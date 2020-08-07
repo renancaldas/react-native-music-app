@@ -14,11 +14,12 @@
     "react-native": "0.63.2",
     "react-native-swift": "^1.2.3",
     "react-native-track-player": "^1.2.3",
+    "react-native-vector-icons": "^7.0.0",
     "react-router-native": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
-    "@babel/runtime": "^7.8.4",
+    "@babel/runtime": "^7.11.2",
     "@react-native-community/eslint-config": "^1.1.0",
     "babel-jest": "^25.1.0",
     "eslint": "^6.5.1",

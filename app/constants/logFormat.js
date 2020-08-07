@@ -1,1 +1,0 @@
-export const logTitle = "background: blue; color: white;";

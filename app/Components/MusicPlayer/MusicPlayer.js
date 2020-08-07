@@ -1,38 +1,45 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import TrackPlayer from 'react-native-track-player';
-import {logTitle} from '../../constants/logFormat';
+import {prettyLog} from '../../helpers/helpers';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class ProgressBar extends TrackPlayer.ProgressComponent {
   render() {
-      return (
-          <View>
-              <Text>Position: {this.state.position}</Text>
-              <Text>Progress: {this.getProgress()}</Text>
-              <Text>BufferedProgress: {this.getBufferedProgress()}</Text>
-          </View>
-      );
-  }  
+    return (
+      <View>
+        <Text>Position: {this.state.position}</Text>
+        <Text>Progress: {this.getProgress()}</Text>
+        <Text>BufferedProgress: {this.getBufferedProgress()}</Text>
+      </View>
+    );
+  }
 }
 
 class MusicPlayer extends Component {
   state = {
     trackTitle: 'N/A',
-    ready: false,
+    playerState: null,
   };
 
   componentDidMount() {
-    console.log(
-      `%c` + `componentDidMount()` + '%c' + ' Called',
-      logTitle,
-      null,
-    );
+    prettyLog('componentDidMount', 'Called');
     // Adds an event handler for the playback-track-changed event
     this.onTrackChange = TrackPlayer.addEventListener(
       'playback-track-changed',
       async (data) => {
         const track = await TrackPlayer.getTrack(data.nextTrack);
+        prettyLog('playback-track-changed', track);
         this.setState({trackTitle: track.title});
+      },
+    );
+
+    this.onStateChange = TrackPlayer.addEventListener(
+      'playback-state',
+      async (data) => {
+        const state = await TrackPlayer.getState();
+        prettyLog('playback-state', state);
+        this.setState({playerState: state});
       },
     );
 
@@ -42,11 +49,11 @@ class MusicPlayer extends Component {
   }
 
   componentWillUnmount() {
-    console.log(`%c` + `componentWillUnmount()`, logTitle);
+    prettyLog('componentWillUnmount');
 
     // Removes the event handler
     this.onTrackChange.remove();
-    this.setState({ready: false});
+    this.setState({playerState: null});
 
     // Log spacing
     console.log('');
@@ -55,19 +62,11 @@ class MusicPlayer extends Component {
   componentDidUpdate(provProps, prevState) {
     const prevStateLog = `\nPrevious State: ${JSON.stringify(prevState)}`;
     const currStateLog = `\nCurrent State: ${JSON.stringify(this.state)}`;
-    console.log(
-      `%c` + `componentDidUpdate()` + '%c ' + `${prevStateLog} ${currStateLog}`,
-      logTitle,
-      null,
-    );
+    prettyLog('componentDidUpdate', `${prevStateLog} ${currStateLog}`);
 
-    const isPlayerReady = !prevState.ready && this.state.ready;
+    const isPlayerReady = !prevState.playerState && this.state.playerState;
     if (isPlayerReady) {
-      console.log(
-        `%c` + `componentDidUpdate()` + '%c ' + `isPlayerReady`,
-        logTitle,
-        null,
-      );
+      prettyLog('componentDidUpdate', `isPlayerReady`);
 
       this.addTrack({
         id: 'patriota', // Must be a string, required
@@ -83,36 +82,83 @@ class MusicPlayer extends Component {
   }
 
   initPlayer() {
-    console.log(`%c` + `initPlayer()` + '%c ' + 'Called', logTitle, null);
+    prettyLog('initPlayer', `Called`);
     const self = this;
 
     TrackPlayer.setupPlayer().then(() => {
-      console.log(
-        `%c` + `initPlayer()` + '%c ' + 'Player initialized!',
-        logTitle,
-        null,
-      );
-      this.setState({ready: true});
+      TrackPlayer.getState().then((playerState) => {
+        prettyLog(
+          'initPlayer',
+          `Player initialized: ${JSON.stringify(playerState)}`,
+        );
+        this.setState({playerState});
+      });
     });
   }
 
   addTrack(track) {
-    console.log(`%c` + `addTrack()` + '%c ' + 'Called', logTitle, null);
+    prettyLog('addTrack', `Called`);
 
     TrackPlayer.add([track]).then(async () => {
-      console.log(`%c` + `addTrack()` + '%c ' + `Track added: ${JSON.stringify(track)}`, logTitle, null);
-      TrackPlayer.play();
+      prettyLog('addTrack', `Track added: ${JSON.stringify(track)}`);
     });
   }
 
+  onPressPlay() {
+    prettyLog('onPressPlay', `Called`);
+    TrackPlayer.play();
+  }
+
+  onPressPause() {
+    prettyLog('onPressPause', `Called`);
+    TrackPlayer.pause();
+  }
+
+  onPressStop() {
+    prettyLog('onPressStop', `Called`);
+    TrackPlayer.stop();
+  }
   render() {
     return (
       <View>
         <Text>{this.state.trackTitle}</Text>
         <ProgressBar />
+        <View style={styles.buttons}>
+          <Icon
+            name="backward"
+            size={30}
+            color="black"
+            onPress={this.onPressPlay}
+          />
+
+          {['paused', 'ready'].includes(this.state.playerState) ? (
+            <TouchableOpacity onPress={this.onPressPlay}>
+              <Icon name="play" size={30} color="black" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={this.onPressPause}>
+              <Icon name="pause" size={30} color="black" />
+            </TouchableOpacity>
+          )}
+
+          {/* <Icon name="stop" size={30} color="black"  onPress={this.onPressStop}/> */}
+          <Icon
+            name="forward"
+            size={30}
+            color="black"
+            onPress={this.onPressStop}
+          />
+        </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+});
 
 export default MusicPlayer;
