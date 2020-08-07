@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import {prettyLog} from '../../helpers/helpers';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -18,7 +18,7 @@ class ProgressBar extends TrackPlayer.ProgressComponent {
 
 class MusicPlayer extends Component {
   state = {
-    trackTitle: 'N/A',
+    track: null,
     playerState: null,
   };
 
@@ -30,7 +30,7 @@ class MusicPlayer extends Component {
       async (data) => {
         const track = await TrackPlayer.getTrack(data.nextTrack);
         prettyLog('playback-track-changed', track);
-        this.setState({trackTitle: track.title});
+        this.setState({track});
       },
     );
 
@@ -101,6 +101,11 @@ class MusicPlayer extends Component {
 
     TrackPlayer.add([track]).then(async () => {
       prettyLog('addTrack', `Track added: ${JSON.stringify(track)}`);
+
+      const currentTrack = await TrackPlayer.getCurrentTrack();
+      prettyLog('addTrack', `currentTrack: ${JSON.stringify(currentTrack)}`);
+
+      this.setState({track: currentTrack});
     });
   }
 
@@ -120,10 +125,23 @@ class MusicPlayer extends Component {
   }
   render() {
     return (
-      <View>
-        <Text>{this.state.trackTitle}</Text>
-        <ProgressBar />
-        <View style={styles.buttons}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text>{this.state.track && this.state.track ? this.state.track : 'N/A'}</Text>
+        </View>
+
+        <View style={styles.content}>
+          <Image
+            style={styles.image}
+            source={require('../../assets/patriota.png')}
+          />
+        </View>
+
+        <View style={styles.progressBar}>
+          <ProgressBar />
+        </View>
+
+        <View style={styles.playerControls}>
           <Icon
             name="backward"
             size={30}
@@ -155,9 +173,37 @@ class MusicPlayer extends Component {
 }
 
 const styles = StyleSheet.create({
-  buttons: {
+  container: {},
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 30,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  content: {
+    height: 300,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginBottom: 30,
+  },
+  image: {
+    height: '100%',
+    width: '100%',
+  },
+  progressBar: {
+    height: 50,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginBottom: 30,
+  },
+  playerControls: {
+    height: 35,
     flexDirection: 'row',
     justifyContent: 'space-around',
+    borderColor: 'black',
+    borderWidth: 1,
   },
 });
 
