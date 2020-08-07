@@ -5,6 +5,7 @@ import { NativeRouter, Route, Link } from "react-router-native";
 import Home from '../Views/Home';
 import About from '../Views/About';
 import Topics from '../Views/Topics';
+import Player from '../Views/Player';
 
 const Navigator = () => (
   <NativeRouter>
@@ -13,6 +14,15 @@ const Navigator = () => (
         <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
           <Text>Home</Text>
         </Link>
+        
+        <Link
+          to="/player"
+          underlayColor="#f0f4f7"
+          style={styles.navItem}
+        >
+          <Text>Player</Text>
+        </Link>
+
         <Link
           to="/about"
           underlayColor="#f0f4f7"
@@ -20,6 +30,7 @@ const Navigator = () => (
         >
           <Text>About</Text>
         </Link>
+        
         <Link
           to="/topics"
           underlayColor="#f0f4f7"
@@ -30,6 +41,7 @@ const Navigator = () => (
       </View>
 
       <Route exact path="/" component={Home} />
+      <Route path="/player" component={Player} />
       <Route path="/about" component={About} />
       <Route path="/topics" component={Topics} />
     </View>
