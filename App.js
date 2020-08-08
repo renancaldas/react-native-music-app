@@ -1,21 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import Header from "./Components/Player/Header";
+import Cover from "./Components/Player/Cover";
+import Album from "./Components/Player/Album";
+import Slider from "./Components/Player/Slider";
+import Control from "./Components/Player/Control";
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={{ alignItems: "center" }}>
+          <Header />
+          <Cover />
+          <Album />
+        </View>
+
+        <Slider />
+        <Control />
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#EAEAEC",
   },
 });
