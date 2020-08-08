@@ -1,0 +1,12 @@
+{
+  "name": "MusicApp",
+  "displayName": "MusicApp",
+  "expo": {
+    "name": "MusicApp",
+    "slug": "MusicApp",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
