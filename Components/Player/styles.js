@@ -16,17 +16,21 @@ export const styles = StyleSheet.create({
   },
   coverContainer: {
     // marginTop: 32,
-    width: 250,
-    height: 250,
+    width: '80%',
+    height: '70%',
     shadowColor: "#5D3F6A",
-    shadowOffset: { height: 15 },
-    shadowRadius: 8,
+    shadowOffset: { height: 5 },
+    shadowRadius: 2,
     shadowOpacity: 0.3,
+    marginTop: 5,
+    marginBottom: 10,
+  elevation: 1,
+  backgroundColor : "#0000" // invisible color
   },
   cover: {
-    width: 250,
-    height: 250,
-    borderRadius: 125,
+    width: '100%',
+    height: '100%',
+    borderRadius: 20,
   },
   track: {
     height: 2,

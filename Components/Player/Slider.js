@@ -26,7 +26,7 @@ export default class Header extends React.Component {
         style={{
           marginHorizontal: 32,
           //margin: 32,
-          // borderWidth: 1
+          //borderWidth: 1
         }}
       >
         <Slider

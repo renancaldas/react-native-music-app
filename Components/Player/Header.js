@@ -8,7 +8,7 @@ export default class Header extends React.Component {
       <View
         style={{
           alignItems: "center",
-          //marginTop: 24,
+          // marginTop: 24,
           // borderWidth: 1
         }}
       >
