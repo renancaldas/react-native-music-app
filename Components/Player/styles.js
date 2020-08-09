@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 32,
     shadowColor: "#5D3F6A",
-    shadowRadius: 30,
+    shadowRadius: 5,
     shadowOpacity: 0.5,
   },
 });

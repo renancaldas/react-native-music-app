@@ -30,11 +30,10 @@ export default class Player extends React.Component {
           <Album />
         </View>
 
-        <View style={{ flex: 0.5 }}>
+        <View style={{ flex: 1.5,
+          justifyContent: "space-between", marginBottom: 10 }}>
           <Slider />
-        </View>
 
-        <View style={{ flex: 1.2 }}>
           <Control />
         </View>
       </View>
