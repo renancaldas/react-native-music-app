@@ -2,7 +2,7 @@ import React from "react";
 import { Platform, SafeAreaView, StyleSheet } from "react-native";
 import * as Device from 'expo-device';
 
-import Player from "./Components/Player/Player";
+import Player from "../Components/Player/Player";
 
 export default class App extends React.Component {
 
@@ -10,6 +10,7 @@ export default class App extends React.Component {
     Device.getUptimeAsync().then(console.log)
     Device.getDeviceTypeAsync().then(console.log)
   }
+  
   render() {
     console.log('>>> Device.osName', Device);
     this.getAsync();
