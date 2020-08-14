@@ -1,10 +1,14 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Text, View, Button } from "react-native";
 
 const Player = ({ route, navigation, text }) => {
+  const { youtubeLogin } = useSelector(state => state.User);
+
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>{text || "Player Screen"}</Text>
+      <Text>Code: {youtubeLogin.code}</Text>
+      <Text>Scope: {youtubeLogin.scope}</Text>
 
       <Button
         title="Go to Player... again"

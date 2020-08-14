@@ -1,46 +1,63 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { StyleSheet, View, Text, Linking } from "react-native";
 import LottieView from "lottie-react-native";
-import queryString from 'query-string';
+import queryString from "query-string";
 
 import RoundedButton from "../Components/Buttons/RoundedButton";
 const MusicAnimation = require("../../assets/lottie/4876-speakers-music.json");
 
+import { LOGIN } from "../Redux/Types/User";
+
 const Login = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.User)
+
   const [canOpenUrl, setCanOpenUrl] = useState(null);
   const [loginUrl, setLoginUrl] = useState(null);
 
   useEffect(() => {
-    if(!loginUrl) {
-      fetch('https://us-central1-musicapp-286403.cloudfunctions.net/loginYoutube')
+    if (!loginUrl) {
+      fetch(
+        "https://us-central1-musicapp-286403.cloudfunctions.net/loginYoutube"
+      )
         .then((res) => res.json())
-        .then((json) => setLoginUrl(json.url));
+        .then((json) => {
+          setLoginUrl(json.url);
+        });
     } else {
       Linking.canOpenURL(loginUrl).then((supported) => {
         setCanOpenUrl(supported);
       });
     }
 
-    const onDeepLink = ({ url }) => {
-      const query = url.indexOf('?') !== -1 ? queryString.parse(url.split('?')[1]) : null;
-      console.log('onDeepLink | query:', query);
+    if (user.youtubeLogin) {
+      navigation.navigate("Player");
     }
 
-    Linking.addEventListener('url', onDeepLink);
+    const onDeepLink = ({ url }) => {
+      const query =
+        url.indexOf("?") !== -1 ? queryString.parse(url.split("?")[1]) : null;
+      console.log("onDeepLink | query:", query);
+
+      dispatch({ type: LOGIN, payload: query });
+    };
+
+    Linking.addEventListener("url", onDeepLink);
     return () => {
-      Linking.removeEventListener('url', onDeepLink);
+      Linking.removeEventListener("url", onDeepLink);
     };
   });
 
   const onGoogleLogin = () => {
-    if(canOpenUrl){
+    if (canOpenUrl) {
       Linking.openURL(loginUrl);
     }
-  }
+  };
 
   const onSpotifyLogin = () => {
-    alert('onSpotifyLogin')
-  }
+    alert("onSpotifyLogin");
+  };
 
   return (
     <View style={styles.container}>
@@ -69,7 +86,6 @@ const Login = ({ navigation }) => {
         </Text>
       </View>
       <View style={styles.buttons}>
-
         <RoundedButton
           onPress={onGoogleLogin}
           backgroundColor="#f80002"
