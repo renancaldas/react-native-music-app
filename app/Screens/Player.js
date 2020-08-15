@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { Text, View, Button, Image, StyleSheet } from 'react-native';
-import { Audio } from 'expo-av';
+import React, { useState, useEffect } from "react";
+import { View, Button } from "react-native";
 
-import { getYoutubeVideoDataById } from '../api';
-const soundObject = new Audio.Sound();
+import { getYoutubeVideoDataById } from "../api";
+
+import MusicPlayer from "../Components/Player/Player";
 
 const Player = ({ route, navigation, text }) => {
+  console.log('View player render')
+
   // const { youtubeLogin } = useSelector((state) => state.User);
 
   const [musicData, setMusicData] = useState(null);
@@ -14,42 +15,28 @@ const Player = ({ route, navigation, text }) => {
     console.log(`getMusicById(${id})`);
 
     getYoutubeVideoDataById(id).then((data) => {
-      console.log('Downloaded music data: ', data.title);
+      console.log("Downloaded music data: ", data);
       setMusicData(data);
     });
   };
 
-  const [playing, setPlay] = useState(null);
-  const play = () => {
-    console.log('Request play');
 
-    const sourceList = musicData.sourceList.filter(source => source.hasAudio && source.hasVideo);
-    console.log('sourceList: ', sourceList);
+  return musicData ? (
+    <MusicPlayer musicData={musicData} />
+  ) : (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Button
+        title="Get music by ID"
+        onPress={() => getMusicById("EnJz5IwCeDY")}
+      />
+    </View>
+  );
+};
 
-    const uri = sourceList[0].url;
+export default Player;
 
-    soundObject.loadAsync({ uri }).then(() => {
-      console.log('Loaded url:', uri);
-      soundObject.playAsync().then(() => {
-        console.log('setPlay = true');
-        setPlay(true);
-      });
-    });
-  };
-
-  const pause = () => {
-    soundObject.pauseAsync().then(() => {
-      setPlay(false);
-    });
-  };
-
-  // useEffect( () => {
-  //   return () => {
-  //     soundObject.unloadAsync();
-  //   }
-  // })
-
-  return (
+/*
+(
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       {musicData && (
         <View>
@@ -77,6 +64,4 @@ const Player = ({ route, navigation, text }) => {
       />
     </View>
   );
-};
-
-export default Player;
+*/

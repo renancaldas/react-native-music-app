@@ -4,23 +4,35 @@ import { Text, View } from "react-native";
 import Slider from "@react-native-community/slider";
 import moment from "moment";
 
-export default class Header extends React.Component {
+class SliderComponent extends React.Component {
   state = {
-    trackLength: 300,
-    timeElapsed: "0:00",
-    timeRemaining: "5:00",
+    slidingValue: null,
   };
 
-  changeTime = (seconds) => {
-    this.setState({ timeElapsed: moment.utc(seconds * 1000).format("m:ss") });
-    this.setState({
-      timeRemaining: moment
-        .utc((this.state.trackLength - seconds) * 1000)
-        .format("m:ss"),
-    });
-  };
+  getTimeFromMiliseconds(miliseconds) {
+    const seconds = miliseconds / 1000;
+    return moment(new Date()).startOf("day").seconds(seconds).format("mm:ss");
+  }
+
+  onSlidingStart() {
+    const { positionMillis } = this.props;
+    this.setState({ slidingValue: positionMillis });
+  }
+
+  onValueChange(slidingValue) {
+    this.setState({ slidingValue });
+  }
+
+  onSlidingComplete(value) {
+    const { setPosition } = this.props;
+    setPosition(value);
+    this.setState({ slidingValue: null });
+  }
 
   render() {
+    const { durationMillis, positionMillis } = this.props;
+    const { slidingValue } = this.state;
+
     return (
       <View
         style={{
@@ -30,12 +42,16 @@ export default class Header extends React.Component {
         }}
       >
         <Slider
+          value={slidingValue || positionMillis}
           minimumValue={0}
-          maximumValue={this.state.trackLength}
-          trackStyle={styles.track}
-          thumbStyle={styles.thumb}
-          minimumTrackTintColor="#93A8B3"
-          onValueChange={(seconds) => this.changeTime(seconds)}
+          maximumValue={durationMillis}
+          onSlidingStart={(value) => this.onSlidingStart(value)}
+          onValueChange={(value) => this.onValueChange(value)}
+          onSlidingComplete={(value) => this.onSlidingComplete(value)}
+
+          // trackStyle={styles.track}
+          // thumbStyle={styles.thumb}
+          // minimumTrackTintColor="#93A8B3"
         ></Slider>
         <View
           style={{
@@ -45,13 +61,17 @@ export default class Header extends React.Component {
           }}
         >
           <Text style={[styles.textLight, styles.timeStamp]}>
-            {this.state.timeElapsed}
+            {this.getTimeFromMiliseconds(
+              slidingValue ? slidingValue : positionMillis
+            )}
           </Text>
           <Text style={[styles.textLight, styles.timeStamp]}>
-            {this.state.timeRemaining}
+            {this.getTimeFromMiliseconds(durationMillis)}
           </Text>
         </View>
       </View>
     );
   }
 }
+
+export default SliderComponent;

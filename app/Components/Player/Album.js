@@ -1,9 +1,12 @@
 import React from "react";
 import { styles } from "./styles";
 import { Text, View } from "react-native";
+import TextTicker from "react-native-text-ticker";
 
-export default class Header extends React.Component {
+class Album extends React.Component {
   render() {
+    const { author, title } = this.props;
+
     return (
       <View
         style={{
@@ -12,13 +15,21 @@ export default class Header extends React.Component {
           // borderWidth: 1
         }}
       >
-        <Text style={[styles.textDark, { fontSize: 20, fontWeight: "500" }]}>
-          Let Yourself Go
+        <Text style={[styles.textDark, { fontSize: 18, fontWeight: "500" }]}>
+          {author.name}
         </Text>
-        <Text style={[styles.text, { fontSize: 16, marginTop: 8 }]}>
-          Green Day
-        </Text>
+        <View style={{ marginHorizontal: 20 }}>
+          <TextTicker
+            style={[styles.text, { fontSize: 16, marginTop: 8 }]}
+            loop
+            scroll={false}
+          >
+            {title}
+          </TextTicker>
+        </View>
       </View>
     );
   }
 }
+
+export default Album;
