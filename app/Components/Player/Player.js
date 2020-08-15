@@ -8,6 +8,10 @@ import Album from "./Album";
 import Slider from "./Slider";
 import Control from "./Control";
 
+Audio.setAudioModeAsync({
+  staysActiveInBackground: true,
+});
+
 class Player extends React.Component {
   state = {
     isReady: false,
@@ -42,7 +46,7 @@ class Player extends React.Component {
           style={{
             flex: 1,
             flexDirection: "column",
-            justifyContent: "space-around"
+            justifyContent: "space-around",
           }}
         >
           <View
