@@ -1,34 +1,32 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { View, Button } from "react-native";
 
 import { getYoutubeVideoDataById } from "../api";
+import {
+  setMusicDataAction,
+} from "../Redux/Actions/Player";
 
 import MusicPlayer from "../Components/Player/Player";
 
 const Player = ({ route, navigation, text }) => {
-  console.log('View player render')
-  // const { youtubeLogin } = useSelector((state) => state.User);
 
-  const [musicData, setMusicData] = useState(null);
-  const getMusicById = (id) => {
-    console.log(`getMusicById(${id})`);
+  const dispatch = useDispatch();
+  const { selectedItem } = useSelector((state) => state.Playlist);
+  const { musicData } = useSelector((state) => state.Player);
 
-    getYoutubeVideoDataById(id).then((data) => {
-      console.log("Downloaded music data: ", data);
-      setMusicData(data);
+  if (!musicData && selectedItem) {
+    getYoutubeVideoDataById(selectedItem.id.videoId).then((data) => {
+      dispatch(setMusicDataAction(data));
     });
-  };
+  } 
 
-
-  return musicData ? (
-    <MusicPlayer musicData={musicData} />
-  ) : (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Button
-        title="Get music by ID"
-        onPress={() => getMusicById("iywaBOMvYLI")}
+  return (
+    musicData && (
+      <MusicPlayer
+        navigation={navigation}
       />
-    </View>
+    )
   );
 };
 

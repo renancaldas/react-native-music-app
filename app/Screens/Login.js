@@ -35,7 +35,6 @@ const Login = ({ navigation }) => {
     const onDeepLink = ({ url }) => {
       const query =
         url.indexOf("?") !== -1 ? queryString.parse(url.split("?")[1]) : null;
-      console.log("onDeepLink | query:", query);
 
       dispatch({ type: LOGIN, payload: query });
     };

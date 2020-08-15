@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Audio } from "expo-av";
+import { connect } from "react-redux";
 
 import Header from "./Header";
 import Cover from "./Cover";
@@ -8,8 +9,11 @@ import Album from "./Album";
 import Slider from "./Slider";
 import Control from "./Control";
 
+import { clearMusicDataAction } from "../../Redux/Actions/Player";
+
 Audio.setAudioModeAsync({
-  staysActiveInBackground: true,
+  staysActiveInBackground: false,
+  playThroughEarpieceAndroid: false,
 });
 
 class Player extends React.Component {
@@ -31,9 +35,14 @@ class Player extends React.Component {
     )[0].url;
 
     this.soundObject.loadAsync({ uri }).then(() => {
-      console.log("Loaded url:", uri);
       this.setState({ isReady: true });
     });
+  }
+
+  componentWillUnmount() {
+    this.soundObject.unloadAsync();
+    this.soundObject = null;
+    this.props.clearMusicData();
   }
 
   render() {
@@ -81,6 +90,9 @@ class Player extends React.Component {
             />
 
             <Control
+              back={() => {
+                this.props.navigation.navigate("Playlist");
+              }}
               play={() => this.soundObject.playAsync()}
               pause={() => this.soundObject.pauseAsync()}
               isPlaying={playbackStatus ? playbackStatus.isPlaying : false}
@@ -92,4 +104,18 @@ class Player extends React.Component {
   }
 }
 
-export default Player;
+const mapStateToProps = (state) => {
+  return {
+    musicData: state.Player.musicData,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearMusicData: () => {
+      dispatch(clearMusicDataAction());
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Player);

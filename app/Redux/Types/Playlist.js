@@ -1,0 +1,2 @@
+export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
+export const SELECT_ITEM = 'SELECT_ITEM';

@@ -5,8 +5,6 @@ const initialState = {
 };
 
 function reducer(state = initialState, action) {
-  console.log(`User reducer: `, action);
-
   switch (action.type) {
     case LOGIN: {
       return {

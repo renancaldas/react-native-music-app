@@ -1,0 +1,2 @@
+export const SET_MUSIC_DATA = 'SET_MUSIC_DATA';
+export const CLEAR_MUSIC_DATA = 'CLEAR_MUSIC_DATA';

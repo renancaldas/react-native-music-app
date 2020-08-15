@@ -5,7 +5,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 class Control extends React.Component {
   render() {
-    const { play, pause, isPlaying } = this.props;
+    const { back, play, pause, isPlaying } = this.props;
     
     return (
       <View
@@ -15,7 +15,7 @@ class Control extends React.Component {
           alignItems: "center",
         }}
       >
-        <TouchableOpacity>
+        <TouchableOpacity onPress={back}>
           <FontAwesome5
             name="backward"
             size={32}
