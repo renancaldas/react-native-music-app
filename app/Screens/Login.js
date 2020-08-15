@@ -6,25 +6,22 @@ import queryString from "query-string";
 
 import RoundedButton from "../Components/Buttons/RoundedButton";
 const MusicAnimation = require("../../assets/lottie/4876-speakers-music.json");
+import { getYoutubeLoginUrl } from "../api";
 
 import { LOGIN } from "../Redux/Types/User";
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.User)
+  const user = useSelector((state) => state.User);
 
   const [canOpenUrl, setCanOpenUrl] = useState(null);
   const [loginUrl, setLoginUrl] = useState(null);
 
   useEffect(() => {
     if (!loginUrl) {
-      fetch(
-        "https://us-central1-musicapp-286403.cloudfunctions.net/loginYoutube"
-      )
-        .then((res) => res.json())
-        .then((json) => {
-          setLoginUrl(json.url);
-        });
+      getYoutubeLoginUrl.then((json) => {
+        setLoginUrl(json.url);
+      });
     } else {
       Linking.canOpenURL(loginUrl).then((supported) => {
         setCanOpenUrl(supported);

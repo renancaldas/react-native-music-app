@@ -25,12 +25,12 @@ const App = (props) => {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator headerMode="none">
-          {/* Login */}
+          {/* Login 
           <Stack.Screen name="Login">
             {(props) => <Login {...props} title="Login" />}
-          </Stack.Screen>
+          </Stack.Screen>*/}
 
-          {/* Details */}
+          {/* Player */}
           <Stack.Screen name="Player">
             {(props) => <Player {...props} title="Player" />}
           </Stack.Screen>
