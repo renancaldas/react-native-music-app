@@ -1,6 +1,5 @@
 import React from "react";
-import { styles } from "./styles";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import { Audio } from "expo-av";
 
 import Header from "./Header";
@@ -43,7 +42,7 @@ class Player extends React.Component {
           style={{
             flex: 1,
             flexDirection: "column",
-            justifyContent: "space-around",
+            justifyContent: "space-around"
           }}
         >
           <View

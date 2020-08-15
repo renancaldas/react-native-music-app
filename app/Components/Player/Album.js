@@ -11,8 +11,6 @@ class Album extends React.Component {
       <View
         style={{
           alignItems: "center",
-          //marginTop: 32,
-          // borderWidth: 1
         }}
       >
         <Text style={[styles.textDark, { fontSize: 18, fontWeight: "500" }]}>

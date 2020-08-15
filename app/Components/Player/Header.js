@@ -8,15 +8,14 @@ class Header extends React.Component {
       <View
         style={{
           alignItems: "center",
-          // marginTop: 24,
-          // borderWidth: 1
+          marginTop: 50,
         }}
       >
         <Text style={[styles.textLight, { fontSize: 12 }]}>PLAYLIST</Text>
         <Text
           style={[
             styles.text,
-            { fontSize: 15, fontWeight: "500", marginTop: 8 },
+            { fontSize: 15, fontWeight: "500", marginTop: 5 },
           ]}
         >
           Rock'n Roll

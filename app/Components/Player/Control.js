@@ -13,8 +13,6 @@ class Control extends React.Component {
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          //marginTop: 16,
-          // borderWidth: 1
         }}
       >
         <TouchableOpacity>
@@ -30,7 +28,7 @@ class Control extends React.Component {
               name="pause"
               size={32}
               color="#3D425C"
-              style={[styles.playButton, { marginLeft: 8 }]}
+              style={[styles.playButton]}
             ></FontAwesome5>
           </TouchableOpacity>
         ) : (
@@ -39,7 +37,7 @@ class Control extends React.Component {
               name="play"
               size={32}
               color="#3D425C"
-              style={[styles.playButton, { marginLeft: 8 }]}
+              style={[styles.playButton, { marginLeft: 5 }]}
             ></FontAwesome5>
           </TouchableOpacity>
         )}

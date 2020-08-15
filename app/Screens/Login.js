@@ -102,21 +102,15 @@ const Login = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // borderWidth: 1,
-    // borderColor: 'yellow',
     height: "93%",
   },
   logo: {
-    // borderWidth: 1,
-    // borderColor: 'red',
     height: "60%",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-around",
   },
   buttons: {
-    // borderWidth: 1,
-    // borderColor: 'blue',
     height: "40%",
     flexDirection: "column",
     alignItems: "center",

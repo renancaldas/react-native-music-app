@@ -37,8 +37,7 @@ class SliderComponent extends React.Component {
       <View
         style={{
           marginHorizontal: 32,
-          //margin: 32,
-          //borderWidth: 1
+          marginTop: 25,
         }}
       >
         <Slider
@@ -48,14 +47,9 @@ class SliderComponent extends React.Component {
           onSlidingStart={(value) => this.onSlidingStart(value)}
           onValueChange={(value) => this.onValueChange(value)}
           onSlidingComplete={(value) => this.onSlidingComplete(value)}
-
-          // trackStyle={styles.track}
-          // thumbStyle={styles.thumb}
-          // minimumTrackTintColor="#93A8B3"
         ></Slider>
         <View
           style={{
-            // marginTop: -12,
             flexDirection: "row",
             justifyContent: "space-between",
           }}
