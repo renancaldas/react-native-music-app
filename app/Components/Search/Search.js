@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button } from "react-native";
+import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 
 const Search = ({ onSearch }) => {
-  const [searchText, onChangeText] = React.useState("system of a down");
+  const [searchText, onChangeText] = React.useState(null);
 
+  const searchEvent = () => {
+    if (searchText) {
+      onSearch(searchText)
+    }
+  }
   return (
     <View
       style={{
@@ -23,11 +28,13 @@ const Search = ({ onSearch }) => {
         style={{ height: 40, width: "60%" }}
         onChangeText={(text) => onChangeText(text)}
         value={searchText}
-        defaultValue="Search for music here..."
-        onBlur={() => onSearch(searchText)}
+        defaultValue="Search for music"
+        onBlur={() => searchEvent()}
         selectTextOnFocus
       />
-      <Button title="Search" onPress={() => onSearch(searchText)} />
+      <TouchableOpacity onPress={() => searchEvent()}>
+        <Text style={{ color: '#3a80f4', marginRight: 10}}>Search</Text>
+      </TouchableOpacity>
     </View>
   );
 };
