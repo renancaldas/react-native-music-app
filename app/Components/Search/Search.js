@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 
@@ -10,6 +10,7 @@ const Search = ({ onSearch }) => {
       onSearch(searchText)
     }
   }
+  
   return (
     <View
       style={{

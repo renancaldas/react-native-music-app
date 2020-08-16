@@ -5,7 +5,7 @@ import ListItem from "./PlaylistItem";
 
 const List = ({ items, onPressItem }) => {
   return (
-    <ScrollView style={{ padding: 10 }}>
+    <ScrollView>
       {items.map((item) => (
         <ListItem key={item.id.videoId} item={item} onPressItem={onPressItem} />
       ))}

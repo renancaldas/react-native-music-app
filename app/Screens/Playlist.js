@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
 import { searchByQuery } from "../api";
-import { setSearchResultsAction, selectItemAction } from '../Redux/Actions/Playlist';
+import {
+  setSearchResultsAction,
+  selectItemAction,
+} from "../Redux/Actions/Playlist";
 
 import Search from "../Components/Search/Search";
 import List from "../Components/Playlist/Playlist";
@@ -29,9 +32,17 @@ const Playlist = ({ route, navigation, text }) => {
         flexDirection: "column",
         height: "100%",
         width: "100%",
+        padding: 10,
       }}
     >
-      <Search onSearch={(searchText) => onSearch(searchText)} />
+      <View
+       style={{
+        marginBottom: 5,
+      }}
+      >
+        <Search onSearch={(searchText) => onSearch(searchText)} />
+      </View>
+
       <List items={searchResults.items} onPressItem={onPressItem} />
     </View>
   );
