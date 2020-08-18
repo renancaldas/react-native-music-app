@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
+import colors from "../constants/colors";
 
 import { searchByQuery, getYoutubeVideoDataById } from "../api";
 import {
   setSearchResultsAction,
   selectItemAction,
+  setSearchLoadingAction,
 } from "../Redux/Actions/Playlist";
 import { setMusicDataAction } from "../Redux/Actions/Player";
 
@@ -14,10 +16,14 @@ import List from "../Components/Playlist/Playlist";
 
 const Playlist = ({ route, navigation, text }) => {
   const dispatch = useDispatch();
-  const { searchResults } = useSelector((state) => state.Playlist);
+  const { searchResults, isSearchLoading } = useSelector(
+    (state) => state.Playlist
+  );
 
   const onSearch = (searchText) => {
+    dispatch(setSearchLoadingAction(true));
     searchByQuery(searchText).then((results) => {
+      dispatch(setSearchLoadingAction(false));
       dispatch(setSearchResultsAction(results));
     });
   };
@@ -41,13 +47,27 @@ const Playlist = ({ route, navigation, text }) => {
         height: "100%",
         width: "100%",
         padding: 10,
+        backgroundColor: colors.background.app,
       }}
     >
       <View style={{ marginBottom: 5 }}>
         <Search onSearch={(searchText) => onSearch(searchText)} />
       </View>
 
-      <List items={searchResults.items} onPressItem={onPressItem} />
+      {isSearchLoading ? (
+        <View
+          style={{
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            height: '100%'
+          }}
+        >
+          <ActivityIndicator size="large" />
+        </View>
+      ) : (
+        <List items={searchResults.items} onPressItem={onPressItem} />
+      )}
     </View>
   );
 };

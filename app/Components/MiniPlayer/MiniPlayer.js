@@ -7,6 +7,7 @@ import {
   TouchableNativeFeedback,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import TextTicker from "react-native-text-ticker";
 
 import colors from "../../constants/colors";
 import { setIsFullscreenAction } from "../../Redux/Actions/Player";
@@ -17,7 +18,7 @@ const MiniPlayer = () => {
   const dispatch = useDispatch();
   const { musicData, isFullScreen } = useSelector((state) => state.Player);
 
-  console.log('>>>> isFullScreen', isFullScreen)
+  console.log(">>>> isFullScreen", isFullScreen);
 
   return (
     musicData && (
@@ -38,11 +39,11 @@ const MiniPlayer = () => {
         >
           <View
             style={{
-              width: '100%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 20
+              width: "100%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              height: 30,
             }}
           >
             <View
@@ -66,12 +67,14 @@ const MiniPlayer = () => {
           }}
         >
           <View style={{ width: "80%" }}>
-            <Slider
-              title={musicData.title}
-              setPosition={() => {}}
-              positionMillis={500}
-              durationMillis={1000}
-            />
+            <TextTicker
+              duration={5000}
+              marqueeDelay={2000}
+              style={{ color: colors.solid.white }}
+            >
+              {musicData.title}
+            </TextTicker>
+            <Text style={{ color: colors.solid.white }}>test</Text>
           </View>
           <TouchableOpacity>
             <FontAwesome5 name="play" size={25} color={colors.solid.white} />

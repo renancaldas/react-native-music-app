@@ -3,7 +3,6 @@ import { styles } from "./styles";
 import { Text, View } from "react-native";
 import Slider from "@react-native-community/slider";
 import moment from "moment";
-import TextTicker from "react-native-text-ticker";
 import colors from "../../constants/colors";
 
 class SliderComponent extends React.Component {
@@ -51,27 +50,25 @@ class SliderComponent extends React.Component {
             justifyContent: "space-between",
           }}
         >
-          <Text style={[styles.textLight, styles.timeStamp]}>
+          <Text
+            style={{
+              fontSize: 11,
+              fontWeight: "500",
+              color: colors.text.title,
+            }}
+          >
             {this.getTimeFromMiliseconds(
               slidingValue ? slidingValue : positionMillis
             )}
           </Text>
 
-          <View
+          <Text
             style={{
-              width: "70%",
+              fontSize: 11,
+              fontWeight: "500",
+              color: colors.text.title,
             }}
           >
-            <TextTicker
-              duration={5000}
-              marqueeDelay={2000}
-              style={{ color: colors.solid.white, fontSize: 10 }}
-            >
-              {this.props.title}
-            </TextTicker>
-          </View>
-
-          <Text style={[styles.textLight, styles.timeStamp]}>
             {this.getTimeFromMiliseconds(durationMillis)}
           </Text>
         </View>

@@ -41,10 +41,6 @@ export const styles = StyleSheet.create({
     height: 8,
     backgroundColor: "#3D425C",
   },
-  timeStamp: {
-    fontSize: 11,
-    fontWeight: "500",
-  },
   playButtonContainer: {
     backgroundColor: "#FFF",
     borderColor: "rgba(93, 63, 106, 0.2)",

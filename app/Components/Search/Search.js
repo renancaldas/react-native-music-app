@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
-import { EvilIcons } from "@expo/vector-icons";
+import { EvilIcons, AntDesign } from "@expo/vector-icons";
 import colors from "../../constants/colors";
 
 const Search = ({ onSearch }) => {
@@ -25,7 +25,14 @@ const Search = ({ onSearch }) => {
         paddingHorizontal: 10,
       }}
     >
-      <EvilIcons name="search" size={32} />
+      <View style={{ width: 10 }}>
+        <AntDesign
+          name="youtube"
+          size={32}
+          style={{ color: "red", marginTop: 5, width: 50 }}
+        />
+      </View>
+
       <TextInput
         style={{ height: 40, width: "60%" }}
         onChangeText={(text) => onChangeText(text)}
@@ -34,10 +41,9 @@ const Search = ({ onSearch }) => {
         onBlur={() => searchEvent()}
         selectTextOnFocus
       />
+
       <TouchableOpacity onPress={() => searchEvent()}>
-        <Text style={{ color: colors.buttons.search, marginRight: 10 }}>
-          Search
-        </Text>
+        <EvilIcons name="search" size={32} />
       </TouchableOpacity>
     </View>
   );

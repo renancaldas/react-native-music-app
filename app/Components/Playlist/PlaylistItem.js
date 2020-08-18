@@ -74,8 +74,10 @@ const ListItem = ({ item, onPressItem }) => {
             width: "75%",
           }}
         >
-          <Text numberOfLines={2}>{title}</Text>
-          
+          <Text numberOfLines={2} style={{ color: colors.text.title }}>
+            {title}
+          </Text>
+
           <View
             style={{
               flexDirection: "row",
@@ -88,8 +90,8 @@ const ListItem = ({ item, onPressItem }) => {
                 alignItems: "center",
               }}
             >
-              <AntDesign name="playcircleo" size={12} />
-              <Text style={{ marginLeft: 4 }}>{numberFormat(viewCount)}</Text>
+              <AntDesign name="playcircleo" size={12} color={colors.text.title} />
+              <Text style={{ marginLeft: 4, color: colors.text.title }}>{numberFormat(viewCount)}</Text>
             </View>
             <View
               style={{
@@ -97,8 +99,8 @@ const ListItem = ({ item, onPressItem }) => {
                 alignItems: "center",
               }}
             >
-              <AntDesign name="like2" size={12} />
-              <Text style={{ marginLeft: 4 }}>{numberFormat(likeCount)}</Text>
+              <AntDesign name="like2" size={12} color={colors.text.title}/>
+              <Text style={{ marginLeft: 4, color: colors.text.title }}>{numberFormat(likeCount)}</Text>
             </View>
             <View
               style={{
@@ -106,8 +108,8 @@ const ListItem = ({ item, onPressItem }) => {
                 alignItems: "center",
               }}
             >
-              <AntDesign name="dislike2" size={12} />
-              <Text style={{ marginLeft: 4 }}>
+              <AntDesign name="dislike2" size={12} color={colors.text.title}/>
+              <Text style={{ marginLeft: 4, color: colors.text.title }}>
                 {numberFormat(dislikeCount)}
               </Text>
             </View>
