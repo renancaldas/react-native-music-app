@@ -1,16 +1,17 @@
 import React from "react";
 import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
+import colors from "../../constants/colors";
 
 const Search = ({ onSearch }) => {
   const [searchText, onChangeText] = React.useState(null);
 
   const searchEvent = () => {
     if (searchText) {
-      onSearch(searchText)
+      onSearch(searchText);
     }
-  }
-  
+  };
+
   return (
     <View
       style={{
@@ -20,7 +21,7 @@ const Search = ({ onSearch }) => {
         height: 40,
         width: "100%",
         borderRadius: 20,
-        backgroundColor: "lightgrey",
+        backgroundColor: colors.solid.lightgrey,
         paddingHorizontal: 10,
       }}
     >
@@ -34,7 +35,9 @@ const Search = ({ onSearch }) => {
         selectTextOnFocus
       />
       <TouchableOpacity onPress={() => searchEvent()}>
-        <Text style={{ color: '#3a80f4', marginRight: 10}}>Search</Text>
+        <Text style={{ color: colors.buttons.search, marginRight: 10 }}>
+          Search
+        </Text>
       </TouchableOpacity>
     </View>
   );

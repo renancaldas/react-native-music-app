@@ -1,11 +1,15 @@
-import { SET_MUSIC_DATA, CLEAR_MUSIC_DATA } from "../Types/Player";
+import {
+  SET_MUSIC_DATA,
+  CLEAR_MUSIC_DATA,
+  SET_IS_FULLSCREEN,
+} from "../Types/Player";
 
 const initialState = {
   musicData: null,
+  isFullScreen: false,
 };
 
 function reducer(state = initialState, action) {
-
   switch (action.type) {
     case SET_MUSIC_DATA: {
       return {
@@ -18,6 +22,13 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         musicData: initialState.musicData,
+      };
+    }
+
+    case SET_IS_FULLSCREEN: {
+      return {
+        ...state,
+        isFullScreen: action.payload,
       };
     }
 

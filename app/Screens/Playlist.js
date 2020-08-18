@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { View } from "react-native";
 
-import { searchByQuery } from "../api";
+import { searchByQuery, getYoutubeVideoDataById } from "../api";
 import {
   setSearchResultsAction,
   selectItemAction,
 } from "../Redux/Actions/Playlist";
+import { setMusicDataAction } from "../Redux/Actions/Player";
 
 import Search from "../Components/Search/Search";
 import List from "../Components/Playlist/Playlist";
@@ -21,9 +22,16 @@ const Playlist = ({ route, navigation, text }) => {
     });
   };
 
-  const onPressItem = (item) => {
-    dispatch(selectItemAction(item));
-    navigation.navigate("Player");
+  const loadMusicData = (selectedItem) => {
+    getYoutubeVideoDataById(selectedItem.id.videoId).then((data) => {
+      dispatch(setMusicDataAction(data));
+    });
+  };
+
+  const onPressItem = (selectedItem) => {
+    dispatch(selectItemAction(selectedItem));
+    loadMusicData(selectedItem);
+    // navigation.navigate("Player");
   };
 
   return (
@@ -35,11 +43,7 @@ const Playlist = ({ route, navigation, text }) => {
         padding: 10,
       }}
     >
-      <View
-       style={{
-        marginBottom: 5,
-      }}
-      >
+      <View style={{ marginBottom: 5 }}>
         <Search onSearch={(searchText) => onSearch(searchText)} />
       </View>
 

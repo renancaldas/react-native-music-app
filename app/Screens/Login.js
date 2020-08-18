@@ -4,9 +4,12 @@ import { StyleSheet, View, Text, Linking } from "react-native";
 import LottieView from "lottie-react-native";
 import queryString from "query-string";
 
+import colors from '../constants/colors';
+
 import RoundedButton from "../Components/Buttons/RoundedButton";
 const MusicAnimation = require("../../assets/lottie/4876-speakers-music.json");
 import { getYoutubeLoginUrl } from "../api";
+
 
 import { LOGIN } from "../Redux/Types/User";
 
@@ -84,13 +87,13 @@ const Login = ({ navigation }) => {
       <View style={styles.buttons}>
         <RoundedButton
           onPress={onGoogleLogin}
-          backgroundColor="#f80002"
+          backgroundColor={colors.buttons.google}
           text="Login with Google"
           icon="youtube"
         />
         <RoundedButton
           onPress={onSpotifyLogin}
-          backgroundColor="#24d15d"
+          backgroundColor={colors.buttons.spotify}
           text="Login with Spotify"
           icon="spotify"
         />

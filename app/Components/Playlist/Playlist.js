@@ -1,15 +1,21 @@
 import React from "react";
-import { Text, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 
 import ListItem from "./PlaylistItem";
 
 const List = ({ items, onPressItem }) => {
   return (
-    <ScrollView>
-      {items.map((item) => (
-        <ListItem key={item.id.videoId} item={item} onPressItem={onPressItem} />
-      ))}
-    </ScrollView>
+    <View style={{ height: "100%" }}>
+      <ScrollView>
+        {items.map((item) => (
+          <ListItem
+            key={item.id.videoId}
+            item={item}
+            onPressItem={onPressItem}
+          />
+        ))}
+      </ScrollView>
+    </View>
   );
 };
 

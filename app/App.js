@@ -9,6 +9,9 @@ import store from "./Redux/store";
 import Login from "./Screens/Login";
 import Playlist from "./Screens/Playlist";
 import Player from "./Screens/Player";
+import MiniPlayer from "./Components/MiniPlayer/MiniPlayer";
+
+import colors from './constants/colors';
 
 const Stack = createStackNavigator();
 
@@ -42,6 +45,7 @@ const App = (props) => {
             </Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
+        <MiniPlayer />
       </SafeAreaView>
     </Provider>
   );
@@ -50,7 +54,7 @@ const App = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#EAEAEC",
+    backgroundColor: colors.background.app,
     paddingTop: Platform.OS === 'android' ? 30 : 0,
   },
 });

@@ -2,6 +2,10 @@ import React from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
+import colors from "../../constants/colors";
+
+import numberFormat from "../../helpers/numberFormat";
+
 const ListItem = ({ item, onPressItem }) => {
   const { channelTitle, title, thumbnails } = item.snippet;
   const { duration } = item.contentDetails;
@@ -24,21 +28,42 @@ const ListItem = ({ item, onPressItem }) => {
           height: 60,
         }}
       >
-        <View>
+        <View
+          style={{
+            backgroundColor: colors.solid.black,
+            marginRight: 10,
+            borderRadius: 10,
+          }}
+        >
           <Image
             style={{
               width: 60,
               height: "100%",
               borderRadius: 10,
-              marginRight: 10,
+              opacity: 0.5,
             }}
             source={{ uri: thumbnails.default.url }}
           />
           <Text
-            style={{ position: "absolute", color: "white", top: 45, left: 18 }}
+            style={{
+              position: "absolute",
+              color: colors.solid.white,
+              top: 45,
+              left: 18,
+            }}
           >
             {formatedDuration}
           </Text>
+          <AntDesign
+            style={{
+              position: "absolute",
+              color: colors.solid.white,
+              top: 12,
+              left: 15,
+            }}
+            name="playcircleo"
+            size={30}
+          />
         </View>
 
         <View
@@ -50,8 +75,7 @@ const ListItem = ({ item, onPressItem }) => {
           }}
         >
           <Text numberOfLines={2}>{title}</Text>
-          {/* <Text style={{ color: "#B6B7BF" }}>{channelTitle}</Text> */}
-
+          
           <View
             style={{
               flexDirection: "row",
@@ -64,8 +88,8 @@ const ListItem = ({ item, onPressItem }) => {
                 alignItems: "center",
               }}
             >
-              <AntDesign name="playcircleo" size={12}  />
-              <Text style={{ marginLeft: 4  }}>{viewCount}</Text>
+              <AntDesign name="playcircleo" size={12} />
+              <Text style={{ marginLeft: 4 }}>{numberFormat(viewCount)}</Text>
             </View>
             <View
               style={{
@@ -73,8 +97,8 @@ const ListItem = ({ item, onPressItem }) => {
                 alignItems: "center",
               }}
             >
-              <AntDesign name="like2" size={12}  />
-              <Text style={{ marginLeft: 4  }}>{likeCount}</Text>
+              <AntDesign name="like2" size={12} />
+              <Text style={{ marginLeft: 4 }}>{numberFormat(likeCount)}</Text>
             </View>
             <View
               style={{
@@ -82,8 +106,10 @@ const ListItem = ({ item, onPressItem }) => {
                 alignItems: "center",
               }}
             >
-              <AntDesign name="dislike2" size={12}  />
-              <Text style={{ marginLeft: 4  }}>{dislikeCount}</Text>
+              <AntDesign name="dislike2" size={12} />
+              <Text style={{ marginLeft: 4 }}>
+                {numberFormat(dislikeCount)}
+              </Text>
             </View>
           </View>
         </View>
