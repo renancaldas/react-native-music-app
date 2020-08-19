@@ -14,32 +14,13 @@ const MusicAnimation = require("../../assets/lottie/4031-voice-recognition.json"
 const Login = ({ navigation }) => {
   const user = useSelector((state) => state.User);
 
-  const [canOpenUrl, setCanOpenUrl] = useState(null);
-  const [loginUrl, setLoginUrl] = useState(null);
-
   useEffect(() => {
-    if (!loginUrl) {
-      api.getYoutubeLoginUrl().then((data) => {
-        setLoginUrl(data.url);
-      });
-    } else {
-      Linking.canOpenURL(loginUrl).then((supported) => {
-        setCanOpenUrl(supported);
-      });
-    }
-
     if (user.login) {
       navigation.navigate("Playlist");
     }
 
     return () => {};
   });
-
-  const onGoogleLogin = () => {
-    if (canOpenUrl) {
-      Linking.openURL(loginUrl);
-    }
-  };
 
   const onSpotifyLogin = () => {
     Linking.openURL(api.getSpotifyCodeUrl());

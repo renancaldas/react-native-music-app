@@ -32,7 +32,7 @@ const Search = ({ onSearch }) => {
             width: 22,
             height: 22,
             position: "absolute",
-            top: 10,
+            top: 5,
             left: 5,
             borderRadius: 10,
           }}
@@ -41,7 +41,7 @@ const Search = ({ onSearch }) => {
         <Entypo
           name="spotify"
           size={32}
-          style={{ color: colors.solid.green, marginTop: 5, width: 50 }}
+          style={{ color: colors.solid.green,  width: 50 }}
         />
       </View>
 
