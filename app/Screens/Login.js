@@ -7,7 +7,7 @@ import colors from "../constants/colors";
 
 import RoundedButton from "../Components/Buttons/RoundedButton";
 const MusicAnimation = require("../../assets/lottie/4876-speakers-music.json");
-import { getYoutubeLoginUrl } from "../api";
+import * as api from "../api";
 
 
 const Login = ({ navigation }) => {
@@ -18,7 +18,7 @@ const Login = ({ navigation }) => {
 
   useEffect(() => {
     if (!loginUrl) {
-      getYoutubeLoginUrl().then((data) => {
+      api.getYoutubeLoginUrl().then((data) => {
         setLoginUrl(data.url);
       });
     } else {
@@ -42,9 +42,7 @@ const Login = ({ navigation }) => {
   };
 
   const onSpotifyLogin = () => {
-    Linking.openURL(
-      "https://accounts.spotify.com/authorize?response_type=code&client_id=77880ef48e6545949e1d36b049fb2f17&scope=user-read-private&redirect_uri=https://us-central1-musicapp-286403.cloudfunctions.net/callbackSpotify"
-    );
+    Linking.openURL(api.getSpotifyCodeUrl());
   };
 
   return (
