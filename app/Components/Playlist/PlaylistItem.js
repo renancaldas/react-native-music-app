@@ -1,12 +1,19 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
+import { getYoutubeVideoDataById } from "../../api";
 import colors from "../../constants/colors";
-
 import numberFormat from "../../helpers/numberFormat";
+import {
+  selectItemAction,
+  setSelectItemLoadingAction,
+} from "../../Redux/Actions/Playlist";
+import { setMusicDataAction } from "../../Redux/Actions/Player";
 
-const ListItem = ({ item, onPressItem }) => {
+const ListItem = ({ item }) => {
+  const dispatch = useDispatch();
   const { channelTitle, title, thumbnails } = item.snippet;
   const { duration } = item.contentDetails;
   const { viewCount, likeCount, dislikeCount } = item.statistics;
@@ -15,6 +22,20 @@ const ListItem = ({ item, onPressItem }) => {
     .replace("PT", "")
     .replace("S", "")
     .replace("M", ":");
+
+  const loadMusicData = (selectedItem) => {
+    getYoutubeVideoDataById(selectedItem.id.videoId).then((data) => {
+      dispatch(setSelectItemLoadingAction(false));
+      dispatch(setMusicDataAction(data));
+    });
+  };
+
+  const onPressItem = (selectedItem) => {
+    dispatch(setSelectItemLoadingAction(true));
+    dispatch(selectItemAction(selectedItem));
+    loadMusicData(selectedItem);
+    // navigation.navigate("Player");
+  };
 
   return (
     <TouchableOpacity onPress={() => onPressItem(item)}>
@@ -90,8 +111,14 @@ const ListItem = ({ item, onPressItem }) => {
                 alignItems: "center",
               }}
             >
-              <AntDesign name="playcircleo" size={12} color={colors.text.title} />
-              <Text style={{ marginLeft: 4, color: colors.text.title }}>{numberFormat(viewCount)}</Text>
+              <AntDesign
+                name="playcircleo"
+                size={12}
+                color={colors.text.title}
+              />
+              <Text style={{ marginLeft: 4, color: colors.text.title }}>
+                {numberFormat(viewCount)}
+              </Text>
             </View>
             <View
               style={{
@@ -99,8 +126,10 @@ const ListItem = ({ item, onPressItem }) => {
                 alignItems: "center",
               }}
             >
-              <AntDesign name="like2" size={12} color={colors.text.title}/>
-              <Text style={{ marginLeft: 4, color: colors.text.title }}>{numberFormat(likeCount)}</Text>
+              <AntDesign name="like2" size={12} color={colors.text.title} />
+              <Text style={{ marginLeft: 4, color: colors.text.title }}>
+                {numberFormat(likeCount)}
+              </Text>
             </View>
             <View
               style={{
@@ -108,7 +137,7 @@ const ListItem = ({ item, onPressItem }) => {
                 alignItems: "center",
               }}
             >
-              <AntDesign name="dislike2" size={12} color={colors.text.title}/>
+              <AntDesign name="dislike2" size={12} color={colors.text.title} />
               <Text style={{ marginLeft: 4, color: colors.text.title }}>
                 {numberFormat(dislikeCount)}
               </Text>

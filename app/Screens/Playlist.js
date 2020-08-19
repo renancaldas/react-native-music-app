@@ -3,13 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator, View } from "react-native";
 import colors from "../constants/colors";
 
-import { searchByQuery, getYoutubeVideoDataById } from "../api";
+import { searchByQuery } from "../api";
 import {
   setSearchResultsAction,
-  selectItemAction,
   setSearchLoadingAction,
 } from "../Redux/Actions/Playlist";
-import { setMusicDataAction } from "../Redux/Actions/Player";
 
 import Search from "../Components/Search/Search";
 import List from "../Components/Playlist/Playlist";
@@ -26,18 +24,6 @@ const Playlist = ({ route, navigation, text }) => {
       dispatch(setSearchLoadingAction(false));
       dispatch(setSearchResultsAction(results));
     });
-  };
-
-  const loadMusicData = (selectedItem) => {
-    getYoutubeVideoDataById(selectedItem.id.videoId).then((data) => {
-      dispatch(setMusicDataAction(data));
-    });
-  };
-
-  const onPressItem = (selectedItem) => {
-    dispatch(selectItemAction(selectedItem));
-    loadMusicData(selectedItem);
-    // navigation.navigate("Player");
   };
 
   return (
@@ -66,7 +52,7 @@ const Playlist = ({ route, navigation, text }) => {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <List items={searchResults.items} onPressItem={onPressItem} />
+        <List items={searchResults.items} />
       )}
     </View>
   );

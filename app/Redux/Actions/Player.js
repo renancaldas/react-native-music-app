@@ -1,8 +1,16 @@
 import {
+  SET_AUDIO_PLAYER,
   SET_MUSIC_DATA,
   CLEAR_MUSIC_DATA,
   SET_IS_FULLSCREEN,
 } from "../Types/Player";
+
+export function setAudioPlayerAction(audioPlayer) {
+  return {
+    type: SET_AUDIO_PLAYER,
+    payload: audioPlayer,
+  };
+}
 
 export function setMusicDataAction(musicData) {
   return {
