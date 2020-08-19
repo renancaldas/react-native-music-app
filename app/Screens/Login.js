@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { StyleSheet, View, Text, Linking } from "react-native";
 import LottieView from "lottie-react-native";
-import queryString from "query-string";
 
-import colors from '../constants/colors';
+import colors from "../constants/colors";
 
 import RoundedButton from "../Components/Buttons/RoundedButton";
 const MusicAnimation = require("../../assets/lottie/4876-speakers-music.json");
 import { getYoutubeLoginUrl } from "../api";
 
 
-import { LOGIN } from "../Redux/Types/User";
-
 const Login = ({ navigation }) => {
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.User);
 
   const [canOpenUrl, setCanOpenUrl] = useState(null);
@@ -22,8 +18,8 @@ const Login = ({ navigation }) => {
 
   useEffect(() => {
     if (!loginUrl) {
-      getYoutubeLoginUrl.then((json) => {
-        setLoginUrl(json.url);
+      getYoutubeLoginUrl().then((data) => {
+        setLoginUrl(data.url);
       });
     } else {
       Linking.canOpenURL(loginUrl).then((supported) => {
@@ -31,20 +27,11 @@ const Login = ({ navigation }) => {
       });
     }
 
-    if (user.youtubeLogin) {
-      navigation.navigate("Player");
+    if (user.login) {
+      navigation.navigate("Playlist");
     }
 
-    const onDeepLink = ({ url }) => {
-      const query =
-        url.indexOf("?") !== -1 ? queryString.parse(url.split("?")[1]) : null;
-
-      dispatch({ type: LOGIN, payload: query });
-    };
-
-    Linking.addEventListener("url", onDeepLink);
     return () => {
-      Linking.removeEventListener("url", onDeepLink);
     };
   });
 
@@ -55,7 +42,9 @@ const Login = ({ navigation }) => {
   };
 
   const onSpotifyLogin = () => {
-    alert("onSpotifyLogin");
+    Linking.openURL(
+      "https://accounts.spotify.com/authorize?response_type=code&client_id=77880ef48e6545949e1d36b049fb2f17&scope=user-read-private&redirect_uri=https://us-central1-musicapp-286403.cloudfunctions.net/callbackSpotify"
+    );
   };
 
   return (
@@ -70,6 +59,7 @@ const Login = ({ navigation }) => {
             top: 10,
             width: 400,
             height: 300,
+            backgroundColor: colors.background.app,
           }}
         />
         <Text
@@ -79,18 +69,19 @@ const Login = ({ navigation }) => {
             fontFamily: "SatisfyRegular",
             fontSize: 40,
             marginTop: 100,
+            color: colors.text.title,
           }}
         >
           Music App
         </Text>
       </View>
       <View style={styles.buttons}>
-        <RoundedButton
+        {/* <RoundedButton
           onPress={onGoogleLogin}
           backgroundColor={colors.buttons.google}
           text="Login with Google"
           icon="youtube"
-        />
+        /> */}
         <RoundedButton
           onPress={onSpotifyLogin}
           backgroundColor={colors.buttons.spotify}
@@ -104,7 +95,8 @@ const Login = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: "93%",
+    height: "100%",
+    backgroundColor: colors.background.app,
   },
   logo: {
     height: "60%",

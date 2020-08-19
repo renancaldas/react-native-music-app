@@ -1,13 +1,13 @@
 import { LOGIN, LOGOUT } from "../Types/User";
 
-export function login(payload) {
+export function loginAction(payload) {
   return {
     type: LOGIN,
     payload,
   };
 }
 
-export function logout() {
+export function logoutAction() {
   return {
     type: LOGOUT,
   };

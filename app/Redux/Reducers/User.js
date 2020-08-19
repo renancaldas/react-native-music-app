@@ -1,7 +1,7 @@
 import { LOGIN, LOGOUT } from "../Types/User";
 
 const initialState = {
-  youtubeLogin: null,
+  login: null,
 };
 
 function reducer(state = initialState, action) {
@@ -9,14 +9,14 @@ function reducer(state = initialState, action) {
     case LOGIN: {
       return {
         ...state,
-        youtubeLogin: action.payload,
+        login: action.payload,
       };
     }
 
     case LOGOUT: {
         return {
           ...state,
-          youtubeLogin: initialState.youtubeLogin,
+          login: initialState.login,
         };
       }
 

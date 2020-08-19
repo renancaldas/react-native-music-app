@@ -1,8 +1,7 @@
-const firebaseUrl = "https://us-central1-musicapp-286403.cloudfunctions.net";
-const localhostUrl = "http://192.168.0.128:3000";
+import config from "../config";
 const isProduction = false;
 
-const backendUrl = isProduction ? firebaseUrl : localhostUrl;
+const backendUrl = isProduction ? config.firebaseUrl : config.localhostUrl;
 
 export const getYoutubeLoginUrl = () =>
   fetch(`${backendUrl}/loginYoutube`).then((res) => res.json());
@@ -19,3 +18,30 @@ export const searchByQueryPageToken = (query, pageToken) =>
   fetch(`${backendUrl}/search?q=${query}&pageToken=${pageToken}`).then((res) =>
     res.json()
   );
+
+export const getSpotifyToken = (code, authBase64) => {
+  const details = {
+      grant_type: 'authorization_code',
+      redirect_uri: config.redirectUrl,
+      code
+  };
+  console.log('>>> details', details);
+
+  let formBody = [];
+  for (let property in details) {
+      let encodedKey = encodeURIComponent(property);
+      let encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+  }
+  formBody = formBody.join("&");
+  console.log('>>> formBody', formBody);
+
+  return fetch(`https://accounts.spotify.com/api/token`, {
+    method: "POST",
+    headers: {
+      'Authorization': `Basic ${authBase64}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: formBody,
+  }).then((res) => res.json());
+};
