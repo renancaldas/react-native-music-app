@@ -18,8 +18,6 @@ const MiniPlayer = () => {
   const { musicData, isFullScreen } = useSelector((state) => state.Player);
   const { isSelectItemLoading } = useSelector((state) => state.Playlist);
 
-  console.log(">>>> isFullScreen", isFullScreen);
-
   return (
     musicData && (
       <View

@@ -13,7 +13,7 @@ import Player from "./Screens/Player";
 import MiniPlayer from "./Components/MiniPlayer/MiniPlayer";
 
 import colors from "./constants/colors";
-import { getSpotifyToken } from "./api";
+import * as api from "./api";
 
 import {
   clearMusicDataAction,
@@ -49,24 +49,21 @@ const App = () => {
     }
   };
 
+  const login = (queryString) => {
+    api.getSpotifyToken(queryString.code, queryString.authBase64).then(
+      (spotifyToken) => {
+        dispatch(loginAction({ ...queryString, spotifyToken }));
+      }
+    );
+  };
+
   const onDeepLink = ({ url }) => {
     console.log("[onDeepLink] ", url);
     const queryString =
       url.indexOf("?") !== -1 ? qs.parse(url.split("?")[1]) : null;
 
-    console.log("queryString ", queryString);
-
     if (queryString.login) {
-      if (queryString.login === "spotify") {
-        getSpotifyToken(queryString.code, queryString.authBase64).then(
-          (spotifyToken) => {
-            console.log(">>> spotifyToken", spotifyToken);
-            dispatch(loginAction({ ...queryString, spotifyToken }));
-          }
-        );
-      } else {
-        dispatch(loginAction(queryString));
-      }
+      login(queryString);
     }
   };
 
@@ -74,8 +71,6 @@ const App = () => {
     Linking.addEventListener("url", onDeepLink);
 
     if (!audioPlayer) {
-      console.log(">>> Initializing Audio Player");
-
       const player = new Audio.Sound();
       player.setOnPlaybackStatusUpdate((playbackStatus) => {
         // this.setState({ playbackStatus });

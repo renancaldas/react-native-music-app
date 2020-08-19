@@ -2,7 +2,8 @@ const lightTheme = {
   solid: {
     white: "white",
     black: 'black',
-    lightgrey: 'lightgrey'
+    lightgrey: 'lightgrey',
+    green: '#1dd05c'
   },
   background: {
     app: "#EAEAEC",
@@ -24,7 +25,8 @@ const darkTheme =  {
   solid: {
     white: "white",
     black: 'black',
-    lightgrey: 'lightgrey'
+    lightgrey: 'lightgrey',
+    green: '#1dd05c'
   },
   background: {
     app: "#121212",

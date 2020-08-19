@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
-import { EvilIcons, AntDesign } from "@expo/vector-icons";
+import { View, TextInput, TouchableOpacity } from "react-native";
+import { EvilIcons, Entypo } from "@expo/vector-icons";
 import colors from "../../constants/colors";
 
 const Search = ({ onSearch }) => {
@@ -26,10 +26,22 @@ const Search = ({ onSearch }) => {
       }}
     >
       <View style={{ width: 10 }}>
-        <AntDesign
-          name="youtube"
+        <View
+          style={{
+            backgroundColor: colors.solid.black,
+            width: 22,
+            height: 22,
+            position: "absolute",
+            top: 10,
+            left: 5,
+            borderRadius: 10,
+          }}
+        />
+
+        <Entypo
+          name="spotify"
           size={32}
-          style={{ color: "red", marginTop: 5, width: 50 }}
+          style={{ color: colors.solid.green, marginTop: 5, width: 50 }}
         />
       </View>
 
