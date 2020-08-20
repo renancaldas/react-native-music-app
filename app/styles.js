@@ -10,7 +10,7 @@ const viewHeight = windowHeight - tabHeight - 20;
 export const AppContainer = styled(SafeAreaView)`
     flex: 1;
     background-color: ${colors.background.app};
-    /* padding-top: ${Platform.OS === "android" ? 30 : 0}; */
+    padding-top: ${Platform.OS === "android" ? 20 + 'px' : 0};
 `;
 
 export const ViewWrapper = styled.View`
