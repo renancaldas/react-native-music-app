@@ -15,6 +15,8 @@ export const AppContainer = styled(SafeAreaView)`
 
 export const ViewWrapper = styled.View`
   height: ${viewHeight + 'px'};
+  box-shadow: 0px 10px 5px #111;
+  z-index: 10;
 `;
 
 export const TabWrapper = styled.View`

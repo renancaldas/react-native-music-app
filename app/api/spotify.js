@@ -34,7 +34,6 @@ export const getToken = (code, authBase64) => {
 };
 
 export const getUserInfo = (access_token) => {
-    console.log('>>> access_token', access_token)
   return fetch(`https://api.spotify.com/v1/me`, {
     method: "GET",
     headers: {

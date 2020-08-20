@@ -12,8 +12,6 @@ const Tabs = () => {
 
   const changeRoute = (route) => dispatch(setRouteAction(route));
 
-  console.log('>>>> login', login);
-
   return login && (
     <Container>
       <TabIcon
