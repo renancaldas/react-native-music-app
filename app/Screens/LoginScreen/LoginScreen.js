@@ -1,29 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { StyleSheet, View, Text, Linking } from "react-native";
 import LottieView from "lottie-react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-import RoundedButton from "../Components/Buttons/RoundedButton";
-import { getLogoSize } from "../helpers/dimensions";
-import colors from "../constants/colors";
-import * as api from "../api";
+import RoundedButton from "../../Components/Buttons/RoundedButton";
+import { getLogoSize } from "../../helpers/dimensions";
+import colors from "../../constants/colors";
+import * as apiSpotify from "../../api/spotify";
 
-const MusicAnimation = require("../../assets/lottie/4031-voice-recognition.json");
+const MusicAnimation = require("../../../assets/lottie/4031-voice-recognition.json");
 
-const Login = ({ navigation }) => {
-  const user = useSelector((state) => state.User);
+import { setRouteAction } from "../../Redux/Actions/App";
+
+const Login = (props) => {
+  const dispatch = useDispatch();
+  const { login } = useSelector((state) => state.User);
+  const { routes } = useSelector((state) => state.App);
 
   useEffect(() => {
-    if (user.login) {
-      navigation.navigate("Playlist");
+    if (login) {
+      dispatch(setRouteAction(routes.profile))
     }
 
     return () => {};
   });
 
   const onSpotifyLogin = () => {
-    Linking.openURL(api.getSpotifyCodeUrl());
+    Linking.openURL(apiSpotify.getCodeUrl());
   };
 
   return (

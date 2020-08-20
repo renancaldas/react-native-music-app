@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getYoutubeVideoDataById } from "../api";
-import { setMusicDataAction } from "../Redux/Actions/Player";
+import { getYoutubeVideoDataById } from "../../api";
+import { setMusicDataAction } from "../../Redux/Actions/Player";
 
-import MusicPlayer from "../Components/Player/Player";
+import MusicPlayer from "../../Components/Player/Player";
 
 const Player = ({ navigation }) => {
   const dispatch = useDispatch();

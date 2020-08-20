@@ -1,19 +1,21 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Linking, SafeAreaView, StyleSheet } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { Linking } from "react-native";
 import { useFonts } from "expo-font";
 import { Audio } from "expo-av";
 import qs from "query-string";
 
-import Login from "./Screens/Login";
-import Playlist from "./Screens/Playlist";
-import Player from "./Screens/Player";
+import LoginScreen from "./Screens/LoginScreen/LoginScreen";
+import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
+import SearchScreen from "./Screens/SearchScreen/SearchScreen";
+import PlaylistScreen from "./Screens/PlaylistScreen/PlaylistScreen";
+import PlayerScreen from "./Screens/PlayerScreen/PlayerScreen";
 import MiniPlayer from "./Components/MiniPlayer/MiniPlayer";
+import Tabs from "./Components/Tabs/Tabs";
 
-import colors from "./constants/colors";
-import * as api from "./api";
+import { AppContainer, ViewWrapper, TabWrapper } from "./styles";
+
+import * as apiSpotify from "./api/spotify";
 
 import {
   clearMusicDataAction,
@@ -22,7 +24,6 @@ import {
 
 import { loginAction } from "./Redux/Actions/User";
 
-const Stack = createStackNavigator();
 
 Audio.setAudioModeAsync({
   staysActiveInBackground: false,
@@ -32,6 +33,7 @@ Audio.setAudioModeAsync({
 const App = () => {
   const dispatch = useDispatch();
   const { audioPlayer, musicData } = useSelector((state) => state.Player);
+  const { currentRoute, routes } = useSelector((state) => state.App);
 
   const [loaded] = useFonts({
     SatisfyRegular: require("../assets/fonts/Satisfy-Regular.ttf"),
@@ -49,27 +51,26 @@ const App = () => {
     }
   };
 
-  const login = (queryString) => {
-    api.getSpotifyToken(queryString.code, queryString.authBase64).then(
-      (spotifyToken) => {
-        dispatch(loginAction({ ...queryString, spotifyToken }));
-      }
-    );
-  };
-
   const onDeepLink = ({ url }) => {
     console.log("[onDeepLink] ", url);
     const queryString =
       url.indexOf("?") !== -1 ? qs.parse(url.split("?")[1]) : null;
 
     if (queryString.login) {
-      login(queryString);
+      apiSpotify
+        .getToken(queryString.code, queryString.authBase64)
+        .then((spotifyToken) => {
+          apiSpotify.getUserInfo(spotifyToken.access_token).then((userData) => {
+            dispatch(loginAction({ ...queryString, spotifyToken, userData }));
+          });
+        });
     }
   };
 
   useEffect(() => {
     Linking.addEventListener("url", onDeepLink);
 
+    // Load player
     if (!audioPlayer) {
       const player = new Audio.Sound();
       player.setOnPlaybackStatusUpdate((playbackStatus) => {
@@ -78,7 +79,9 @@ const App = () => {
 
       dispatch(setAudioPlayerAction(player));
     }
+
     return () => {
+      // Clear on unmount
       Linking.removeEventListener("url", onDeepLink);
 
       if (audioPlayer) {
@@ -91,26 +94,24 @@ const App = () => {
 
   return (
     loaded && (
-      <SafeAreaView style={styles.container}>
-        <NavigationContainer>
-          <Stack.Navigator headerMode="none">
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Playlist" component={Playlist} />
-            <Stack.Screen name="Player" component={Player} />
-          </Stack.Navigator>
-        </NavigationContainer>
-        <MiniPlayer />
-      </SafeAreaView>
+      <AppContainer>
+        <ViewWrapper>
+          {currentRoute === routes.login && <LoginScreen />}
+          {currentRoute === routes.search && <SearchScreen />}
+          {currentRoute === routes.profile && <ProfileScreen />}
+          {currentRoute === routes.playlist && <PlaylistScreen />}
+          {currentRoute === routes.player && <PlayerScreen />}
+        </ViewWrapper>
+        {currentRoute !== routes.login && (
+          <TabWrapper>
+            <Tabs />
+          </TabWrapper>
+        )}
+
+        {/* <MiniPlayer /> */}
+      </AppContainer>
     )
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background.app,
-    paddingTop: Platform.OS === "android" ? 30 : 0,
-  },
-});
 
 export default App;

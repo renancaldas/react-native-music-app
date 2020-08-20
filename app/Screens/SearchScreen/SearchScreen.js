@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator, View } from "react-native";
-import colors from "../constants/colors";
+import colors from "../../constants/colors";
 
-import { searchByQuery } from "../api";
+import { searchByQuery } from "../../api";
 import {
   setSearchResultsAction,
   setSearchLoadingAction,
-} from "../Redux/Actions/Playlist";
+} from "../../Redux/Actions/Playlist";
 
-import Search from "../Components/Search/Search";
-import List from "../Components/Playlist/Playlist";
+import Search from "../../Components/Search/Search";
+import List from "../../Components/Playlist/Playlist";
 
 const Playlist = ({ route, navigation, text }) => {
   const dispatch = useDispatch();
