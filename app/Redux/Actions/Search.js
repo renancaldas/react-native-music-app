@@ -3,7 +3,7 @@ import {
   SET_SELECT_ITEM_LOADING,
   SET_SEARCH_RESULTS,
   SET_SEARCH_LOADING,
-} from "../Types/Playlist";
+} from "../Types/Search";
 
 export function selectItemAction(payload) {
   return {
