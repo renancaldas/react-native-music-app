@@ -15,7 +15,7 @@ import Tabs from "./Components/Tabs/Tabs";
 
 import { AppContainer, ViewWrapper, TabWrapper } from "./styles";
 
-import * as spotifyApi from "./api/spotify";
+import spotifyApi from "./api/spotify";
 
 import {
   clearMusicDataAction,
@@ -59,9 +59,11 @@ const App = () => {
       spotifyApi
         .getToken(queryString.code, queryString.authBase64)
         .then((spotifyToken) => {
-          spotifyApi.getUserInfo(spotifyToken.access_token).then((userData) => {
-            dispatch(loginAction({ ...queryString, spotifyToken, userData }));
-          });
+          spotifyApi
+            .getUserInfo(spotifyToken.access_token)
+            .then((userData) => {
+              dispatch(loginAction({ ...queryString, spotifyToken, userData }));
+            });
         });
     }
   };

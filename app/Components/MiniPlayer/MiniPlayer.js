@@ -16,7 +16,6 @@ import { setIsFullscreenAction } from "../../Redux/Actions/Player";
 const MiniPlayer = () => {
   const dispatch = useDispatch();
   const { musicData, isFullScreen } = useSelector((state) => state.Player);
-  const { isSelectItemLoading } = useSelector((state) => state.Playlist);
 
   return (
     musicData && (
@@ -32,9 +31,8 @@ const MiniPlayer = () => {
           width: "100%",
         }}
       >
-        {isSelectItemLoading ? (
-          <ActivityIndicator size="large" />
-        ) : (
+        {/* <ActivityIndicator size="large" /> */}
+        {(
           <>
             <TouchableNativeFeedback
               onPress={() => dispatch(setIsFullscreenAction(!isFullScreen))}

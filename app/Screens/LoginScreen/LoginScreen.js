@@ -7,7 +7,7 @@ import { AntDesign } from "@expo/vector-icons";
 import RoundedButton from "./RoundedButton/RoundedButton";
 import { getLogoSize } from "../../helpers/dimensions";
 import colors from "../../constants/colors";
-import * as spotifyApi from "../../api/spotify";
+import spotifyApi from "../../api/spotify";
 
 const MusicAnimation = require("../../../assets/lottie/4031-voice-recognition.json");
 
@@ -20,7 +20,7 @@ const Login = (props) => {
 
   useEffect(() => {
     if (login) {
-      dispatch(setRouteAction(routes.profile))
+      dispatch(setRouteAction(routes.profile));
     }
 
     return () => {};

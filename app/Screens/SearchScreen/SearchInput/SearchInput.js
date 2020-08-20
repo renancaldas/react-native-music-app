@@ -4,10 +4,9 @@ import { View, TextInput, TouchableOpacity } from "react-native";
 import { EvilIcons, Entypo } from "@expo/vector-icons";
 import colors from "../../../constants/colors";
 
-import * as spotifyApi from "../../../api/spotify";
+import spotifyApi from "../../../api/spotify";
 import {
   setSearchResultsAction,
-  setSearchLoadingAction,
 } from "../../../Redux/Actions/Search";
 
 const Search = () => {
@@ -17,17 +16,13 @@ const Search = () => {
   const [searchText, onChangeText] = React.useState(null);
 
   const onSearch = (searchText) => {
-    dispatch(setSearchLoadingAction(true));
-    console.log(">>>> searchText", searchText);
     spotifyApi
-      .search("artist", searchText, login.spotifyToken.access_token)
+      .searchArtist(searchText, login.spotifyToken.access_token)
       .then((results) => {
-        dispatch(setSearchLoadingAction(false));
         dispatch(setSearchResultsAction(results));
       });
   };
 
-  
   return (
     <View
       style={{

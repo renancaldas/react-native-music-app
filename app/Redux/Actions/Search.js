@@ -1,8 +1,6 @@
 import {
   SELECT_ITEM,
-  SET_SELECT_ITEM_LOADING,
   SET_SEARCH_RESULTS,
-  SET_SEARCH_LOADING,
 } from "../Types/Search";
 
 export function selectItemAction(payload) {
@@ -12,23 +10,9 @@ export function selectItemAction(payload) {
   };
 }
 
-export function setSelectItemLoadingAction(isSelectItemLoading) {
-  return {
-    type: SET_SELECT_ITEM_LOADING,
-    payload: isSelectItemLoading,
-  };
-}
-
 export function setSearchResultsAction(searchResults) {
   return {
     type: SET_SEARCH_RESULTS,
     payload: searchResults,
-  };
-}
-
-export function setSearchLoadingAction(isLoading) {
-  return {
-    type: SET_SEARCH_LOADING,
-    payload: isLoading,
   };
 }

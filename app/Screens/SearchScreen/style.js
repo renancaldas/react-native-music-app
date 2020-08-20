@@ -1,5 +1,9 @@
+import { Dimensions, TouchableOpacity } from "react-native";
+
 import styled from "styled-components/native";
 import colors from "../../constants/colors";
+
+const { width, height } = Dimensions.get("window");
 
 export const Container = styled.View`
   height: 100%;
@@ -7,37 +11,35 @@ export const Container = styled.View`
   background-color: ${colors.background.app};
 
   flex-direction: column;
-  /* align-items: center;
-    justify-content: space-around; */
-
   padding: 10px;
-`;
-
-export const Filters = styled.View`
-  width: 100%;
-  height: 40px;
-
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
 `;
 
 export const Title = styled.Text`
   color: white;
-  position: relative;
-  bottom: 200px;
   font-size: 30px;
+  position: relative;
+  left: ${(width/3) - 10 + 'px'};
+  bottom: ${(height/4) + 'px'};;
 `;
 
-export const Text = styled.Text`
-  color: white;
+export const TitleCategory = styled.Text`
+  color: ${colors.text.title};
+  font-size: 18px;
+  margin: 15px 5px;
+  text-align: center;
 `;
 
-export const ViewCenter = styled.View`
-  width: 100%;
-  height: 100%;
-
-  flex-direction: column;
+export const Row = styled(TouchableOpacity)`
+  flex-direction: row;
+  border-top-color: #333; 
+  border-bottom-color: #333; 
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  height: 30px;
   align-items: center;
-  justify-content: space-around;
-`;
+  justify-content: space-between;
+`
+
+export const RowTitle = styled.Text`
+  color: ${colors.text.title};
+`
