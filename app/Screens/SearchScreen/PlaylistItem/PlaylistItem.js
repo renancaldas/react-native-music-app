@@ -12,7 +12,7 @@ const ListItem = ({ item }) => {
   const onPressItem = (selectedItem) => {
   };
 
-  const image = item.images.length > 0 ? item.images[0].url : '';
+  const image = item.images.length > 0 ? item.images[item.images.length - 1].url : '';
 
   return (
     <TouchableOpacity onPress={() => onPressItem(item)}>

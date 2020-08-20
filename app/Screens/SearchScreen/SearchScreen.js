@@ -3,9 +3,10 @@ import { useSelector } from "react-redux";
 import { ActivityIndicator, View } from "react-native";
 import LottieView from "lottie-react-native";
 
+import { Container, Filters, ViewCenter, Title, Text } from "./style";
 import Search from "./SearchInput/SearchInput";
 import List from "./Playlist/Playlist";
-import { Container, Filters, ViewCenter, Title, Text } from "./style";
+import Carousel from "./Carousel/Carousel";
 
 const MusicAnimation = require("../../../assets/lottie/2881-music-fly.json");
 
@@ -23,6 +24,26 @@ const SearchScreen = () => {
         <Text>Songs</Text>
         <Text>Playlists</Text>
       </Filters>
+
+      {isSearchLoading ? (
+        <ActivityIndicator size="large" />
+      ) : searchResults && searchResults.artists ? (
+        <Carousel items={searchResults.artists.items}/>
+      ) : (
+        <>
+          <LottieView
+            source={MusicAnimation}
+            autoPlay
+            loop
+            style={{
+              width: "100%",
+            }}
+          />
+          <Title>No results</Title>
+        </>
+      )}
+
+      {/*       
       <ViewCenter>
         {isSearchLoading ? (
           <ActivityIndicator size="large" />
@@ -41,7 +62,7 @@ const SearchScreen = () => {
             <Title>No results</Title>
           </>
         )}
-      </ViewCenter>
+      </ViewCenter> */}
     </Container>
   );
 };

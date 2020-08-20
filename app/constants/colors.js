@@ -3,7 +3,7 @@ export default {
     white: "white",
     black: "black",
     green: "#1dd05c",
-    blue: "#167efb",    
+    blue: "dodgerblue",    
     lightgrey: "lightgrey",
   },
   background: {
