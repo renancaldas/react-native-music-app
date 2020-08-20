@@ -5,9 +5,7 @@ import { EvilIcons, Entypo } from "@expo/vector-icons";
 import colors from "../../../constants/colors";
 
 import spotifyApi from "../../../api/spotify";
-import {
-  setSearchResultsAction,
-} from "../../../Redux/Actions/Search";
+import { setArtistsAction } from "../../../Redux/Actions/Search";
 
 const Search = () => {
   let searchInputRef = null;
@@ -19,7 +17,7 @@ const Search = () => {
     spotifyApi
       .searchArtist(searchText, login.spotifyToken.access_token)
       .then((results) => {
-        dispatch(setSearchResultsAction(results));
+        dispatch(setArtistsAction(results.artists));
       });
   };
 

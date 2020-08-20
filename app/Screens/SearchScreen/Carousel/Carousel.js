@@ -15,15 +15,15 @@ const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 6);
 
-const CarouselComponent = ({ items }) => {
+const CarouselComponent = ({ items, onChange }) => {
   let carouselRef = null;
-  const [index, setIndex] = useState(0);
 
-  const renderItem = ({ item, index }) => {
-    const uri = item.images && item.images.length > 0 ? item.images[0].url : "";
-    return (
-      <ImageBackground source={{ uri }} style={styles.image}>
-        <Text style={styles.itemLabel}>{item.name}</Text>
+  const renderItem = ({ item }) => {
+    const uri = item.images && item.images.length > 0 ? item.images[0].url : null;
+
+    const textComponent = (
+      <>
+      <Text style={styles.itemLabel}>{item.name}</Text>
         <LinearGradient
           colors={['transparent', 'rgba(0,0,0,1)']}
           style={{
@@ -34,9 +34,25 @@ const CarouselComponent = ({ items }) => {
             height: 100,
           }}
         />
+      </>
+    );
+
+    return uri ? (
+      <ImageBackground source={{ uri }} style={styles.cover}>
+        {textComponent}
       </ImageBackground>
+    ) : (
+      <View style={styles.cover}>
+        {textComponent}
+      </View>
     );
   };
+
+  const onSnapToItem = (index) => {
+    if (onChange) {
+      onChange(items[index]);
+    }
+  }
 
   return (
     <View>
@@ -48,10 +64,10 @@ const CarouselComponent = ({ items }) => {
         itemWidth={ITEM_WIDTH}
         containerCustomStyle={styles.carouselContainer}
         inactiveSlideShift={0}
-        onSnapToItem={(index) => setIndex(index)}
         scrollInterpolator={scrollInterpolator}
         slideInterpolatedStyle={animatedStyles}
         useScrollView={true}
+        onSnapToItem={onSnapToItem}
       />
     </View>
   );
@@ -61,7 +77,7 @@ const styles = StyleSheet.create({
   carouselContainer: {
     marginTop: 0,
   },
-  image: {
+  cover: {
     width: ITEM_WIDTH,
     height: ITEM_HEIGHT,
     justifyContent: "flex-end",

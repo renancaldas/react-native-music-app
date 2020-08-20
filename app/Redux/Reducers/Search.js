@@ -1,33 +1,44 @@
 import {
-  SELECT_ITEM,
-  SET_SEARCH_RESULTS,
+  SEARCH_SET_ARTISTS,
+  SEARCH_SET_ALBUMS,
+  SEARCH_SET_TRACKS,
+  SEARCH_SELECT_ITEM,
 } from "../Types/Search";
 
 const initialState = {
-  searchResults: {
-    artists: null,
-    albums: null,
-    tracks: null,
-  },
+  artistResponse: null,
+  albumResponse: null,
+  trackResponse: null,
   selectedItem: null,
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case SELECT_ITEM: {
+    case SEARCH_SET_ARTISTS: {
       return {
         ...state,
-        selectedItem: action.payload,
+        artistResponse: action.payload,
       };
     }
 
-    case SET_SEARCH_RESULTS: {
+    case SEARCH_SET_ALBUMS: {
       return {
         ...state,
-        searchResults: {
-          ...state.searchResults,
-          ...action.payload,
-        },
+        albumResponse: action.payload,
+      };
+    }
+
+    case SEARCH_SET_TRACKS: {
+      return {
+        ...state,
+        trackResponse: action.payload,
+      };
+    }
+
+    case SEARCH_SELECT_ITEM: {
+      return {
+        ...state,
+        selectedItem: action.payload,
       };
     }
 

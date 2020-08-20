@@ -60,6 +60,15 @@ const searchAlbum = (query, access_token) =>
 const searchTrack = (query, access_token) =>
   search("track", query, access_token);
 
+const getAlbumTracks = (album_id, access_token) => {
+  return fetch(`https://api.spotify.com/v1/albums/${album_id}/tracks`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  }).then((res) => res.json());
+};
+
 export default {
   getCodeUrl,
   getToken,
@@ -68,4 +77,5 @@ export default {
   searchArtist,
   searchAlbum,
   searchTrack,
+  getAlbumTracks,
 };

@@ -1,18 +1,35 @@
 import {
-  SELECT_ITEM,
-  SET_SEARCH_RESULTS,
+  SEARCH_SET_ARTISTS,
+  SEARCH_SET_ALBUMS,
+  SEARCH_SET_TRACKS,
+  SEARCH_SELECT_ITEM,
 } from "../Types/Search";
 
-export function selectItemAction(payload) {
+export function setArtistsAction(artists) {
   return {
-    type: SELECT_ITEM,
-    payload,
+    type: SEARCH_SET_ARTISTS,
+    payload: artists,
   };
 }
 
-export function setSearchResultsAction(searchResults) {
+
+export function setAlbumsAction(albums) {
   return {
-    type: SET_SEARCH_RESULTS,
-    payload: searchResults,
+    type: SEARCH_SET_ALBUMS,
+    payload: albums,
+  };
+}
+
+export function setTracksAction(tracks) {
+  return {
+    type: SEARCH_SET_TRACKS,
+    payload: tracks,
+  };
+}
+
+export function selectItemAction(selectedItem) {
+  return {
+    type: SEARCH_SELECT_ITEM,
+    payload: selectedItem,
   };
 }
