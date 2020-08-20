@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Entypo as Icon } from "@expo/vector-icons";
 
-import colors from '../../constants/colors';
+import colors from '../../../constants/colors';
 
 const RoundedButton = ({ onPress, backgroundColor, text, icon }) => {
   return (

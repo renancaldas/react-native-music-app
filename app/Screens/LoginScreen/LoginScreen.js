@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, Linking } from "react-native";
 import LottieView from "lottie-react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-import RoundedButton from "../../Components/Buttons/RoundedButton";
+import RoundedButton from "./RoundedButton/RoundedButton";
 import { getLogoSize } from "../../helpers/dimensions";
 import colors from "../../constants/colors";
 import * as spotifyApi from "../../api/spotify";
@@ -66,6 +66,7 @@ const Login = (props) => {
         backgroundColor={colors.buttons.spotify}
         text="Login with Spotify"
         icon="spotify"
+        hasIconBlackBg
       />
     </View>
   );
