@@ -3,39 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-import { getYoutubeVideoDataById } from "../../api";
-import colors from "../../constants/colors";
-import numberFormat from "../../helpers/numberFormat";
-import {
-  selectItemAction,
-  setSelectItemLoadingAction,
-} from "../../Redux/Actions/Search";
-import { setMusicDataAction } from "../../Redux/Actions/Player";
+import colors from "../../../constants/colors";
+import numberFormat from "../../../helpers/numberFormat";
 
 const ListItem = ({ item }) => {
   const dispatch = useDispatch();
-  const { channelTitle, title, thumbnails } = item.snippet;
-  const { duration } = item.contentDetails;
-  const { viewCount, likeCount, dislikeCount } = item.statistics;
-
-  const formatedDuration = duration
-    .replace("PT", "")
-    .replace("S", "")
-    .replace("M", ":");
-
-  const loadMusicData = (selectedItem) => {
-    getYoutubeVideoDataById(selectedItem.id.videoId).then((data) => {
-      dispatch(setSelectItemLoadingAction(false));
-      dispatch(setMusicDataAction(data));
-    });
-  };
 
   const onPressItem = (selectedItem) => {
-    dispatch(setSelectItemLoadingAction(true));
-    dispatch(selectItemAction(selectedItem));
-    loadMusicData(selectedItem);
-    // navigation.navigate("Player");
   };
+
+  const image = item.images.length > 0 ? item.images[0].url : '';
 
   return (
     <TouchableOpacity onPress={() => onPressItem(item)}>
@@ -63,7 +40,7 @@ const ListItem = ({ item }) => {
               borderRadius: 10,
               opacity: 0.5,
             }}
-            source={{ uri: thumbnails.default.url }}
+            source={{ uri: image }}
           />
           <Text
             style={{
@@ -73,7 +50,7 @@ const ListItem = ({ item }) => {
               left: 18,
             }}
           >
-            {formatedDuration}
+            0
           </Text>
           <AntDesign
             style={{
@@ -96,7 +73,7 @@ const ListItem = ({ item }) => {
           }}
         >
           <Text numberOfLines={2} style={{ color: colors.text.title }}>
-            {title}
+            {item.name}
           </Text>
 
           <View
@@ -117,7 +94,7 @@ const ListItem = ({ item }) => {
                 color={colors.text.title}
               />
               <Text style={{ marginLeft: 4, color: colors.text.title }}>
-                {numberFormat(viewCount)}
+                0
               </Text>
             </View>
             <View
@@ -128,7 +105,7 @@ const ListItem = ({ item }) => {
             >
               <AntDesign name="like2" size={12} color={colors.text.title} />
               <Text style={{ marginLeft: 4, color: colors.text.title }}>
-                {numberFormat(likeCount)}
+                0
               </Text>
             </View>
             <View
@@ -139,7 +116,7 @@ const ListItem = ({ item }) => {
             >
               <AntDesign name="dislike2" size={12} color={colors.text.title} />
               <Text style={{ marginLeft: 4, color: colors.text.title }}>
-                {numberFormat(dislikeCount)}
+                0
               </Text>
             </View>
           </View>

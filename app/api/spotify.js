@@ -41,3 +41,12 @@ export const getUserInfo = (access_token) => {
     },
   }).then((res) => res.json());
 };
+
+export const search = (type, query, access_token) => {
+  return fetch(`https://api.spotify.com/v1/search?type=${type}&q=${query}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${access_token}`
+    },
+  }).then((res) => res.json());
+};

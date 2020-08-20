@@ -7,7 +7,7 @@ import { AntDesign } from "@expo/vector-icons";
 import RoundedButton from "../../Components/Buttons/RoundedButton";
 import { getLogoSize } from "../../helpers/dimensions";
 import colors from "../../constants/colors";
-import * as apiSpotify from "../../api/spotify";
+import * as spotifyApi from "../../api/spotify";
 
 const MusicAnimation = require("../../../assets/lottie/4031-voice-recognition.json");
 
@@ -27,7 +27,7 @@ const Login = (props) => {
   });
 
   const onSpotifyLogin = () => {
-    Linking.openURL(apiSpotify.getCodeUrl());
+    Linking.openURL(spotifyApi.getCodeUrl());
   };
 
   return (

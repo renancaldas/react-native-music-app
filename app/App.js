@@ -15,7 +15,7 @@ import Tabs from "./Components/Tabs/Tabs";
 
 import { AppContainer, ViewWrapper, TabWrapper } from "./styles";
 
-import * as apiSpotify from "./api/spotify";
+import * as spotifyApi from "./api/spotify";
 
 import {
   clearMusicDataAction,
@@ -23,7 +23,6 @@ import {
 } from "./Redux/Actions/Player";
 
 import { loginAction } from "./Redux/Actions/User";
-
 
 Audio.setAudioModeAsync({
   staysActiveInBackground: false,
@@ -57,10 +56,10 @@ const App = () => {
       url.indexOf("?") !== -1 ? qs.parse(url.split("?")[1]) : null;
 
     if (queryString.login) {
-      apiSpotify
+      spotifyApi
         .getToken(queryString.code, queryString.authBase64)
         .then((spotifyToken) => {
-          apiSpotify.getUserInfo(spotifyToken.access_token).then((userData) => {
+          spotifyApi.getUserInfo(spotifyToken.access_token).then((userData) => {
             dispatch(loginAction({ ...queryString, spotifyToken, userData }));
           });
         });
@@ -95,17 +94,20 @@ const App = () => {
   return (
     loaded && (
       <AppContainer>
-        <ViewWrapper>
-          {currentRoute === routes.login && <LoginScreen />}
-          {currentRoute === routes.search && <SearchScreen />}
-          {currentRoute === routes.profile && <ProfileScreen />}
-          {currentRoute === routes.playlist && <PlaylistScreen />}
-          {currentRoute === routes.player && <PlayerScreen />}
-        </ViewWrapper>
-        {currentRoute !== routes.login && (
-          <TabWrapper>
-            <Tabs />
-          </TabWrapper>
+        {currentRoute === routes.login ? (
+          <LoginScreen />
+        ) : (
+          <>
+            <ViewWrapper>
+              {currentRoute === routes.search && <SearchScreen />}
+              {currentRoute === routes.profile && <ProfileScreen />}
+              {currentRoute === routes.playlist && <PlaylistScreen />}
+              {currentRoute === routes.player && <PlayerScreen />}
+            </ViewWrapper>
+            <TabWrapper>
+              <Tabs />
+            </TabWrapper>
+          </>
         )}
 
         {/* <MiniPlayer /> */}

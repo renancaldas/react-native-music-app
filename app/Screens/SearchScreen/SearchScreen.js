@@ -1,43 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { ActivityIndicator, View } from "react-native";
 import LottieView from "lottie-react-native";
-import colors from "../../constants/colors";
 
-import { searchByQuery } from "../../api";
-import {
-  setSearchResultsAction,
-  setSearchLoadingAction,
-} from "../../Redux/Actions/Search";
-
-import Search from "./SearchInput";
-import List from "./Playlist";
-import { Container, ViewCenter, Title } from "./style";
+import Search from "./SearchInput/SearchInput";
+import List from "./Playlist/Playlist";
+import { Container, Filters, ViewCenter, Title, Text } from "./style";
 
 const MusicAnimation = require("../../../assets/lottie/2881-music-fly.json");
 
-const SearchScreen = ({ route, navigation, text }) => {
-  const dispatch = useDispatch();
+const SearchScreen = () => {
   const { searchResults, isSearchLoading } = useSelector(
     (state) => state.Search
   );
 
-  const onSearch = (searchText) => {
-    dispatch(setSearchLoadingAction(true));
-    searchByQuery(searchText).then((results) => {
-      dispatch(setSearchLoadingAction(false));
-      dispatch(setSearchResultsAction(results));
-    });
-  };
-
   return (
     <Container>
-      <Search onSearch={(searchText) => onSearch(searchText)} />
+      <Search />
+      <Filters>
+        <Text>Artist</Text>
+        <Text>Albums</Text>
+        <Text>Songs</Text>
+        <Text>Playlists</Text>
+      </Filters>
       <ViewCenter>
         {isSearchLoading ? (
           <ActivityIndicator size="large" />
-        ) : searchResults.length > 0 ? (
-          <List items={searchResults} />
+        ) : searchResults && searchResults.artists ? (
+          <List items={searchResults.artists.items} />
         ) : (
           <>
             <LottieView

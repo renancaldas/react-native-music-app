@@ -1,17 +1,33 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { View, TextInput, TouchableOpacity } from "react-native";
 import { EvilIcons, Entypo } from "@expo/vector-icons";
-import colors from "../../constants/colors";
+import colors from "../../../constants/colors";
 
-const Search = ({ onSearch }) => {
+import * as spotifyApi from "../../../api/spotify";
+import {
+  setSearchResultsAction,
+  setSearchLoadingAction,
+} from "../../../Redux/Actions/Search";
+
+const Search = () => {
+  let searchInputRef = null;
+  const dispatch = useDispatch();
+  const { login } = useSelector((state) => state.User);
   const [searchText, onChangeText] = React.useState(null);
 
-  const searchEvent = () => {
-    if (searchText) {
-      onSearch(searchText);
-    }
+  const onSearch = (searchText) => {
+    dispatch(setSearchLoadingAction(true));
+    console.log(">>>> searchText", searchText);
+    spotifyApi
+      .search("artist", searchText, login.spotifyToken.access_token)
+      .then((results) => {
+        dispatch(setSearchLoadingAction(false));
+        dispatch(setSearchResultsAction(results));
+      });
   };
 
+  
   return (
     <View
       style={{
@@ -41,20 +57,24 @@ const Search = ({ onSearch }) => {
         <Entypo
           name="spotify"
           size={32}
-          style={{ color: colors.solid.green,  width: 50 }}
+          style={{ color: colors.solid.green, width: 50 }}
         />
       </View>
 
       <TextInput
+        ref={(ref) => {
+          searchInputRef = ref;
+        }}
         style={{ height: 40, width: "60%" }}
         onChangeText={(text) => onChangeText(text)}
         value={searchText}
-        defaultValue="Search for music"
-        onBlur={() => searchEvent()}
+        placeholder="Search for music"
+        placeholderTextColor={colors.text.default}
+        onBlur={() => onSearch(searchText)}
         selectTextOnFocus
       />
 
-      <TouchableOpacity onPress={() => searchEvent()}>
+      <TouchableOpacity onPress={() => searchInputRef.blur()}>
         <EvilIcons name="search" size={32} />
       </TouchableOpacity>
     </View>

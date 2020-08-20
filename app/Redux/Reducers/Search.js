@@ -6,7 +6,7 @@ import {
 } from "../Types/Search";
 
 const initialState = {
-  searchResults: [],
+  searchResults: null,
   selectedItem: null,
   isSearchLoading: false,
   isSelectItemLoading: false,
