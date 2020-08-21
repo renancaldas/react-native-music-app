@@ -1,4 +1,5 @@
-import { LOGIN, LOGOUT } from "../Types/User";
+import { USER_LOGIN, USER_LOGOUT, USER_REFRESH_TOKEN } from "../Types/User";
+import { act } from "react-test-renderer";
 
 const initialState = {
   login: null,
@@ -6,17 +7,27 @@ const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case LOGIN: {
+    case USER_LOGIN: {
       return {
         ...state,
         login: action.payload,
       };
     }
 
-    case LOGOUT: {
+    case USER_LOGOUT: {
         return {
           ...state,
           login: initialState.login,
+        };
+      }
+
+      case USER_REFRESH_TOKEN: {
+        return {
+          ...state,
+          login: {
+            ...state.login,
+            spotifyToken: action.payload
+          },
         };
       }
 

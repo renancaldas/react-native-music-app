@@ -10,6 +10,7 @@ import Carousel from "react-native-snap-carousel";
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { scrollInterpolator, animatedStyles } from "./animations";
+import orderBy from "lodash/sortBy";
 
 const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
@@ -19,7 +20,7 @@ const CarouselComponent = ({ items, onChange }) => {
   let carouselRef = null;
 
   const renderItem = ({ item }) => {
-    const uri = item.images && item.images.length > 0 ? item.images[0].url : null;
+    const uri = item.images && item.images.length > 0 ? item.images[1].url : null;
 
     const textComponent = (
       <>
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
     height: ITEM_HEIGHT,
     justifyContent: "flex-end",
     padding: 10, 
+    resizeMode: "repeat",
   },
   itemLabel: {
     color: "white",

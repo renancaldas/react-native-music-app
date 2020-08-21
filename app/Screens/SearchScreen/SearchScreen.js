@@ -75,7 +75,7 @@ const SearchScreen = () => {
             <>
               <TitleCategory>Albums</TitleCategory>
               <Carousel
-                items={uniqBy(albumResponse.items, "id")}
+                items={uniqBy(albumResponse.items, "name")}
                 onChange={onChangeAlbum}
               />
             </>

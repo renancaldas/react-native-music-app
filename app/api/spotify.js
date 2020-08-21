@@ -1,5 +1,14 @@
 import config from "../config";
 
+const handleResponse = (res) =>
+  new Promise((resolve, reject) => {
+    if (res.ok) {
+      res.json().then(resolve);
+    } else {
+      res.json().then(reject);
+    }
+  });
+
 const getCodeUrl = () => {
   const scope = `&scope=${encodeURIComponent(config.spotify.scopes)}`;
   const client_id = `&client_id=${config.spotify.clientId}`;
@@ -30,7 +39,31 @@ const getToken = (code, authBase64) => {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: formBody,
-  }).then((res) => res.json());
+  }).then();
+};
+
+const refreshToken = (refresh_token, authBase64) => {
+  const details = {
+    grant_type: "refresh_token",
+    refresh_token,
+  };
+
+  let formBody = [];
+  for (let property in details) {
+    let encodedKey = encodeURIComponent(property);
+    let encodedValue = encodeURIComponent(details[property]);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  formBody = formBody.join("&");
+
+  return fetch(`https://accounts.spotify.com/api/token`, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${authBase64}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: formBody,
+  }).then(handleResponse);
 };
 
 const getUserInfo = (access_token) => {
@@ -39,7 +72,7 @@ const getUserInfo = (access_token) => {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 const search = (type, query, access_token) => {
@@ -48,7 +81,7 @@ const search = (type, query, access_token) => {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 const searchArtist = (query, access_token) =>
@@ -66,7 +99,7 @@ const getAlbumsByArtistId = (artist_id, access_token) => {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 const getTracksByAlbumId = (album_id, access_token) => {
@@ -75,12 +108,13 @@ const getTracksByAlbumId = (album_id, access_token) => {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 export default {
   getCodeUrl,
   getToken,
+  refreshToken,
   getUserInfo,
   search,
   searchArtist,

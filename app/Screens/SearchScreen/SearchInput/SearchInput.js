@@ -11,6 +11,7 @@ import {
   setAlbumsAction,
   setTracksAction,
 } from "../../../Redux/Actions/Search";
+import { refreshToken } from "../../../Redux/Actions/User";
 
 const Search = () => {
   let searchInputRef = null;
@@ -45,12 +46,20 @@ const Search = () => {
               }
             });
         }
+      })
+      .catch(() => {
+        spotifyApi
+          .refreshToken(login.spotifyToken.refresh_token, login.authBase64)
+          .then((token) => {
+            dispatch(refreshToken(token));
+            alert('Refresh token done!')
+          });
       });
   };
 
   const onChangeText = (text) => {
     dispatch(setSearchInputAction(text));
-  }
+  };
 
   return (
     <View
