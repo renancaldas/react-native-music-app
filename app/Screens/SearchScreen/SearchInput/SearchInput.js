@@ -101,7 +101,7 @@ const Search = () => {
         style={{ height: 40, width: "60%" }}
         onChangeText={(text) => onChangeText(text)}
         value={searchText}
-        placeholder="Search for music"
+        placeholder="Search for artists"
         placeholderTextColor={colors.text.default}
         onBlur={() => onSearch(searchText)}
         selectTextOnFocus

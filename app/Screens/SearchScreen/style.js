@@ -18,8 +18,8 @@ export const Title = styled.Text`
   color: white;
   font-size: 30px;
   position: relative;
-  left: ${(width/3) - 10 + 'px'};
-  bottom: ${(height/4) + 'px'};;
+  left: ${width / 3 - 10 + "px"};
+  bottom: ${height / 4 + "px"};
 `;
 
 export const TitleCategory = styled.Text`
@@ -27,21 +27,38 @@ export const TitleCategory = styled.Text`
   font-size: 18px;
   margin: 15px 5px;
   text-align: center;
+  font-family: "SatisfyRegular";
+`;
+
+export const HeaderRow = styled(TouchableOpacity)`
+  margin-top: 10px;
+  flex-direction: row;
+  height: 30px;
+  align-items: center;
+  background-color: #101010;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+`;
+
+export const HeaderCell = styled.Text`
+  color: ${colors.text.default};
+  text-align: left;
+  margin: 0px 5px;
 `;
 
 export const Row = styled(TouchableOpacity)`
   flex-direction: row;
-  border-top-color: #333; 
-  border-bottom-color: #333; 
+  border-top-color: #333;
+  border-bottom-color: #333;
   border-top-width: 1px;
   border-bottom-width: 1px;
   height: 30px;
   align-items: center;
   /* justify-content: space-between; */
-`
+`;
 
-export const RowTitle = styled.Text`
+export const Cell = styled.Text`
   color: ${colors.text.title};
   text-align: left;
   margin: 0px 5px;
-`
+`;

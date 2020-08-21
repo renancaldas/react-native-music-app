@@ -39,7 +39,7 @@ const getToken = (code, authBase64) => {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: formBody,
-  }).then();
+  }).then(handleResponse);
 };
 
 const refreshToken = (refresh_token, authBase64) => {

@@ -2,13 +2,24 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator, ScrollView } from "react-native";
 import LottieView from "lottie-react-native";
-import sortBy from "lodash/sortBy";
+import orderBy from "lodash/orderBy";
 import uniqBy from "lodash/uniqBy";
 
-import { Container, Title, TitleCategory, Row, RowTitle } from "./style";
+import {
+  Container,
+  Title,
+  TitleCategory,
+  HeaderRow,
+  HeaderCell,
+  Row,
+  Cell,
+} from "./style";
 import Search from "./SearchInput/SearchInput";
 // import List from "./Playlist/Playlist";
 import Carousel from "./Carousel/Carousel";
+
+import ArtistCover from "./ArtistCover/ArtistCover";
+import AlbumCover from "./AlbumCover/AlbumCover";
 
 import spotifyApi from "../../api/spotify";
 import { setAlbumsAction, setTracksAction } from "../../Redux/Actions/Search";
@@ -67,6 +78,7 @@ const SearchScreen = () => {
               <Carousel
                 items={artistResponse.items}
                 onChange={onChangeArtist}
+                renderItem={({ item }) => <ArtistCover artist={item} />}
               />
             </>
           )}
@@ -75,19 +87,27 @@ const SearchScreen = () => {
             <>
               <TitleCategory>Albums</TitleCategory>
               <Carousel
-                items={uniqBy(albumResponse.items, "name")}
+                items={orderBy(
+                  uniqBy(albumResponse.items, "name"),
+                  "release_date",
+                  "desc"
+                )}
                 onChange={onChangeAlbum}
+                renderItem={({ item }) => <AlbumCover album={item} />}
               />
             </>
           )}
 
           {trackResponse && (
             <>
-              <TitleCategory>Tracks</TitleCategory>
-              {sortBy(trackResponse.items, ["disc_number"]).map((track) => (
+              <HeaderRow>
+                <HeaderCell>#</HeaderCell>
+                <HeaderCell>Track</HeaderCell>
+              </HeaderRow>
+              {orderBy(trackResponse.items, ["disc_number"]).map((track) => (
                 <Row key={track.id}>
-                  <RowTitle>{track.track_number}</RowTitle>
-                  <RowTitle>{track.name ? track.name : ""}</RowTitle>
+                  <Cell>{track.track_number}</Cell>
+                  <Cell>{track.name ? track.name : ""}</Cell>
                 </Row>
               ))}
             </>
