@@ -6,6 +6,7 @@ import colors from "../../../constants/colors";
 
 import spotifyApi from "../../../api/spotify";
 import {
+  setSearchInputAction,
   setArtistsAction,
   setAlbumsAction,
   setTracksAction,
@@ -15,9 +16,9 @@ const Search = () => {
   let searchInputRef = null;
   const dispatch = useDispatch();
   const { login } = useSelector((state) => state.User);
-  const [searchText, onChangeText] = React.useState(null);
+  const { searchText } = useSelector((state) => state.Search);
 
-  const onSearch = (searchText) => {
+  const onSearch = () => {
     spotifyApi
       .searchArtist(searchText, login.spotifyToken.access_token)
       .then((artistResults) => {
@@ -46,6 +47,10 @@ const Search = () => {
         }
       });
   };
+
+  const onChangeText = (text) => {
+    dispatch(setSearchInputAction(text));
+  }
 
   return (
     <View

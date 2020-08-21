@@ -1,8 +1,20 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import { applyMiddleware, createStore } from "redux";
+import { persistStore, persistReducer } from "redux-persist";
 import logger from "redux-logger";
 
 import reducers from "./Reducers";
 
-const store = createStore(reducers, applyMiddleware(logger));
+const persistConfig = {
+  key: "root",
+  storage: AsyncStorage,
+  whitelist: ['App', 'User', 'Search'],
+  blacklist: [],
+};
 
-export default store;
+const persistedReducer = persistReducer(persistConfig, reducers);
+
+const store = createStore(persistedReducer, applyMiddleware(logger));
+const persistor = persistStore(store);
+
+export { store, persistor };

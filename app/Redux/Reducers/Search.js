@@ -1,4 +1,5 @@
 import {
+  SEARCH_SET_INPUT,
   SEARCH_SET_ARTISTS,
   SEARCH_SET_ALBUMS,
   SEARCH_SET_TRACKS,
@@ -6,6 +7,7 @@ import {
 } from "../Types/Search";
 
 const initialState = {
+  searchText: null,
   artistResponse: null,
   albumResponse: null,
   trackResponse: null,
@@ -14,6 +16,13 @@ const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case SEARCH_SET_INPUT: {
+      return {
+        ...state,
+        searchText: action.payload,
+      };
+    }
+
     case SEARCH_SET_ARTISTS: {
       return {
         ...state,
