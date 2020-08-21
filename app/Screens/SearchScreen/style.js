@@ -37,9 +37,11 @@ export const Row = styled(TouchableOpacity)`
   border-bottom-width: 1px;
   height: 30px;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 `
 
 export const RowTitle = styled.Text`
   color: ${colors.text.title};
+  text-align: left;
+  margin: 0px 5px;
 `

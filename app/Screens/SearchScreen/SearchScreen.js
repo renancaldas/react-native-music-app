@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator, ScrollView } from "react-native";
 import LottieView from "lottie-react-native";
 import sortBy from 'lodash/sortBy';
+import uniqBy from 'lodash/uniqBy';
 
 import { Container, Title, TitleCategory, Row, RowTitle } from "./style";
 import Search from "./SearchInput/SearchInput";
@@ -23,9 +24,9 @@ const SearchScreen = () => {
     console.log(">>>> onChangeArtist ", artist);
 
     spotifyApi
-      .searchAlbum(artist.name, login.spotifyToken.access_token)
+      .getAlbumsByArtistId(artist.id, login.spotifyToken.access_token)
       .then((results) => {
-        dispatch(setAlbumsAction(results.albums));
+        dispatch(setAlbumsAction(results));
       });
   };
 
@@ -33,7 +34,7 @@ const SearchScreen = () => {
     console.log(">>>> onChangeAlbum ", album);
 
     spotifyApi
-      .getAlbumTracks(album.id, login.spotifyToken.access_token)
+      .getTracksByAlbumId(album.id, login.spotifyToken.access_token)
       .then((results) => {
         dispatch(setTracksAction(results));
       });
@@ -61,7 +62,7 @@ const SearchScreen = () => {
             <>
               <TitleCategory>Albums</TitleCategory>
               <Carousel
-                items={albumResponse.items}
+                items={uniqBy(albumResponse.items, 'id')}
                 onChange={onChangeAlbum}
               />
             </>

@@ -5,7 +5,11 @@ import { EvilIcons, Entypo } from "@expo/vector-icons";
 import colors from "../../../constants/colors";
 
 import spotifyApi from "../../../api/spotify";
-import { setArtistsAction } from "../../../Redux/Actions/Search";
+import {
+  setArtistsAction,
+  setAlbumsAction,
+  setTracksAction,
+} from "../../../Redux/Actions/Search";
 
 const Search = () => {
   let searchInputRef = null;
@@ -16,8 +20,30 @@ const Search = () => {
   const onSearch = (searchText) => {
     spotifyApi
       .searchArtist(searchText, login.spotifyToken.access_token)
-      .then((results) => {
-        dispatch(setArtistsAction(results.artists));
+      .then((artistResults) => {
+        dispatch(setArtistsAction(artistResults.artists));
+
+        if (artistResults.artists.items.length > 0) {
+          spotifyApi
+            .getAlbumsByArtistId(
+              artistResults.artists.items[0].id,
+              login.spotifyToken.access_token
+            )
+            .then((albumResults) => {
+              dispatch(setAlbumsAction(albumResults));
+
+              if (albumResults.items.length > 0) {
+                spotifyApi
+                  .getTracksByAlbumId(
+                    albumResults.items[0].id,
+                    login.spotifyToken.access_token
+                  )
+                  .then((results) => {
+                    dispatch(setTracksAction(results));
+                  });
+              }
+            });
+        }
       });
   };
 
