@@ -19,6 +19,7 @@ import spotifyApi from "./api/spotify";
 import {
   playerClearAllAction,
   setAudioPlayerAction,
+  setPlaybackStatusAction,
 } from "./Redux/Actions/Player";
 
 import { loginAction } from "./Redux/Actions/User";
@@ -30,20 +31,14 @@ Audio.setAudioModeAsync({
 
 const App = () => {
   const dispatch = useDispatch();
-  const { audioPlayer, musicData } = useSelector((state) => state.Player);
+  const { audioPlayer, playbackStatus, currentTrackData } = useSelector(
+    (state) => state.Player
+  );
   const { currentRoute, routes } = useSelector((state) => state.App);
 
   const [loaded] = useFonts({
     SatisfyRegular: require("../assets/fonts/Satisfy-Regular.ttf"),
   });
-
-  const loadMusic = () => {
-    if (musicData) {
-      
-    } else {
-      alert("Cannot load music: musicData is not initialized!");
-    }
-  };
 
   const onDeepLink = ({ url }) => {
     console.log("[onDeepLink] ", url);
@@ -54,11 +49,9 @@ const App = () => {
       spotifyApi
         .getToken(queryString.code, queryString.authBase64)
         .then((spotifyToken) => {
-          spotifyApi
-            .getUserInfo(spotifyToken.access_token)
-            .then((userData) => {
-              dispatch(loginAction({ ...queryString, spotifyToken, userData }));
-            });
+          spotifyApi.getUserInfo(spotifyToken.access_token).then((userData) => {
+            dispatch(loginAction({ ...queryString, spotifyToken, userData }));
+          });
         });
     }
   };
@@ -69,15 +62,15 @@ const App = () => {
     // Load player
     if (!audioPlayer) {
       const player = new Audio.Sound();
-      player.setOnPlaybackStatusUpdate((playbackStatus) => {
-        // this.setState({ playbackStatus });
-      });
+      player.setOnPlaybackStatusUpdate((playbackStatus) =>
+        dispatch(setPlaybackStatusAction(playbackStatus))
+      );
 
       dispatch(setAudioPlayerAction(player));
     }
 
     return () => {
-      console.log('App will unmount!');
+      console.log("App will unmount!");
 
       // Clear on unmount
       Linking.removeEventListener("url", onDeepLink);
@@ -89,6 +82,35 @@ const App = () => {
       }
     };
   }, [audioPlayer]);
+
+  useEffect(() => {
+    if (audioPlayer && currentTrackData) {
+      console.log(">>>> 1 playbackStatus", playbackStatus);
+
+      if (audioPlayer.isLoaded) {
+        console.log(">>>> 2 audioPlayer.isLoaded", audioPlayer.isLoaded);
+        audioPlayer.unloadAsync().then(() => {
+          audioPlayer
+            .getStatusAsync()
+            .then((data) =>
+              console.log(">>>> 3 audioPlayer.unloadAsync", data)
+            );
+
+          audioPlayer.loadAsync({ uri: currentTrackData });
+        });
+      } else {
+        audioPlayer.loadAsync({ uri: currentTrackData });
+      }
+    }
+
+    return () => {
+      console.log(
+        ">>> unmount() audioPlayer, currentTrackData",
+        audioPlayer,
+        currentTrackData
+      );
+    };
+  }, [audioPlayer, currentTrackData]);
 
   return (
     loaded && (
@@ -108,7 +130,6 @@ const App = () => {
             </TabWrapper>
           </>
         )}
-
       </AppContainer>
     )
   );

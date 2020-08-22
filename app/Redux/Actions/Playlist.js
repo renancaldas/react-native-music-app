@@ -6,9 +6,7 @@ import {
 } from "../Types/Playlist";
 
 import orderBy from "lodash/orderBy";
-import {
-  searchGetData,
-} from "../../api/index";
+import { openSearchGetData } from "../../api/index";
 import { setCurrentTrackDataAction } from "../Actions/Player";
 
 export function playlistAddTrackAction(track) {
@@ -32,11 +30,22 @@ export function playlistSetCurrentTrackAction(track) {
       payload: track,
     });
 
-    searchGetData(`"${track.artists[0].name}"|"${track.name}"`).then(
+    openSearchGetData(`"${track.artists[0].name}"|"${track.name}"`).then(
       (videoData) => {
-        const videoList = videoData.sourceList.filter(item => item.hasAudio && item.hasVideo);
-        const orderedSourceList = orderBy(videoList, (item) => parseInt(item.contentLength), 'asc');
-        dispatch(setCurrentTrackDataAction(orderedSourceList[0].url));
+        try {
+          console.log('>>> videoData', videoData)
+          const videoList = videoData.sourceList.filter(
+            (item) => item.hasAudio && item.hasVideo
+          );
+          const orderedSourceList = orderBy(
+            videoList,
+            (item) => parseInt(item.contentLength),
+            "asc"
+          );
+          dispatch(setCurrentTrackDataAction(orderedSourceList[0].url));
+        } catch (ex) {
+          console.log(">>>> ex", ex);
+        }
       }
     );
   };

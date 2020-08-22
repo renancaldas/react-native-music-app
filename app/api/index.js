@@ -18,3 +18,6 @@ export const searchByQueryPageToken = (query, pageToken) =>
 
 export const searchGetData = (query) =>
   fetch(`${backendUrl}/searchGetData?q=${query}`).then((res) => res.json());
+
+export const openSearchGetData = (query) =>
+  fetch(`${backendUrl}/openSearchGetData?q=${query}`).then((res) => res.json());

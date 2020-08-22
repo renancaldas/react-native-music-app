@@ -1,11 +1,13 @@
 import {
   PLAYER_SET_AUDIO_PLAYER,
   PLAYER_SET_CURRENT_TRACK_DATA,
+  PLAYER_SET_PLAYBACK_STATUS,
   PLAYER_CLEAR_ALL
 } from "../Types/Player";
 
 const initialState = {
   audioPlayer: null,
+  playbackStatus: null,
   currentTrackData: null,
 };
 
@@ -22,6 +24,13 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         currentTrackData: action.payload,
+      };
+    }
+
+    case PLAYER_SET_PLAYBACK_STATUS: {
+      return {
+        ...state,
+        playbackStatus: action.payload,
       };
     }
 
