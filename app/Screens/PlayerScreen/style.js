@@ -40,7 +40,7 @@ export const Subtitle = styled.Text`
 
 
 export const Cover = styled.View`
-  height: ${ITEM_HEIGHT};
+  height: ${ITEM_HEIGHT + 'px'};
 `;
 
 export const Controls = styled.View`

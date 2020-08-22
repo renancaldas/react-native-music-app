@@ -1,6 +1,6 @@
 import React from "react";
-import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import findIndex from "lodash/findIndex";
 
 import Slider from "./Slider/Slider";
 import AlbumCover from "./AlbumCover/AlbumCover";
@@ -17,13 +17,15 @@ import {
   ForwardButton,
 } from "./style";
 
+import { playlistSetCurrentTrackAction } from "../../Redux/Actions/Playlist";
+
 const PlayerScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { playlist, currentTrack } = useSelector((state) => state.Playlist);
   console.log(">>> playlist, currentTrack", playlist, currentTrack);
 
   const onChangeTrack = (track) => {
-    console.log(">>> onChangeTrack", onChangeTrack);
+    dispatch(playlistSetCurrentTrackAction(track));
   };
 
   return (
@@ -33,6 +35,7 @@ const PlayerScreen = ({ navigation }) => {
           items={playlist}
           onChange={onChangeTrack}
           renderItem={({ item }) => <AlbumCover album={item.album} />}
+          currentIndex={findIndex(playlist, (item) => item.id === currentTrack.id)}
         />
       </Cover>
 

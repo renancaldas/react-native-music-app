@@ -7,7 +7,7 @@ import { scrollInterpolator, animatedStyles } from "./animations";
 const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
-const CarouselComponent = ({ items, onChange, renderItem }) => {
+const CarouselComponent = ({ items, onChange, renderItem, currentIndex }) => {
   let carouselRef = null;
 
   const onSnapToItem = (index) => {
@@ -15,6 +15,10 @@ const CarouselComponent = ({ items, onChange, renderItem }) => {
       onChange(items[index]);
     }
   };
+
+  setTimeout(() => {
+    carouselRef.snapToItem(currentIndex, true);
+  }, 100);
 
   return (
     <Carousel
