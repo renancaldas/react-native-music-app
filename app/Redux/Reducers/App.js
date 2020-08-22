@@ -1,11 +1,11 @@
-import { APP_SET_ROUTE } from "../Types/App";
+import { APP_SET_ROUTE, APP_CLEAR_ALL } from "../Types/App";
 
 const routes = {
-  login: 'login',
-  profile: 'profile',
-  search: 'search',
-  playlist: 'playlist',
-  player: 'player',
+  login: "login",
+  profile: "profile",
+  search: "search",
+  playlist: "playlist",
+  player: "player",
 };
 
 const initialState = {
@@ -19,6 +19,12 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         currentRoute: action.payload,
+      };
+    }
+
+    case APP_CLEAR_ALL: {
+      return {
+        ...initialState,
       };
     }
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Image } from "react-native";
 import { EvilIcons, Fontisto } from "@expo/vector-icons";
 import { Container, TabIcon } from "./styles";
-import { setRouteAction } from "../../Redux/Actions/App";
+import { setRouteAction } from "../Redux/Actions/App";
 
 const Tabs = () => {
   const dispatch = useDispatch();

@@ -1,4 +1,9 @@
-import { USER_LOGIN, USER_LOGOUT, USER_REFRESH_TOKEN } from "../Types/User";
+import {
+  USER_LOGIN,
+  USER_LOGOUT,
+  USER_REFRESH_TOKEN,
+  USER_CLEAR_ALL,
+} from "../Types/User";
 
 export function loginAction(payload) {
   return {
@@ -17,5 +22,11 @@ export function refreshToken(payload) {
   return {
     type: USER_REFRESH_TOKEN,
     payload,
+  };
+}
+
+export function userClearAll() {
+  return {
+    type: USER_CLEAR_ALL,
   };
 }

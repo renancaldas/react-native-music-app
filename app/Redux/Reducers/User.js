@@ -1,5 +1,9 @@
-import { USER_LOGIN, USER_LOGOUT, USER_REFRESH_TOKEN } from "../Types/User";
-import { act } from "react-test-renderer";
+import {
+  USER_LOGIN,
+  USER_LOGOUT,
+  USER_REFRESH_TOKEN,
+  USER_CLEAR_ALL,
+} from "../Types/User";
 
 const initialState = {
   login: null,
@@ -15,21 +19,27 @@ function reducer(state = initialState, action) {
     }
 
     case USER_LOGOUT: {
-        return {
-          ...state,
-          login: initialState.login,
-        };
-      }
+      return {
+        ...state,
+        login: initialState.login,
+      };
+    }
 
-      case USER_REFRESH_TOKEN: {
-        return {
-          ...state,
-          login: {
-            ...state.login,
-            spotifyToken: action.payload
-          },
-        };
-      }
+    case USER_REFRESH_TOKEN: {
+      return {
+        ...state,
+        login: {
+          ...state.login,
+          spotifyToken: action.payload,
+        },
+      };
+    }
+
+    case USER_CLEAR_ALL: {
+      return {
+        ...initialState,
+      };
+    }
 
     default:
       return state;

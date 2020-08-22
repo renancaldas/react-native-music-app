@@ -4,13 +4,26 @@ import { View, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Title, Subtitle, LinkRow, Link, LinkBack } from "./style";
 
-import { loginAction } from "../../Redux/Actions/User";
-import { setRouteAction } from "../../Redux/Actions/App";
+
+import { appClearAllAction, setRouteAction } from "../../Redux/Actions/App";
+import { playerClearAllAction } from "../../Redux/Actions/Player";
+import { playlistClearAllAction } from "../../Redux/Actions/Playlist";
+import { searchClearAllAction } from "../../Redux/Actions/Search";
+import { userClearAll } from "../../Redux/Actions/User";
 
 const ProfileScreen = () => {
   const dispatch = useDispatch();
   const { login } = useSelector((state) => state.User);
   const { routes } = useSelector((state) => state.App);
+
+  const logout = () => {
+    dispatch(appClearAllAction());
+    dispatch(playerClearAllAction());
+    dispatch(playlistClearAllAction());
+    dispatch(searchClearAllAction());
+    dispatch(userClearAll());
+    dispatch(setRouteAction(routes.login));
+  }
 
   const confirmLogout = () =>
     Alert.alert(
@@ -24,10 +37,7 @@ const ProfileScreen = () => {
         },
         {
           text: "OK",
-          onPress: () => {
-            dispatch(loginAction(null));
-            dispatch(setRouteAction(routes.login));
-          },
+          onPress: logout,
         },
       ],
       { cancelable: false }

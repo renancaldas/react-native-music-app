@@ -1,8 +1,9 @@
 import {
-  SET_AUDIO_PLAYER,
-  SET_MUSIC_DATA,
-  CLEAR_MUSIC_DATA,
-  SET_IS_FULLSCREEN,
+  PLAYER_SET_AUDIO_PLAYER,
+  PLAYER_SET_MUSIC_DATA,
+  PLAYER_CLEAR_MUSIC_DATA,
+  PLAYER_SET_IS_FULLSCREEN,
+  PLAYER_CLEAR_ALL
 } from "../Types/Player";
 
 const initialState = {
@@ -13,31 +14,37 @@ const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case SET_AUDIO_PLAYER: {
+    case PLAYER_SET_AUDIO_PLAYER: {
       return {
         ...state,
         audioPlayer: action.payload,
       };
     }
 
-    case SET_MUSIC_DATA: {
+    case PLAYER_SET_MUSIC_DATA: {
       return {
         ...state,
         musicData: action.payload,
       };
     }
 
-    case CLEAR_MUSIC_DATA: {
+    case PLAYER_CLEAR_MUSIC_DATA: {
       return {
         ...state,
         musicData: initialState.musicData,
       };
     }
 
-    case SET_IS_FULLSCREEN: {
+    case PLAYER_SET_IS_FULLSCREEN: {
       return {
         ...state,
         isFullScreen: action.payload,
+      };
+    }
+
+    case PLAYER_CLEAR_ALL: {
+      return {
+        ...initialState,
       };
     }
 

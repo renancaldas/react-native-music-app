@@ -2,6 +2,7 @@ import {
   PLAYLIST_ADD_TRACK,
   PLAYLIST_REMOVE_TRACK,
   PLAYLIST_SET_CURRENT_TRACK,
+  PLAYLIST_CLEAR_ALL
 } from "../Types/Playlist";
 
 const initialState = {
@@ -31,6 +32,12 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         currentTrack: action.payload,
+      };
+    }
+
+    case PLAYLIST_CLEAR_ALL: {
+      return {
+        ...initialState,
       };
     }
 

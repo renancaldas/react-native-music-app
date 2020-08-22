@@ -8,7 +8,9 @@ import spotifyApi from "../../../api/spotify";
 import {
   setSearchInputAction,
   setArtistsAction,
+  setSelectedArtistAction,
   setAlbumsAction,
+  setSelectedAlbumAction,
   setTracksAction,
 } from "../../../Redux/Actions/Search";
 import { refreshToken } from "../../../Redux/Actions/User";
@@ -25,19 +27,25 @@ const Search = () => {
       .then((artistResults) => {
         dispatch(setArtistsAction(artistResults.artists));
 
+        const selectedArtist = artistResults.artists.items[0];
+        dispatch(setSelectedArtistAction(selectedArtist));
+
         if (artistResults.artists.items.length > 0) {
           spotifyApi
             .getAlbumsByArtistId(
-              artistResults.artists.items[0].id,
+              selectedArtist.id,
               login.spotifyToken.access_token
             )
             .then((albumResults) => {
               dispatch(setAlbumsAction(albumResults));
 
+              const selectedAlbum = albumResults.items[0];
+              dispatch(setSelectedAlbumAction(selectedAlbum));
+
               if (albumResults.items.length > 0) {
                 spotifyApi
                   .getTracksByAlbumId(
-                    albumResults.items[0].id,
+                    selectedAlbum.id,
                     login.spotifyToken.access_token
                   )
                   .then((results) => {

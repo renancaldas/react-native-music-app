@@ -1,33 +1,40 @@
 import {
-  SET_AUDIO_PLAYER,
-  SET_MUSIC_DATA,
-  CLEAR_MUSIC_DATA,
-  SET_IS_FULLSCREEN,
+  PLAYER_SET_AUDIO_PLAYER,
+  PLAYER_SET_MUSIC_DATA,
+  PLAYER_CLEAR_MUSIC_DATA,
+  PLAYER_SET_IS_FULLSCREEN,
+  PLAYER_CLEAR_ALL,
 } from "../Types/Player";
 
 export function setAudioPlayerAction(audioPlayer) {
   return {
-    type: SET_AUDIO_PLAYER,
+    type: PLAYER_SET_AUDIO_PLAYER,
     payload: audioPlayer,
   };
 }
 
 export function setMusicDataAction(musicData) {
   return {
-    type: SET_MUSIC_DATA,
+    type: PLAYER_SET_MUSIC_DATA,
     payload: musicData,
   };
 }
 
 export function clearMusicDataAction() {
   return {
-    type: CLEAR_MUSIC_DATA,
+    type: PLAYER_CLEAR_MUSIC_DATA,
   };
 }
 
 export function setIsFullscreenAction(isFullscreen) {
   return {
-    type: SET_IS_FULLSCREEN,
+    type: PLAYER_SET_IS_FULLSCREEN,
     payload: isFullscreen,
+  };
+}
+
+export function playerClearAllAction() {
+  return {
+    type: PLAYER_CLEAR_ALL,
   };
 }

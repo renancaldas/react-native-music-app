@@ -10,8 +10,7 @@ import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import SearchScreen from "./Screens/SearchScreen/SearchScreen";
 import PlaylistScreen from "./Screens/PlaylistScreen/PlaylistScreen";
 import PlayerScreen from "./Screens/PlayerScreen/PlayerScreen";
-import MiniPlayer from "./Components/MiniPlayer/MiniPlayer";
-import Tabs from "./Components/Tabs/Tabs";
+import Tabs from "./Tabs/Tabs";
 
 import { AppContainer, ViewWrapper, TabWrapper } from "./styles";
 
@@ -112,7 +111,6 @@ const App = () => {
           </>
         )}
 
-        {/* <MiniPlayer /> */}
       </AppContainer>
     )
   );

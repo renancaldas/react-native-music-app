@@ -44,10 +44,9 @@ const PlaylistScreen = () => {
                   {track.name ? track.name : ""}
                 </Cell>
                 <Cell>
-                  {/* <IconAntDesign name="hearto"  /> */}
                   <IconMaterialIcons
                     name={
-                      currentTrack.id === track.id
+                      currentTrack && currentTrack.id === track.id
                         ? "play-circle-filled"
                         : "play-circle-outline"
                     }

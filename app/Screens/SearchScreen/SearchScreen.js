@@ -14,7 +14,7 @@ import {
   HeaderCell,
   Row,
   Cell,
-  IconIonicons
+  IconIonicons,
 } from "./style";
 import Search from "./SearchInput/SearchInput";
 // import List from "./Playlist/Playlist";
@@ -24,21 +24,33 @@ import ArtistCover from "./ArtistCover/ArtistCover";
 import AlbumCover from "./AlbumCover/AlbumCover";
 
 import spotifyApi from "../../api/spotify";
-import { setAlbumsAction, setTracksAction } from "../../Redux/Actions/Search";
-import { playlistAddTrackAction, playlistRemoveTrackAction } from "../../Redux/Actions/Playlist";
+import {
+  setSelectedArtistAction,
+  setAlbumsAction,
+  setSelectedAlbumAction,
+  setTracksAction,
+} from "../../Redux/Actions/Search";
+import {
+  playlistAddTrackAction,
+  playlistRemoveTrackAction,
+} from "../../Redux/Actions/Playlist";
 
 const MusicAnimation = require("../../../assets/lottie/2881-music-fly.json");
 
 const SearchScreen = () => {
   const dispatch = useDispatch();
   const { login } = useSelector((state) => state.User);
-  const { artistResponse, albumResponse, trackResponse } = useSelector(
-    (state) => state.Search
-  );
+  const {
+    artistResponse,
+    selectedArtist,
+    albumResponse,
+    selectedAlbum,
+    trackResponse,
+  } = useSelector((state) => state.Search);
   const { playlist } = useSelector((state) => state.Playlist);
 
   const onChangeArtist = (artist) => {
-    console.log(">>>> onChangeArtist ", artist);
+    dispatch(setSelectedArtistAction(artist));
 
     spotifyApi
       .getAlbumsByArtistId(artist.id, login.spotifyToken.access_token)
@@ -59,7 +71,7 @@ const SearchScreen = () => {
   };
 
   const onChangeAlbum = (album) => {
-    console.log(">>>> onChangeAlbum ", album);
+    dispatch(setSelectedAlbumAction(album));
 
     spotifyApi
       .getTracksByAlbumId(album.id, login.spotifyToken.access_token)
@@ -69,13 +81,14 @@ const SearchScreen = () => {
   };
 
   const onPressTrack = (track) => {
-    const index = findIndex(playlist, item => item.id === track.id);
+    const index = findIndex(playlist, (item) => item.id === track.id);
     if (index === -1) {
+      track.album = {...selectedAlbum};
       dispatch(playlistAddTrackAction(track));
     } else {
       dispatch(playlistRemoveTrackAction(playlist[index]));
     }
-  }
+  };
 
   return (
     <Container>
@@ -124,7 +137,14 @@ const SearchScreen = () => {
                     {track.name ? track.name : ""}
                   </Cell>
                   <Cell>
-                    <IconIonicons name={findIndex(playlist, item => item.id === track.id) === -1? "ios-add-circle-outline" : "ios-add-circle"} />
+                    <IconIonicons
+                      name={
+                        findIndex(playlist, (item) => item.id === track.id) ===
+                        -1
+                          ? "ios-add-circle-outline"
+                          : "ios-add-circle"
+                      }
+                    />
                   </Cell>
                 </Row>
               ))}
