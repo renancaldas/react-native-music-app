@@ -1,4 +1,5 @@
 import { Dimensions, TouchableOpacity } from "react-native";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 
 import styled from "styled-components/native";
 import colors from "../../constants/colors";
@@ -30,7 +31,7 @@ export const TitleCategory = styled.Text`
   font-family: "SatisfyRegular";
 `;
 
-export const HeaderRow = styled(TouchableOpacity)`
+export const HeaderRow = styled.View`
   margin-top: 10px;
   flex-direction: row;
   height: 30px;
@@ -54,11 +55,18 @@ export const Row = styled(TouchableOpacity)`
   border-bottom-width: 1px;
   height: 30px;
   align-items: center;
-  /* justify-content: space-between; */
+  justify-content: space-between;
 `;
 
 export const Cell = styled.Text`
   color: ${colors.text.title};
-  text-align: left;
   margin: 0px 5px;
+`;
+
+export const IconAntDesign = styled(AntDesign)`
+  font-size: 25px;
+`;
+
+export const IconIonicons = styled(Ionicons)`
+  font-size: 25px;
 `;

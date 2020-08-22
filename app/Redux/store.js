@@ -8,7 +8,7 @@ import reducers from "./Reducers";
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ['App', 'User', 'Search'],
+  whitelist: ['App', 'User', 'Search', 'Playlist'],
   blacklist: [],
 };
 
