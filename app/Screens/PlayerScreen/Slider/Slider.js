@@ -5,7 +5,7 @@ import SliderComponent from "@react-native-community/slider";
 
 import colors from "../../../constants/colors";
 
-const Slider = ({ durationMillis, positionMillis, setPosition, width }) => {
+const Slider = ({ disabled, durationMillis, positionMillis, setPosition, width }) => {
   const [slidingValue, setSlidingValue] = useState(0);
 
   const getTimeFromMiliseconds = (miliseconds) => {
@@ -29,6 +29,7 @@ const Slider = ({ durationMillis, positionMillis, setPosition, width }) => {
   return (
     <View style={{ width }}>
       <SliderComponent
+        disabled={disabled}
         value={slidingValue || positionMillis}
         minimumValue={0}
         maximumValue={durationMillis}

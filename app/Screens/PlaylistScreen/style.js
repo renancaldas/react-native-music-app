@@ -1,5 +1,5 @@
 import { Dimensions, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 
 import styled from "styled-components/native";
 import colors from "../../constants/colors";
@@ -51,13 +51,13 @@ export const HeaderCell = styled.Text`
   margin: 0px 5px;
 `;
 
-export const Row = styled(TouchableOpacity)`
+export const Row = styled.View`
   flex-direction: row;
   border-top-color: #333;
   border-bottom-color: #333;
   border-top-width: 1px;
   border-bottom-width: 1px;
-  height: 30px;
+  height: 40px;
   align-items: center;
   justify-content: space-between;
 `;
@@ -67,6 +67,22 @@ export const Cell = styled.Text`
   margin: 0px 5px;
 `;
 
+export const CellSubtitle = styled.Text`
+  color: ${colors.text.default};
+  margin: 0px 5px;
+`;
+
+export const CellVertical = styled(TouchableOpacity)`
+  color: ${colors.text.title};
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+
 export const IconMaterialIcons = styled(MaterialIcons)`
+  font-size: 25px;
+`;
+
+export const IconIonicons = styled(Ionicons)`
   font-size: 25px;
 `;

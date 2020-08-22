@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { ActivityIndicator, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import findIndex from "lodash/findIndex";
 
@@ -56,7 +56,7 @@ const PlayerScreen = ({ isSelectedRoute }) => {
 
   const onSetPosition = (millis) => {
     audioPlayer.setPositionAsync(millis);
-  }
+  };
 
   return (
     <Container isSelectedRoute={isSelectedRoute}>
@@ -74,32 +74,37 @@ const PlayerScreen = ({ isSelectedRoute }) => {
         <Subtitle>{currentTrack ? currentTrack.artists[0].name : ""}</Subtitle>
       </TitleWrapper>
 
-      <>
-        <Slider
-          durationMillis={playbackStatus.durationMillis}
-          positionMillis={playbackStatus.positionMillis}
-          setPosition={onSetPosition}
-          width="90%"
-        />
-        <Controls>
-          <TouchableOpacity onPress={onBackward}>
-            <BackButton name="backward" />
-          </TouchableOpacity>
-          {playbackStatus && playbackStatus.isPlaying ? (
-            <TouchableOpacity onPress={onPause}>
-              <PlayButton name="pause" />
+      {playbackStatus && (
+        <>
+          <Slider
+            disabled={!playbackStatus.isLoaded}
+            durationMillis={playbackStatus.durationMillis}
+            positionMillis={playbackStatus.positionMillis}
+            setPosition={onSetPosition}
+            width="90%"
+          />
+          <Controls>
+            <TouchableOpacity onPress={onBackward}>
+              <BackButton name="backward" />
             </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={onPlay}>
-              <PlayButton name="play" />
-            </TouchableOpacity>
-          )}
+            {!playbackStatus.isLoaded ? (
+              <ActivityIndicator size="large" />
+            ) : playbackStatus.isPlaying ? (
+              <TouchableOpacity onPress={onPause}>
+                <PlayButton name="pause" />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={onPlay}>
+                <PlayButton name="play" />
+              </TouchableOpacity>
+            )}
 
-          <TouchableOpacity onPress={onForward}>
-            <ForwardButton name="forward" />
-          </TouchableOpacity>
-        </Controls>
-      </>
+            <TouchableOpacity onPress={onForward}>
+              <ForwardButton name="forward" />
+            </TouchableOpacity>
+          </Controls>
+        </>
+      )}
     </Container>
   );
 };

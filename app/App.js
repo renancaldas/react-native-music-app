@@ -77,16 +77,20 @@ class App extends React.Component {
     this.props.setAudioPlayer(player);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const hasChangedTrack = prevProps.currentTrackData !== this.props.currentTrackData;
+  componentDidUpdate(prevProps) {
+    const { audioPlayer, currentTrackData } = this.props;
+
+    const hasChangedTrack = prevProps.currentTrackData !== currentTrackData;
     if (hasChangedTrack) {
       console.log("CHANGED TRACK");
 
-      this.props.audioPlayer.unloadAsync().then(() => {
-        this.props.audioPlayer.loadAsync({ uri: this.props.currentTrackData }).then(() => {
-          this.props.audioPlayer.playAsync();
+      if (audioPlayer) {
+        audioPlayer.unloadAsync().then(() => {
+          audioPlayer.loadAsync({ uri: currentTrackData }).then(() => {
+            audioPlayer.playAsync();
+          })
         });
-      });
+      }
     }
   }
 

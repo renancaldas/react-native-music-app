@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import LottieView from "lottie-react-native";
 import findIndex from "lodash/findIndex";
@@ -11,7 +11,9 @@ import {
   HeaderCell,
   Row,
   Cell,
-  IconMaterialIcons,
+  CellSubtitle,
+  CellVertical,
+  IconIonicons,
   TitleCategory,
 } from "./style";
 
@@ -38,20 +40,31 @@ const PlaylistScreen = ({ isSelectedRoute }) => {
           </HeaderRow>
           <ScrollView>
             {playlist.map((track, index) => (
-              <Row key={track.id} onPress={() => onPressPlayTrack(track)}>
+              <Row
+                key={track.id}
+                style={{
+                  backgroundColor:
+                    currentTrack && currentTrack.id === track.id
+                      ? "black"
+                      : "transparent",
+                }}
+              >
                 <Cell>{index + 1}</Cell>
-                <Cell style={{ flexGrow: 1 }}>
-                  {track.name ? track.name : ""}
-                </Cell>
-                <Cell>
-                  <IconMaterialIcons
-                    name={
-                      currentTrack && currentTrack.id === track.id
-                        ? "play-circle-filled"
-                        : "play-circle-outline"
-                    }
-                  />
-                </Cell>
+                <CellVertical
+                  style={{ flexGrow: 1 }}
+                  onPress={() => onPressPlayTrack(track)}
+                >
+                  <Cell>{track.name ? track.name : ""}</Cell>
+                  <CellSubtitle>
+                    {track.artists ? track.artists[0].name : ""} -{" "}
+                    {track.album ? track.album.name : ""}
+                  </CellSubtitle>
+                </CellVertical>
+                <TouchableOpacity onPress={() => {}}>
+                  <Cell>
+                    <IconIonicons name="ios-close-circle-outline" />
+                  </Cell>
+                </TouchableOpacity>
               </Row>
             ))}
           </ScrollView>
