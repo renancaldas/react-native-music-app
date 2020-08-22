@@ -15,6 +15,10 @@ export const Container = styled.View`
   justify-content: space-between;
   /* border: 1px;
   border-color: white; */
+
+  display: ${({ isSelectedRoute }) => {
+    return isSelectedRoute ? 'flex' : 'none';
+  }};
 `;
 
 export const Title = styled.Text`

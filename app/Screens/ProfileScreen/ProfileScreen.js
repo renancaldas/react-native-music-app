@@ -9,7 +9,7 @@ import { playlistClearAllAction } from "../../Redux/Actions/Playlist";
 import { searchClearAllAction } from "../../Redux/Actions/Search";
 import { userClearAll } from "../../Redux/Actions/User";
 
-const ProfileScreen = () => {
+const ProfileScreen = ({isSelectedRoute}) => {
   const dispatch = useDispatch();
   const { login } = useSelector((state) => state.User);
   const { routes } = useSelector((state) => state.App);
@@ -41,9 +41,10 @@ const ProfileScreen = () => {
       { cancelable: false }
     );
 
+    console.log('>>> render profile isSelectedRoute', isSelectedRoute);
   return (
     login && (
-      <Container>
+      <Container isSelectedRoute={isSelectedRoute}>
         <View>
           <Subtitle>Logged as</Subtitle>
 

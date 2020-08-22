@@ -19,7 +19,7 @@ import { playlistSetCurrentTrackAction } from "../../Redux/Actions/Playlist";
 
 const MusicAnimation = require("../../../assets/lottie/2881-music-fly.json");
 
-const PlaylistScreen = () => {
+const PlaylistScreen = ({ isSelectedRoute }) => {
   const dispatch = useDispatch();
   const { playlist, currentTrack } = useSelector((state) => state.Playlist);
 
@@ -28,7 +28,7 @@ const PlaylistScreen = () => {
   };
 
   return (
-    <Container>
+    <Container isSelectedRoute={isSelectedRoute}>
       <TitleCategory>Playlist</TitleCategory>
       {playlist.length > 0 ? (
         <>

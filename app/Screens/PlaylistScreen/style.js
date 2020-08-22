@@ -6,6 +6,19 @@ import colors from "../../constants/colors";
 
 const { width, height } = Dimensions.get("window");
 
+export const Container = styled.View`
+  height: 100%;
+  width: 100%;
+  background-color: ${colors.background.app};
+
+  flex-direction: column;
+  padding: 10px;
+
+  display: ${({ isSelectedRoute }) => {
+    return isSelectedRoute ? 'flex' : 'none';
+  }};
+`;
+
 export const Title = styled.Text`
   color: white;
   font-size: 30px;
@@ -20,15 +33,6 @@ export const TitleCategory = styled.Text`
   margin: 10px 0px;
   text-align: center;
   font-family: "SatisfyRegular";
-`;
-
-export const Container = styled.View`
-  height: 100%;
-  width: 100%;
-  background-color: ${colors.background.app};
-
-  flex-direction: column;
-  padding: 10px;
 `;
 
 export const HeaderRow = styled.View`

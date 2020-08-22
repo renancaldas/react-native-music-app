@@ -20,7 +20,7 @@ import {
 
 import { playlistSetCurrentTrackAction } from "../../Redux/Actions/Playlist";
 
-const PlayerScreen = ({ navigation }) => {
+const PlayerScreen = ({ isSelectedRoute }) => {
   const dispatch = useDispatch();
   const { playlist, currentTrack } = useSelector((state) => state.Playlist);
   const currentTrackIndex = findIndex(
@@ -47,7 +47,7 @@ const PlayerScreen = ({ navigation }) => {
   };
 
   return (
-    <Container>
+    <Container isSelectedRoute={isSelectedRoute}>
       <Cover>
         <Carousel
           items={playlist}
@@ -58,8 +58,8 @@ const PlayerScreen = ({ navigation }) => {
       </Cover>
 
       <TitleWrapper>
-        <Title>{currentTrack.name}</Title>
-        <Subtitle>{currentTrack.artists[0].name}</Subtitle>
+        <Title>{currentTrack ? currentTrack.name : ''}</Title>
+        <Subtitle>{currentTrack ? currentTrack.artists[0].name : ''}</Subtitle>
       </TitleWrapper>
 
       <>
@@ -86,12 +86,3 @@ const PlayerScreen = ({ navigation }) => {
 };
 
 export default PlayerScreen;
-
-// import { getYoutubeVideoDataById } from "../../api";
-// import { setMusicDataAction } from "../../Redux/Actions/Player";
-
-/*if (!musicData && selectedItem) {
-    getYoutubeVideoDataById(selectedItem.id.videoId).then((data) => {
-      dispatch(setMusicDataAction(data));
-    });
-  } */

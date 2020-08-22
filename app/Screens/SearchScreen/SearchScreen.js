@@ -33,11 +33,12 @@ import {
 import {
   playlistAddTrackAction,
   playlistRemoveTrackAction,
+  playlistSetCurrentTrackAction,
 } from "../../Redux/Actions/Playlist";
 
 const MusicAnimation = require("../../../assets/lottie/2881-music-fly.json");
 
-const SearchScreen = () => {
+const SearchScreen = ({ isSelectedRoute }) => {
   const dispatch = useDispatch();
   const { login } = useSelector((state) => state.User);
   const {
@@ -46,7 +47,7 @@ const SearchScreen = () => {
     selectedAlbum,
     trackResponse,
   } = useSelector((state) => state.Search);
-  const { playlist } = useSelector((state) => state.Playlist);
+  const { playlist, currentTrack } = useSelector((state) => state.Playlist);
 
   const onChangeArtist = (artist) => {
     dispatch(setSelectedArtistAction(artist));
@@ -83,14 +84,21 @@ const SearchScreen = () => {
     const index = findIndex(playlist, (item) => item.id === track.id);
     if (index === -1) {
       track.album = {...selectedAlbum};
+
+      // If is first song of the playlist, set currentTrack
+      if (playlist.length === 0) {
+        dispatch(playlistSetCurrentTrackAction(track));
+      }
+
       dispatch(playlistAddTrackAction(track));
     } else {
       dispatch(playlistRemoveTrackAction(playlist[index]));
     }
   };
+  console.log('>>> render search isSelectedRoute', isSelectedRoute);
 
   return (
-    <Container>
+    <Container isSelectedRoute={isSelectedRoute}>
       <Search />
 
       {/* <ActivityIndicator size="large" /> */}

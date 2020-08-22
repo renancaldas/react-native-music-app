@@ -1,46 +1,34 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { connect } from 'react-redux'
 import { Linking } from "react-native";
-import { useFonts } from "expo-font";
 import { Audio } from "expo-av";
 import qs from "query-string";
-
+import { AppLoading } from "expo";
+import * as Font from 'expo-font';
 import LoginScreen from "./Screens/LoginScreen/LoginScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import SearchScreen from "./Screens/SearchScreen/SearchScreen";
 import PlaylistScreen from "./Screens/PlaylistScreen/PlaylistScreen";
 import PlayerScreen from "./Screens/PlayerScreen/PlayerScreen";
 import Tabs from "./Tabs/Tabs";
-
 import { AppContainer, ViewWrapper, TabWrapper } from "./styles";
-
 import spotifyApi from "./api/spotify";
-
-import {
-  playerClearAllAction,
-  setAudioPlayerAction,
-  setPlaybackStatusAction,
-} from "./Redux/Actions/Player";
 
 import { loginAction } from "./Redux/Actions/User";
 
-Audio.setAudioModeAsync({
-  staysActiveInBackground: false,
-  playThroughEarpieceAndroid: false,
-});
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fontsLoaded: false,
+    };
 
-const App = () => {
-  const dispatch = useDispatch();
-  const { audioPlayer, playbackStatus, currentTrackData } = useSelector(
-    (state) => state.Player
-  );
-  const { currentRoute, routes } = useSelector((state) => state.App);
+    this.onDeepLink = this.onDeepLink.bind(this);
+  }
 
-  const [loaded] = useFonts({
-    SatisfyRegular: require("../assets/fonts/Satisfy-Regular.ttf"),
-  });
+  onDeepLink({ url }) {
+    const { login } = this.props;
 
-  const onDeepLink = ({ url }) => {
     console.log("[onDeepLink] ", url);
     const queryString =
       url.indexOf("?") !== -1 ? qs.parse(url.split("?")[1]) : null;
@@ -50,89 +38,72 @@ const App = () => {
         .getToken(queryString.code, queryString.authBase64)
         .then((spotifyToken) => {
           spotifyApi.getUserInfo(spotifyToken.access_token).then((userData) => {
-            dispatch(loginAction({ ...queryString, spotifyToken, userData }));
+            login({ ...queryString, spotifyToken, userData });
           });
         });
     }
-  };
+  }
 
-  useEffect(() => {
-    Linking.addEventListener("url", onDeepLink);
+  loadFonts() {
+    Font.loadAsync({
+      SatisfyRegular: require("../assets/fonts/Satisfy-Regular.ttf"),
+    }).then(() => {
+      this.setState({ fontsLoaded: true });
+    }).catch((err) => {console.log('>>>> err', err)});
+  }
 
-    // Load player
-    if (!audioPlayer) {
-      const player = new Audio.Sound();
-      player.setOnPlaybackStatusUpdate((playbackStatus) =>
-        dispatch(setPlaybackStatusAction(playbackStatus))
+  componentDidMount() {
+    Linking.addEventListener("url", this.onDeepLink);
+    this.loadFonts();
+  }
+
+  componentWillUnmount() {
+    Linking.removeEventListener("url", this.onDeepLink);
+  }
+
+  render() {
+    const { currentRoute, routes } = this.props;
+    const { fontsLoaded } = this.state;
+
+    if (fontsLoaded) {
+      return (
+        <AppContainer>
+          {currentRoute === routes.login ? (
+            <LoginScreen />
+          ) : (
+            <>
+              <ViewWrapper>
+                {<ProfileScreen isSelectedRoute={currentRoute === routes.profile} />}
+                {<SearchScreen isSelectedRoute={currentRoute === routes.search} />}
+                {<PlaylistScreen isSelectedRoute={currentRoute === routes.playlist} />}
+                {<PlayerScreen isSelectedRoute={currentRoute === routes.player} />}
+              </ViewWrapper>
+              <TabWrapper>
+                <Tabs />
+              </TabWrapper>
+            </>
+          )}
+        </AppContainer>
       );
-
-      dispatch(setAudioPlayerAction(player));
+    } else {
+      return <AppLoading />;
     }
+  }
+}
 
-    return () => {
-      console.log("App will unmount!");
-
-      // Clear on unmount
-      Linking.removeEventListener("url", onDeepLink);
-
-      if (audioPlayer) {
-        audioPlayer.unloadAsync();
-        dispatch(playerClearAllAction());
-        dispatch(setAudioPlayerAction(null));
-      }
-    };
-  }, [audioPlayer]);
-
-  useEffect(() => {
-    if (audioPlayer && currentTrackData) {
-      console.log(">>>> 1 playbackStatus", playbackStatus);
-
-      if (audioPlayer.isLoaded) {
-        console.log(">>>> 2 audioPlayer.isLoaded", audioPlayer.isLoaded);
-        audioPlayer.unloadAsync().then(() => {
-          audioPlayer
-            .getStatusAsync()
-            .then((data) =>
-              console.log(">>>> 3 audioPlayer.unloadAsync", data)
-            );
-
-          audioPlayer.loadAsync({ uri: currentTrackData });
-        });
-      } else {
-        audioPlayer.loadAsync({ uri: currentTrackData });
-      }
-    }
-
-    return () => {
-      console.log(
-        ">>> unmount() audioPlayer, currentTrackData",
-        audioPlayer,
-        currentTrackData
-      );
-    };
-  }, [audioPlayer, currentTrackData]);
-
-  return (
-    loaded && (
-      <AppContainer>
-        {currentRoute === routes.login ? (
-          <LoginScreen />
-        ) : (
-          <>
-            <ViewWrapper>
-              {currentRoute === routes.search && <SearchScreen />}
-              {currentRoute === routes.profile && <ProfileScreen />}
-              {currentRoute === routes.playlist && <PlaylistScreen />}
-              {currentRoute === routes.player && <PlayerScreen />}
-            </ViewWrapper>
-            <TabWrapper>
-              <Tabs />
-            </TabWrapper>
-          </>
-        )}
-      </AppContainer>
-    )
-  );
+function mapStateToProps(state) {
+  return {
+    currentRoute: state.App.currentRoute,
+    routes: state.App.routes
+  }
 };
 
-export default App;
+function mapDispatchToProps(dispatch) {
+  return {
+    login: (userData) => {
+      dispatch(loginAction(userData))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
