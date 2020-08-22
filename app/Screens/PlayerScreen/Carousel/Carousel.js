@@ -17,21 +17,19 @@ const CarouselComponent = ({ items, onChange, renderItem }) => {
   };
 
   return (
-    <View>
-      <Carousel
-        layout={"default"}
-        ref={(c) => (carouselRef = c)}
-        data={items}
-        renderItem={renderItem}
-        sliderWidth={SLIDER_WIDTH}
-        itemWidth={ITEM_WIDTH}
-        inactiveSlideShift={0}
-        scrollInterpolator={scrollInterpolator}
-        slideInterpolatedStyle={animatedStyles}
-        useScrollView={true}
-        onSnapToItem={onSnapToItem}
-      />
-    </View>
+    <Carousel
+      layout={"default"}
+      ref={(c) => (carouselRef = c)}
+      data={items}
+      renderItem={renderItem}
+      sliderWidth={SLIDER_WIDTH}
+      itemWidth={ITEM_WIDTH}
+      inactiveSlideShift={0}
+      scrollInterpolator={scrollInterpolator}
+      slideInterpolatedStyle={animatedStyles}
+      useScrollView={true}
+      onSnapToItem={onSnapToItem}
+    />
   );
 };
 

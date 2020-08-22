@@ -11,8 +11,8 @@ const AlbumCover = ({ album }) => {
 
   const textComponent = (
     <>
-      <YearTitle>{year}</YearTitle>
-      <Title>{album.name}</Title>
+      {/* <YearTitle>{year}</YearTitle>
+      <Title>{album.name}</Title> */}
       <LinearGradient
         colors={["transparent", "rgba(0,0,0,1)"]}
         style={{

@@ -5,66 +5,64 @@ import SliderComponent from "@react-native-community/slider";
 
 import colors from "../../../constants/colors";
 
-const Slider = ({ durationMillis, positionMillis, setPosition }) => {
+const Slider = ({ durationMillis, positionMillis, setPosition, width }) => {
   const [slidingValue, setSlidingValue] = useState(0);
 
   const getTimeFromMiliseconds = (miliseconds) => {
     const seconds = miliseconds / 1000;
     return moment(new Date()).startOf("day").seconds(seconds).format("mm:ss");
-  }
+  };
 
   const onSlidingStart = () => {
     setSlidingValue(positionMillis);
-  }
+  };
 
   const onValueChange = (slidingValue) => {
     setSlidingValue(slidingValue);
-  }
+  };
 
   const onSlidingComplete = (value) => {
     setPosition(value);
     setSlidingValue(null);
-  }
+  };
 
   return (
-    <View>
-        <SliderComponent
-          value={slidingValue || positionMillis}
-          minimumValue={0}
-          maximumValue={durationMillis}
-          onSlidingStart={(value) => onSlidingStart(value)}
-          onValueChange={(value) => onValueChange(value)}
-          onSlidingComplete={(value) => onSlidingComplete(value)}
-        />
-        <View
+    <View style={{ width }}>
+      <SliderComponent
+        value={slidingValue || positionMillis}
+        minimumValue={0}
+        maximumValue={durationMillis}
+        onSlidingStart={(value) => onSlidingStart(value)}
+        onValueChange={(value) => onValueChange(value)}
+        onSlidingComplete={(value) => onSlidingComplete(value)}
+      />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            fontSize: 11,
+            fontWeight: "500",
+            color: colors.text.title,
           }}
         >
-          <Text
-            style={{
-              fontSize: 11,
-              fontWeight: "500",
-              color: colors.text.title,
-            }}
-          >
-            {getTimeFromMiliseconds(
-              slidingValue ? slidingValue : positionMillis
-            )}
-          </Text>
+          {getTimeFromMiliseconds(slidingValue ? slidingValue : positionMillis)}
+        </Text>
 
-          <Text
-            style={{
-              fontSize: 11,
-              fontWeight: "500",
-              color: colors.text.title,
-            }}
-          >
-            {getTimeFromMiliseconds(durationMillis)}
-          </Text>
-        </View>
+        <Text
+          style={{
+            fontSize: 11,
+            fontWeight: "500",
+            color: colors.text.title,
+          }}
+        >
+          {getTimeFromMiliseconds(durationMillis)}
+        </Text>
       </View>
+    </View>
   );
 };
 

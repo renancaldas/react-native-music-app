@@ -5,7 +5,7 @@ import colors from "../../../constants/colors";
 
 const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
-const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 6);
+const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 3);
 
 export const YearTitle = styled.Text`
   color: ${colors.text.title};
