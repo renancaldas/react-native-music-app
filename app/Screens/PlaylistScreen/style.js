@@ -1,5 +1,6 @@
 import { Dimensions, TouchableOpacity } from "react-native";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import TextTicker from "react-native-text-ticker";
 
 import styled from "styled-components/native";
 import colors from "../../constants/colors";
@@ -15,11 +16,11 @@ export const Container = styled.View`
   padding: 10px;
 
   display: ${({ isSelectedRoute }) => {
-    return isSelectedRoute ? 'flex' : 'none';
+    return isSelectedRoute ? "flex" : "none";
   }};
 `;
 
-export const Title = styled.Text`
+export const NoResults = styled.Text`
   color: white;
   font-size: 30px;
   position: relative;
@@ -59,30 +60,31 @@ export const Row = styled.View`
   border-bottom-width: 1px;
   height: 40px;
   align-items: center;
-  justify-content: space-between;
 `;
 
-export const Cell = styled.Text`
-  color: ${colors.text.title};
-  margin: 0px 5px;
-`;
-
-export const CellSubtitle = styled.Text`
-  color: ${colors.text.default};
-  margin: 0px 5px;
-`;
-
-export const CellVertical = styled(TouchableOpacity)`
-  color: ${colors.text.title};
+export const RowCell = styled.View`
+  height: 100%;
   flex-direction: column;
-  align-items: flex-start;
+  justify-content: center;
 `;
 
+export const Title = styled.Text`
+  color: ${colors.text.title};
+`;
+export const TitleScroll = styled(TextTicker)`
+  color: ${colors.text.title};
+`;
+
+export const Subtitle = styled.Text`
+  color: ${colors.text.default};
+`;
 
 export const IconMaterialIcons = styled(MaterialIcons)`
   font-size: 25px;
+  color: ${colors.text.title};
 `;
 
 export const IconIonicons = styled(Ionicons)`
   font-size: 25px;
+  color: ${colors.text.title};
 `;

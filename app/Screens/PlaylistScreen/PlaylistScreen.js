@@ -1,23 +1,26 @@
 import React from "react";
-import { ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import LottieView from "lottie-react-native";
-import findIndex from "lodash/findIndex";
 
 import {
   Container,
-  Title,
+  NoResults,
   HeaderRow,
   HeaderCell,
   Row,
-  Cell,
-  CellSubtitle,
-  CellVertical,
+  Title,
+  TitleScroll,
+  Subtitle,
+  RowCell,
   IconIonicons,
   TitleCategory,
 } from "./style";
 
-import { playlistSetCurrentTrackAction } from "../../Redux/Actions/Playlist";
+import {
+  playlistSetCurrentTrackAction,
+  playlistRemoveTrackAction,
+} from "../../Redux/Actions/Playlist";
 
 const MusicAnimation = require("../../../assets/lottie/2881-music-fly.json");
 
@@ -27,6 +30,10 @@ const PlaylistScreen = ({ isSelectedRoute }) => {
 
   const onPressPlayTrack = (track) => {
     dispatch(playlistSetCurrentTrackAction(track));
+  };
+
+  const onPressRemoveTrack = (track) => {
+    dispatch(playlistRemoveTrackAction(track));
   };
 
   return (
@@ -49,22 +56,48 @@ const PlaylistScreen = ({ isSelectedRoute }) => {
                       : "transparent",
                 }}
               >
-                <Cell>{index + 1}</Cell>
-                <CellVertical
-                  style={{ flexGrow: 1 }}
+                <RowCell
+                  style={{
+                    alignItems: "center",
+                    width: "6%",
+                  }}
+                >
+                  <Title>{index + 1}</Title>
+                </RowCell>
+                <TouchableOpacity
+                  style={{
+                    width: "80%",
+                    marginHorizontal: 5,
+                  }}
                   onPress={() => onPressPlayTrack(track)}
                 >
-                  <Cell>{track.name ? track.name : ""}</Cell>
-                  <CellSubtitle>
-                    {track.artists ? track.artists[0].name : ""} -{" "}
-                    {track.album ? track.album.name : ""}
-                  </CellSubtitle>
-                </CellVertical>
-                <TouchableOpacity onPress={() => {}}>
-                  <Cell>
-                    <IconIonicons name="ios-close-circle-outline" />
-                  </Cell>
+                  <RowCell>
+                    <TitleScroll
+                      duration={20000}
+                      loop
+                      animationType="scroll"
+                      repeatSpacer={10}
+                      marqueeDelay={1000}
+                    >
+                      {track.name ? track.name : ""}
+                    </TitleScroll>
+
+                    <Subtitle>
+                      {track.artists ? track.artists[0].name : ""} -{" "}
+                      {track.album ? track.album.name : ""}
+                    </Subtitle>
+                  </RowCell>
                 </TouchableOpacity>
+                <RowCell
+                  style={{
+                    alignItems: "center",
+                    width: "10%",
+                  }}
+                >
+                  <TouchableOpacity onPress={() => onPressRemoveTrack(track)}>
+                    <IconIonicons name="ios-close-circle-outline" />
+                  </TouchableOpacity>
+                </RowCell>
               </Row>
             ))}
           </ScrollView>
@@ -79,7 +112,7 @@ const PlaylistScreen = ({ isSelectedRoute }) => {
               width: "100%",
             }}
           />
-          <Title>No results</Title>
+          <NoResults>No results</NoResults>
         </>
       )}
     </Container>
