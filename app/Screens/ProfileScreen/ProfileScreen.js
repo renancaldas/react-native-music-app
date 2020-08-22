@@ -1,9 +1,7 @@
 import React from "react";
 import { View, Alert } from "react-native";
-
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Title, Subtitle, LinkRow, Link, LinkBack } from "./style";
-
 
 import { appClearAllAction, setRouteAction } from "../../Redux/Actions/App";
 import { playerClearAllAction } from "../../Redux/Actions/Player";

@@ -42,7 +42,6 @@ const SearchScreen = () => {
   const { login } = useSelector((state) => state.User);
   const {
     artistResponse,
-    selectedArtist,
     albumResponse,
     selectedAlbum,
     trackResponse,

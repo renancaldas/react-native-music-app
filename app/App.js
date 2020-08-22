@@ -17,7 +17,7 @@ import { AppContainer, ViewWrapper, TabWrapper } from "./styles";
 import spotifyApi from "./api/spotify";
 
 import {
-  clearMusicDataAction,
+  playerClearAllAction,
   setAudioPlayerAction,
 } from "./Redux/Actions/Player";
 
@@ -39,11 +39,7 @@ const App = () => {
 
   const loadMusic = () => {
     if (musicData) {
-      audioPlayer.loadAsync({
-        uri: musicData.sourceList.filter(
-          (source) => source.hasAudio && source.hasVideo
-        )[0].url,
-      });
+      
     } else {
       alert("Cannot load music: musicData is not initialized!");
     }
@@ -81,12 +77,14 @@ const App = () => {
     }
 
     return () => {
+      console.log('App will unmount!');
+
       // Clear on unmount
       Linking.removeEventListener("url", onDeepLink);
 
       if (audioPlayer) {
         audioPlayer.unloadAsync();
-        dispatch(clearMusicDataAction());
+        dispatch(playerClearAllAction());
         dispatch(setAudioPlayerAction(null));
       }
     };

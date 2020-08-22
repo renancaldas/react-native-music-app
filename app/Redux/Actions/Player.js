@@ -1,8 +1,6 @@
 import {
   PLAYER_SET_AUDIO_PLAYER,
-  PLAYER_SET_MUSIC_DATA,
-  PLAYER_CLEAR_MUSIC_DATA,
-  PLAYER_SET_IS_FULLSCREEN,
+  PLAYER_SET_CURRENT_TRACK_DATA,
   PLAYER_CLEAR_ALL,
 } from "../Types/Player";
 
@@ -13,23 +11,10 @@ export function setAudioPlayerAction(audioPlayer) {
   };
 }
 
-export function setMusicDataAction(musicData) {
+export function setCurrentTrackDataAction(currentTrackData) {
   return {
-    type: PLAYER_SET_MUSIC_DATA,
-    payload: musicData,
-  };
-}
-
-export function clearMusicDataAction() {
-  return {
-    type: PLAYER_CLEAR_MUSIC_DATA,
-  };
-}
-
-export function setIsFullscreenAction(isFullscreen) {
-  return {
-    type: PLAYER_SET_IS_FULLSCREEN,
-    payload: isFullscreen,
+    type: PLAYER_SET_CURRENT_TRACK_DATA,
+    payload: currentTrackData,
   };
 }
 

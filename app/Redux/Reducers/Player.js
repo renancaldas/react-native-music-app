@@ -1,15 +1,12 @@
 import {
   PLAYER_SET_AUDIO_PLAYER,
-  PLAYER_SET_MUSIC_DATA,
-  PLAYER_CLEAR_MUSIC_DATA,
-  PLAYER_SET_IS_FULLSCREEN,
+  PLAYER_SET_CURRENT_TRACK_DATA,
   PLAYER_CLEAR_ALL
 } from "../Types/Player";
 
 const initialState = {
   audioPlayer: null,
-  musicData: null,
-  isFullScreen: false,
+  currentTrackData: null,
 };
 
 function reducer(state = initialState, action) {
@@ -21,24 +18,10 @@ function reducer(state = initialState, action) {
       };
     }
 
-    case PLAYER_SET_MUSIC_DATA: {
+    case PLAYER_SET_CURRENT_TRACK_DATA: {
       return {
         ...state,
-        musicData: action.payload,
-      };
-    }
-
-    case PLAYER_CLEAR_MUSIC_DATA: {
-      return {
-        ...state,
-        musicData: initialState.musicData,
-      };
-    }
-
-    case PLAYER_SET_IS_FULLSCREEN: {
-      return {
-        ...state,
-        isFullScreen: action.payload,
+        currentTrackData: action.payload,
       };
     }
 
