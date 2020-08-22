@@ -95,7 +95,6 @@ const SearchScreen = ({ isSelectedRoute }) => {
       dispatch(playlistRemoveTrackAction(playlist[index]));
     }
   };
-  console.log('>>> render search isSelectedRoute', isSelectedRoute);
 
   return (
     <Container isSelectedRoute={isSelectedRoute}>

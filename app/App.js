@@ -1,10 +1,10 @@
 import React from "react";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import { Linking } from "react-native";
 import { Audio } from "expo-av";
 import qs from "query-string";
 import { AppLoading } from "expo";
-import * as Font from 'expo-font';
+import * as Font from "expo-font";
 import LoginScreen from "./Screens/LoginScreen/LoginScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import SearchScreen from "./Screens/SearchScreen/SearchScreen";
@@ -15,6 +15,12 @@ import { AppContainer, ViewWrapper, TabWrapper } from "./styles";
 import spotifyApi from "./api/spotify";
 
 import { loginAction } from "./Redux/Actions/User";
+import { setAudioPlayerAction, setPlaybackStatusAction } from "./Redux/Actions/Player";
+
+Audio.setAudioModeAsync({
+  staysActiveInBackground: false,
+  playThroughEarpieceAndroid: false,
+});
 
 class App extends React.Component {
   constructor(props) {
@@ -24,6 +30,19 @@ class App extends React.Component {
     };
 
     this.onDeepLink = this.onDeepLink.bind(this);
+    this.onPlaybackStatusChange = this.onPlaybackStatusChange.bind(this);
+  }
+
+  loadFonts() {
+    Font.loadAsync({
+      SatisfyRegular: require("../assets/fonts/Satisfy-Regular.ttf"),
+    })
+      .then(() => {
+        this.setState({ fontsLoaded: true });
+      })
+      .catch((err) => {
+        console.log(">>>> err", err);
+      });
   }
 
   onDeepLink({ url }) {
@@ -44,17 +63,31 @@ class App extends React.Component {
     }
   }
 
-  loadFonts() {
-    Font.loadAsync({
-      SatisfyRegular: require("../assets/fonts/Satisfy-Regular.ttf"),
-    }).then(() => {
-      this.setState({ fontsLoaded: true });
-    }).catch((err) => {console.log('>>>> err', err)});
+  onPlaybackStatusChange(playbackStatus) {
+    this.props.setPlaybackStatus(playbackStatus);
   }
 
   componentDidMount() {
     Linking.addEventListener("url", this.onDeepLink);
     this.loadFonts();
+
+    const player = new Audio.Sound();
+    player.setOnPlaybackStatusUpdate(this.onPlaybackStatusChange);
+
+    this.props.setAudioPlayer(player);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const hasChangedTrack = prevProps.currentTrackData !== this.props.currentTrackData;
+    if (hasChangedTrack) {
+      console.log("CHANGED TRACK");
+
+      this.props.audioPlayer.unloadAsync().then(() => {
+        this.props.audioPlayer.loadAsync({ uri: this.props.currentTrackData }).then(() => {
+          this.props.audioPlayer.playAsync();
+        });
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -73,10 +106,26 @@ class App extends React.Component {
           ) : (
             <>
               <ViewWrapper>
-                {<ProfileScreen isSelectedRoute={currentRoute === routes.profile} />}
-                {<SearchScreen isSelectedRoute={currentRoute === routes.search} />}
-                {<PlaylistScreen isSelectedRoute={currentRoute === routes.playlist} />}
-                {<PlayerScreen isSelectedRoute={currentRoute === routes.player} />}
+                {
+                  <ProfileScreen
+                    isSelectedRoute={currentRoute === routes.profile}
+                  />
+                }
+                {
+                  <SearchScreen
+                    isSelectedRoute={currentRoute === routes.search}
+                  />
+                }
+                {
+                  <PlaylistScreen
+                    isSelectedRoute={currentRoute === routes.playlist}
+                  />
+                }
+                {
+                  <PlayerScreen
+                    isSelectedRoute={currentRoute === routes.player}
+                  />
+                }
               </ViewWrapper>
               <TabWrapper>
                 <Tabs />
@@ -94,16 +143,25 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     currentRoute: state.App.currentRoute,
-    routes: state.App.routes
-  }
-};
+    routes: state.App.routes,
+    currentTrack: state.Playlist.currentTrack,
+    currentTrackData: state.Player.currentTrackData,
+    audioPlayer: state.Player.audioPlayer,
+  };
+}
 
 function mapDispatchToProps(dispatch) {
   return {
     login: (userData) => {
-      dispatch(loginAction(userData))
-    }
-  }
+      dispatch(loginAction(userData));
+    },
+    setAudioPlayer: (audioPlayer) => {
+      dispatch(setAudioPlayerAction(audioPlayer));
+    },
+    setPlaybackStatus: (playbackStatus) => {
+      dispatch(setPlaybackStatusAction(playbackStatus));
+    },
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

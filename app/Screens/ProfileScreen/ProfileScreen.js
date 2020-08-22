@@ -41,7 +41,6 @@ const ProfileScreen = ({isSelectedRoute}) => {
       { cancelable: false }
     );
 
-    console.log('>>> render profile isSelectedRoute', isSelectedRoute);
   return (
     login && (
       <Container isSelectedRoute={isSelectedRoute}>

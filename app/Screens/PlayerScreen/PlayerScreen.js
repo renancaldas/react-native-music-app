@@ -23,6 +23,8 @@ import { playlistSetCurrentTrackAction } from "../../Redux/Actions/Playlist";
 const PlayerScreen = ({ isSelectedRoute }) => {
   const dispatch = useDispatch();
   const { playlist, currentTrack } = useSelector((state) => state.Playlist);
+  const { audioPlayer, playbackStatus } = useSelector((state) => state.Player);
+
   const currentTrackIndex = findIndex(
     playlist,
     (item) => item.id === currentTrack.id
@@ -38,13 +40,23 @@ const PlayerScreen = ({ isSelectedRoute }) => {
     }
   };
 
-  const onPlay = () => {};
+  const onPlay = () => {
+    audioPlayer.playAsync();
+  };
+
+  const onPause = () => {
+    audioPlayer.pauseAsync();
+  };
 
   const onForward = () => {
     if (currentTrackIndex < playlist.length - 1) {
       dispatch(playlistSetCurrentTrackAction(playlist[currentTrackIndex + 1]));
     }
   };
+
+  const onSetPosition = (millis) => {
+    audioPlayer.setPositionAsync(millis);
+  }
 
   return (
     <Container isSelectedRoute={isSelectedRoute}>
@@ -58,24 +70,31 @@ const PlayerScreen = ({ isSelectedRoute }) => {
       </Cover>
 
       <TitleWrapper>
-        <Title>{currentTrack ? currentTrack.name : ''}</Title>
-        <Subtitle>{currentTrack ? currentTrack.artists[0].name : ''}</Subtitle>
+        <Title>{currentTrack ? currentTrack.name : ""}</Title>
+        <Subtitle>{currentTrack ? currentTrack.artists[0].name : ""}</Subtitle>
       </TitleWrapper>
 
       <>
         <Slider
-          durationMillis={1000}
-          positionMillis={0}
-          setPosition={() => {}}
+          durationMillis={playbackStatus.durationMillis}
+          positionMillis={playbackStatus.positionMillis}
+          setPosition={onSetPosition}
           width="90%"
         />
         <Controls>
           <TouchableOpacity onPress={onBackward}>
             <BackButton name="backward" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={onPlay}>
-            <PlayButton name="play" />
-          </TouchableOpacity>
+          {playbackStatus && playbackStatus.isPlaying ? (
+            <TouchableOpacity onPress={onPause}>
+              <PlayButton name="pause" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={onPlay}>
+              <PlayButton name="play" />
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity onPress={onForward}>
             <ForwardButton name="forward" />
           </TouchableOpacity>
