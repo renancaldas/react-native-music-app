@@ -18,7 +18,7 @@ const CarouselComponent = ({ items, onChange, renderItem, currentIndex }) => {
 
   setTimeout(() => {
     carouselRef.snapToItem(currentIndex, true);
-  }, 100);
+  }, 50);
 
   return (
     <Carousel

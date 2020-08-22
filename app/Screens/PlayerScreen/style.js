@@ -1,5 +1,4 @@
-import { Dimensions, TouchableOpacity } from "react-native";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { Dimensions } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 import styled from "styled-components/native";
@@ -60,6 +59,7 @@ export const PlayButton = styled(FontAwesome5)`
   color: ${colors.text.title};
   font-size: 40px;
 `;
+
 export const ForwardButton = styled(FontAwesome5)`
   color: ${colors.text.title};
   font-size: 30px;

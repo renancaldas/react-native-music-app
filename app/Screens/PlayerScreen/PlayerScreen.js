@@ -1,4 +1,5 @@
 import React from "react";
+import { TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import findIndex from "lodash/findIndex";
 
@@ -22,10 +23,27 @@ import { playlistSetCurrentTrackAction } from "../../Redux/Actions/Playlist";
 const PlayerScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { playlist, currentTrack } = useSelector((state) => state.Playlist);
-  console.log(">>> playlist, currentTrack", playlist, currentTrack);
+  const currentTrackIndex = findIndex(
+    playlist,
+    (item) => item.id === currentTrack.id
+  );
 
   const onChangeTrack = (track) => {
     dispatch(playlistSetCurrentTrackAction(track));
+  };
+
+  const onBackward = () => {
+    if (currentTrackIndex > 0) {
+      dispatch(playlistSetCurrentTrackAction(playlist[currentTrackIndex - 1]));
+    }
+  };
+
+  const onPlay = () => {};
+
+  const onForward = () => {
+    if (currentTrackIndex < playlist.length - 1) {
+      dispatch(playlistSetCurrentTrackAction(playlist[currentTrackIndex + 1]));
+    }
   };
 
   return (
@@ -35,7 +53,7 @@ const PlayerScreen = ({ navigation }) => {
           items={playlist}
           onChange={onChangeTrack}
           renderItem={({ item }) => <AlbumCover album={item.album} />}
-          currentIndex={findIndex(playlist, (item) => item.id === currentTrack.id)}
+          currentIndex={currentTrackIndex}
         />
       </Cover>
 
@@ -52,9 +70,15 @@ const PlayerScreen = ({ navigation }) => {
           width="90%"
         />
         <Controls>
-          <BackButton name="backward" />
-          <PlayButton name="play" />
-          <ForwardButton name="forward" />
+          <TouchableOpacity onPress={onBackward}>
+            <BackButton name="backward" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onPlay}>
+            <PlayButton name="play" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onForward}>
+            <ForwardButton name="forward" />
+          </TouchableOpacity>
         </Controls>
       </>
     </Container>
