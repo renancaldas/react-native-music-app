@@ -20,7 +20,7 @@ import {
 
 import { playlistSetCurrentTrackAction } from "../../Redux/Actions/Playlist";
 
-const PlayerScreen = ({ isSelectedRoute }) => {
+const PlayerScreen = () => {
   const dispatch = useDispatch();
   const { playlist, currentTrack } = useSelector((state) => state.Playlist);
   const { audioPlayer, playbackStatus } = useSelector((state) => state.Player);
@@ -59,7 +59,7 @@ const PlayerScreen = ({ isSelectedRoute }) => {
   };
 
   return (
-    <Container isSelectedRoute={isSelectedRoute}>
+    <Container>
       <Cover>
         <Carousel
           items={playlist}

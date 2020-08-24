@@ -15,7 +15,10 @@ import { AppContainer, ViewWrapper, TabWrapper } from "./styles";
 import spotifyApi from "./api/spotify";
 
 import { loginAction } from "./Redux/Actions/User";
-import { setAudioPlayerAction, setPlaybackStatusAction } from "./Redux/Actions/Player";
+import {
+  setAudioPlayerAction,
+  setPlaybackStatusAction,
+} from "./Redux/Actions/Player";
 
 Audio.setAudioModeAsync({
   staysActiveInBackground: false,
@@ -36,13 +39,9 @@ class App extends React.Component {
   loadFonts() {
     Font.loadAsync({
       SatisfyRegular: require("../assets/fonts/Satisfy-Regular.ttf"),
-    })
-      .then(() => {
-        this.setState({ fontsLoaded: true });
-      })
-      .catch((err) => {
-        console.log(">>>> err", err);
-      });
+    }).then(() => {
+      this.setState({ fontsLoaded: true });
+    });
   }
 
   onDeepLink({ url }) {
@@ -82,13 +81,11 @@ class App extends React.Component {
 
     const hasChangedTrack = prevProps.currentTrackData !== currentTrackData;
     if (hasChangedTrack) {
-      console.log("CHANGED TRACK");
-
       if (audioPlayer) {
         audioPlayer.unloadAsync().then(() => {
           audioPlayer.loadAsync({ uri: currentTrackData }).then(() => {
             audioPlayer.playAsync();
-          })
+          });
         });
       }
     }
@@ -110,26 +107,10 @@ class App extends React.Component {
           ) : (
             <>
               <ViewWrapper>
-                {
-                  <ProfileScreen
-                    isSelectedRoute={currentRoute === routes.profile}
-                  />
-                }
-                {
-                  <SearchScreen
-                    isSelectedRoute={currentRoute === routes.search}
-                  />
-                }
-                {
-                  <PlaylistScreen
-                    isSelectedRoute={currentRoute === routes.playlist}
-                  />
-                }
-                {
-                  <PlayerScreen
-                    isSelectedRoute={currentRoute === routes.player}
-                  />
-                }
+                {currentRoute === routes.profile && <ProfileScreen />}
+                {currentRoute === routes.search && <SearchScreen />}
+                {currentRoute === routes.playlist && <PlaylistScreen />}
+                {currentRoute === routes.player && <PlayerScreen />}
               </ViewWrapper>
               <TabWrapper>
                 <Tabs />

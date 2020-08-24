@@ -19,6 +19,7 @@ const CarouselComponent = ({ items, onChange, renderItem }) => {
   return (
     <View>
       <Carousel
+        initialNumToRender={3}
         layout={"default"}
         ref={(c) => (carouselRef = c)}
         data={items}

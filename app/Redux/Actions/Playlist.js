@@ -33,7 +33,6 @@ export function playlistSetCurrentTrackAction(track) {
     openSearchGetData(`${track.artists[0].name}|album ${track.album.name}|song ${track.name}`).then(
       (videoData) => {
         try {
-          console.log('>>> videoData', videoData)
           const videoList = videoData.sourceList.filter(
             (item) => item.hasAudio && item.hasVideo
           );
@@ -43,8 +42,8 @@ export function playlistSetCurrentTrackAction(track) {
             "asc"
           );
           dispatch(setCurrentTrackDataAction(orderedSourceList[0].url));
-        } catch (ex) {
-          console.log(">>>> ex", ex);
+        } catch (err) {
+          alert(`Ooops! Error on reading song: ${track.name}`);
         }
       }
     );

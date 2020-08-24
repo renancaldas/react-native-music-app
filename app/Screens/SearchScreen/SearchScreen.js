@@ -38,7 +38,7 @@ import {
 
 const MusicAnimation = require("../../../assets/lottie/2881-music-fly.json");
 
-const SearchScreen = ({ isSelectedRoute }) => {
+const SearchScreen = () => {
   const dispatch = useDispatch();
   const { login } = useSelector((state) => state.User);
   const {
@@ -47,7 +47,7 @@ const SearchScreen = ({ isSelectedRoute }) => {
     selectedAlbum,
     trackResponse,
   } = useSelector((state) => state.Search);
-  const { playlist, currentTrack } = useSelector((state) => state.Playlist);
+  const { playlist } = useSelector((state) => state.Playlist);
 
   const onChangeArtist = (artist) => {
     dispatch(setSelectedArtistAction(artist));
@@ -96,8 +96,11 @@ const SearchScreen = ({ isSelectedRoute }) => {
     }
   };
 
+  const artistRenderItem = ({ item }) => <ArtistCover artist={item} />
+  const albumRenderItem = ({ item }) => <AlbumCover album={item} />
+
   return (
-    <Container isSelectedRoute={isSelectedRoute}>
+    <Container >
       <Search />
 
       {/* <ActivityIndicator size="large" /> */}
@@ -110,7 +113,7 @@ const SearchScreen = ({ isSelectedRoute }) => {
               <Carousel
                 items={artistResponse.items}
                 onChange={onChangeArtist}
-                renderItem={({ item }) => <ArtistCover artist={item} />}
+                renderItem={artistRenderItem}
               />
             </>
           )}
@@ -125,7 +128,7 @@ const SearchScreen = ({ isSelectedRoute }) => {
                   "desc"
                 )}
                 onChange={onChangeAlbum}
-                renderItem={({ item }) => <AlbumCover album={item} />}
+                renderItem={albumRenderItem}
               />
             </>
           )}

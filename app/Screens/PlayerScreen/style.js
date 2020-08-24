@@ -18,10 +18,6 @@ export const Container = styled.View`
   justify-content: space-around;
 
   padding: 10px;
-
-  display: ${({ isSelectedRoute }) => {
-    return isSelectedRoute ? 'flex' : 'none';
-  }};
 `;
 
 export const TitleWrapper = styled.View`

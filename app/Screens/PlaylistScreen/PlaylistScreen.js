@@ -24,7 +24,7 @@ import {
 
 const MusicAnimation = require("../../../assets/lottie/2881-music-fly.json");
 
-const PlaylistScreen = ({ isSelectedRoute }) => {
+const PlaylistScreen = () => {
   const dispatch = useDispatch();
   const { playlist, currentTrack } = useSelector((state) => state.Playlist);
 
@@ -37,7 +37,7 @@ const PlaylistScreen = ({ isSelectedRoute }) => {
   };
 
   return (
-    <Container isSelectedRoute={isSelectedRoute}>
+    <Container>
       <TitleCategory>Playlist</TitleCategory>
       {playlist.length > 0 ? (
         <>
