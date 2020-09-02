@@ -30,7 +30,7 @@ export function playlistSetCurrentTrackAction(track) {
       payload: track,
     });
 
-    openSearchGetData(`${track.artists[0].name}|album ${track.album.name}|song ${track.name}`).then(
+    openSearchGetData(`"${track.artists[0].name}" "${track.album.name}" "${track.name}"`).then(
       (videoData) => {
         try {
           const videoList = videoData.sourceList.filter(
