@@ -1,0 +1,23 @@
+{
+  "name": "MusicApp",
+  "displayName": "MusicApp",
+  "expo": {
+    "name": "MusicApp",
+    "icon": "./assets/images/logo.png",
+    "slug": "MusicApp",
+    "version": "0.0.1",
+    "assetBundlePatterns": ["**/*"],
+    "scheme": "musicapp",
+    "ios": {
+      "bundleIdentifier": "com.renancaldas.musicapp",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"]
+      }
+    },
+    "android": {
+      "package": "com.renancaldas.musicapp",
+      "versionCode": 1
+    }
+  }
+}
