@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import moment from "moment";
 import { Text, View } from "react-native";
 import SliderComponent from "@react-native-community/slider";
+import * as Haptics from 'expo-haptics';
 
 import colors from "../../../constants/colors";
 
@@ -18,6 +19,7 @@ const Slider = ({ disabled, durationMillis, positionMillis, setPosition, width }
   };
 
   const onValueChange = (slidingValue) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSlidingValue(slidingValue);
   };
 

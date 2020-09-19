@@ -4,13 +4,17 @@ import { Image } from "react-native";
 import { EvilIcons, Fontisto } from "@expo/vector-icons";
 import { Container, TabIcon } from "./styles";
 import { setRouteAction } from "../Redux/Actions/App";
+import * as Haptics from 'expo-haptics';
 
 const Tabs = () => {
   const dispatch = useDispatch();
   const { currentRoute, routes } = useSelector((state) => state.App);
   const { login } = useSelector((state) => state.User);
 
-  const changeRoute = (route) => dispatch(setRouteAction(route));
+  const changeRoute = (route) => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    dispatch(setRouteAction(route));
+  }
 
   return login && (
     <Container>
