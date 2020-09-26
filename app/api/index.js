@@ -1,7 +1,7 @@
 import config from '../config';
-const isProduction = false;
+const isProduction = true;
 
-const backendUrl = isProduction ? config.urls.firebase : config.urls.backend;
+const backendUrl = isProduction ? config.urls.backendHeroku : config.urls.backendLocal;
 
 const handleApiError = (functionName, error) => {
   console.log(`Api error at ${functionName}`, error);

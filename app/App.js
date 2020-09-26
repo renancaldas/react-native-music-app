@@ -13,6 +13,7 @@ import PlayerScreen from './Screens/PlayerScreen/PlayerScreen';
 import Tabs from './Tabs/Tabs';
 import {AppContainer, RouteWrapper, ViewWrapper, TabWrapper} from './styles';
 import spotifyApi from './api/spotify';
+import orderBy from 'lodash/orderBy';
 
 import {loginAction} from './Redux/Actions/User';
 import {
@@ -79,11 +80,26 @@ class App extends React.Component {
   componentDidUpdate(prevProps) {
     const {audioPlayer, currentTrackData} = this.props;
 
-    const hasChangedTrack = prevProps.currentTrackData !== currentTrackData;
+    const hasChangedTrack =
+      (!prevProps.currentTrackData && currentTrackData) ||
+      prevProps.currentTrackData.description !== currentTrackData.description;
+
     if (hasChangedTrack) {
       if (audioPlayer) {
+        console.log('Unloading track...');
         audioPlayer.unloadAsync().then(() => {
-          audioPlayer.loadAsync({uri: currentTrackData}).then(() => {
+          const videoList = currentTrackData.sourceList.filter(
+            (item) => item.hasAudio && item.hasVideo,
+          );
+          const orderedSourceList = orderBy(
+            videoList,
+            (item) => parseInt(item.contentLength),
+            'asc',
+          );
+
+          console.log('Loading track: ', orderedSourceList[0]);
+
+          audioPlayer.loadAsync({uri: orderedSourceList[0].url}).then(() => {
             audioPlayer.playAsync();
           });
         });
