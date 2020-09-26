@@ -1,7 +1,7 @@
 import config from "../config";
 const isProduction = false;
 
-const backendUrl = isProduction ? config.urls.firebase : config.urls.localhost;
+const backendUrl = isProduction ? config.urls.firebase : config.urls.backend;
 
 export const getYoutubeVideoDataById = (videoId) =>
   fetch(`${backendUrl}/getYoutubeVideoDataById?id=${videoId}`).then((res) =>

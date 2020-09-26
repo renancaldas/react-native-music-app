@@ -1,24 +1,24 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Linking } from "react-native";
-import { Audio } from "expo-av";
-import qs from "query-string";
-import { AppLoading } from "expo";
-import * as Font from "expo-font";
-import LoginScreen from "./Screens/LoginScreen/LoginScreen";
-import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
-import SearchScreen from "./Screens/SearchScreen/SearchScreen";
-import PlaylistScreen from "./Screens/PlaylistScreen/PlaylistScreen";
-import PlayerScreen from "./Screens/PlayerScreen/PlayerScreen";
-import Tabs from "./Tabs/Tabs";
-import { AppContainer, ViewWrapper, TabWrapper } from "./styles";
-import spotifyApi from "./api/spotify";
+import React from 'react';
+import {connect} from 'react-redux';
+import {Linking} from 'react-native';
+import {Audio} from 'expo-av';
+import qs from 'query-string';
+import {AppLoading} from 'expo';
+import * as Font from 'expo-font';
+import LoginScreen from './Screens/LoginScreen/LoginScreen';
+import ProfileScreen from './Screens/ProfileScreen/ProfileScreen';
+import SearchScreen from './Screens/SearchScreen/SearchScreen';
+import PlaylistScreen from './Screens/PlaylistScreen/PlaylistScreen';
+import PlayerScreen from './Screens/PlayerScreen/PlayerScreen';
+import Tabs from './Tabs/Tabs';
+import {AppContainer, RouteWrapper, ViewWrapper, TabWrapper} from './styles';
+import spotifyApi from './api/spotify';
 
-import { loginAction } from "./Redux/Actions/User";
+import {loginAction} from './Redux/Actions/User';
 import {
   setAudioPlayerAction,
   setPlaybackStatusAction,
-} from "./Redux/Actions/Player";
+} from './Redux/Actions/Player';
 
 Audio.setAudioModeAsync({
   staysActiveInBackground: false,
@@ -38,25 +38,25 @@ class App extends React.Component {
 
   loadFonts() {
     Font.loadAsync({
-      SatisfyRegular: require("../assets/fonts/Satisfy-Regular.ttf"),
+      SatisfyRegular: require('../assets/fonts/Satisfy-Regular.ttf'),
     }).then(() => {
-      this.setState({ fontsLoaded: true });
+      this.setState({fontsLoaded: true});
     });
   }
 
-  onDeepLink({ url }) {
-    const { login } = this.props;
+  onDeepLink({url}) {
+    const {login} = this.props;
 
-    console.log("[onDeepLink] ", url);
+    console.log('[onDeepLink] ', url);
     const queryString =
-      url.indexOf("?") !== -1 ? qs.parse(url.split("?")[1]) : null;
+      url.indexOf('?') !== -1 ? qs.parse(url.split('?')[1]) : null;
 
     if (queryString.login) {
       spotifyApi
         .getToken(queryString.code, queryString.authBase64)
         .then((spotifyToken) => {
           spotifyApi.getUserInfo(spotifyToken.access_token).then((userData) => {
-            login({ ...queryString, spotifyToken, userData });
+            login({...queryString, spotifyToken, userData});
           });
         });
     }
@@ -67,7 +67,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    Linking.addEventListener("url", this.onDeepLink);
+    Linking.addEventListener('url', this.onDeepLink);
     this.loadFonts();
 
     const player = new Audio.Sound();
@@ -77,13 +77,13 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { audioPlayer, currentTrackData } = this.props;
+    const {audioPlayer, currentTrackData} = this.props;
 
     const hasChangedTrack = prevProps.currentTrackData !== currentTrackData;
     if (hasChangedTrack) {
       if (audioPlayer) {
         audioPlayer.unloadAsync().then(() => {
-          audioPlayer.loadAsync({ uri: currentTrackData }).then(() => {
+          audioPlayer.loadAsync({uri: currentTrackData}).then(() => {
             audioPlayer.playAsync();
           });
         });
@@ -92,12 +92,12 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    Linking.removeEventListener("url", this.onDeepLink);
+    Linking.removeEventListener('url', this.onDeepLink);
   }
 
   render() {
-    const { currentRoute, routes } = this.props;
-    const { fontsLoaded } = this.state;
+    const {currentRoute, routes} = this.props;
+    const {fontsLoaded} = this.state;
 
     if (fontsLoaded) {
       return (
@@ -107,14 +107,16 @@ class App extends React.Component {
           ) : (
             <>
               <ViewWrapper>
-                {currentRoute === routes.profile && <ProfileScreen />}
-                {currentRoute === routes.search && <SearchScreen />}
-                {currentRoute === routes.playlist && <PlaylistScreen />}
-                {currentRoute === routes.player && <PlayerScreen />}
+                <RouteWrapper>
+                  {currentRoute === routes.profile && <ProfileScreen />}
+                  {currentRoute === routes.search && <SearchScreen />}
+                  {currentRoute === routes.playlist && <PlaylistScreen />}
+                  {currentRoute === routes.player && <PlayerScreen />}
+                </RouteWrapper>
+                <TabWrapper>
+                  <Tabs />
+                </TabWrapper>
               </ViewWrapper>
-              <TabWrapper>
-                <Tabs />
-              </TabWrapper>
             </>
           )}
         </AppContainer>
