@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Linking} from 'react-native';
 import {Audio} from 'expo-av';
+import {StatusBar} from 'expo-status-bar';
 import qs from 'query-string';
 import {AppLoading} from 'expo';
 import * as Font from 'expo-font';
@@ -80,9 +81,17 @@ class App extends React.Component {
   componentDidUpdate(prevProps) {
     const {audioPlayer, currentTrackData} = this.props;
 
-    const hasChangedTrack =
-      (!prevProps.currentTrackData && currentTrackData) ||
-      prevProps.currentTrackData.description !== currentTrackData.description;
+    let hasChangedTrack = false;
+
+    if (!prevProps.currentTrackData && currentTrackData) {
+      hasChangedTrack = true;
+    } else if (
+      prevProps.currentTrackData !== null &&
+      currentTrackData !== null
+    ) {
+      hasChangedTrack =
+        prevProps.currentTrackData.description !== currentTrackData.description;
+    }
 
     if (hasChangedTrack) {
       if (audioPlayer) {
@@ -118,6 +127,7 @@ class App extends React.Component {
     if (fontsLoaded) {
       return (
         <AppContainer>
+          <StatusBar style="light" />
           {currentRoute === routes.login ? (
             <LoginScreen />
           ) : (
