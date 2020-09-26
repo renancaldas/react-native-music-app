@@ -1,7 +1,8 @@
 export default {
   urls: {
     firebase: "https://us-central1-musicapp-286403.cloudfunctions.net",
-    backend: "https://react-native-music-app.herokuapp.com:31445",
+    // backend: "https://react-native-music-app.herokuapp.com:31445",
+    backend: "http://192.168.0.128:5000",
   },
   spotify: {
     redirectUrl:
