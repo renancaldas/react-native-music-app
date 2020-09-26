@@ -1,14 +1,21 @@
 {
-  "name": "MusicApp",
-  "displayName": "MusicApp",
   "expo": {
     "name": "MusicApp",
-    "icon": "./assets/images/logo.png",
     "slug": "MusicApp",
-    "version": "0.0.1",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/logo.png",
+    "splash": {
+      "image": "./assets/images/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
     "assetBundlePatterns": ["**/*"],
-    "scheme": "musicapp",
     "ios": {
+      "supportsTablet": true,
       "bundleIdentifier": "com.renancaldas.musicapp",
       "buildNumber": "1.0.0",
       "infoPlist": {
