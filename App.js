@@ -1,14 +1,13 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import Player from './app/Player';
+import React from "react";
+import Router from "./app/Router/Router";
+import { AppProvider } from "./AppContext";
 
 const App = () => {
   return (
-    <Player />
+    <AppProvider>
+      <Router />
+    </AppProvider>
   );
-}
+};
 
 export default App;
-
-
-
