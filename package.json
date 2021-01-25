@@ -22,7 +22,8 @@
     "react-native-safe-area-context": "3.1.9",
     "@react-native-community/masked-view": "0.1.10",
     "expo-linear-gradient": "~8.4.0",
-    "@react-native-community/slider": "3.0.3"
+    "@react-native-community/slider": "3.0.3",
+    "expo-av": "~8.7.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
