@@ -1,18 +1,14 @@
-import React from "react";
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import Player from './app/Player';
 
-import App from "./app/App";
-import { store, persistor } from "./app/Redux/store";
-
-export default () => {
+const App = () => {
   return (
-    <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <App />
-    </PersistGate>
-  </Provider>
+    <Player />
   );
 }
+
+export default App;
+
 
 

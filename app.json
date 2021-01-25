@@ -1,30 +1,32 @@
 {
   "expo": {
-    "name": "MusicApp",
-    "slug": "MusicApp",
+    "name": "react-native-music-app",
+    "slug": "react-native-music-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/logo.png",
+    "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/images/logo.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.renancaldas.musicapp",
-      "buildNumber": "1.0.0",
-      "infoPlist": {
-        "UIBackgroundModes": ["audio"]
-      }
+      "supportsTablet": true
     },
     "android": {
-      "package": "com.renancaldas.musicapp",
-      "versionCode": 1
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     }
   }
 }
