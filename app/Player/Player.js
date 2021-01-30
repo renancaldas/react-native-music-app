@@ -6,9 +6,14 @@ import { Audio } from "expo-av";
 import { AppContext } from "../../AppContext";
 
 const Player = () => {
-  const { tracks, selectedIndexTrack, setSelectedIndexTrack } = useContext(
-    AppContext
-  );
+  const {
+    isOrientationVertical,
+    tracks,
+    selectedIndexTrack,
+    setSelectedIndexTrack,
+  } = useContext(AppContext);
+
+  console.log(">>> isOrientationVertical", isOrientationVertical);
 
   const [sound, setSound] = useState();
   const [status, setStatus] = useState();
@@ -47,7 +52,14 @@ const Player = () => {
   }, [sound]);
 
   return (
-    <>
+    <View
+      style={{
+        flex: 1,
+        flexDirection: isOrientationVertical ? "column" : "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+      }}
+    >
       <Image
         style={{
           height: 300,
@@ -63,76 +75,158 @@ const Player = () => {
         source={require(`../../assets/ffxv_cover.jpeg`)}
       />
 
-      <Text style={{ color: "white", fontSize: 28 }}>
-        {" "}
-        {tracks[selectedIndexTrack].name}{" "}
-      </Text>
-      <Text style={{ color: "lightgrey", fontSize: 16 }}>
-        {" "}
-        {tracks[selectedIndexTrack].album} - {tracks[selectedIndexTrack].artist}{" "}
-      </Text>
+      {isOrientationVertical ? (
+        <>
+          <Text style={{ color: "white", fontSize: 28 }}>
+            {tracks[selectedIndexTrack].name}
+          </Text>
+          <Text style={{ color: "lightgrey", fontSize: 16 }}>
+            {tracks[selectedIndexTrack].album} -
+            {tracks[selectedIndexTrack].artist}
+          </Text>
 
-      {status && (
-        <Slider
-          style={{ width: 350, height: 40 }}
-          minimumValue={0}
-          value={status.positionMillis}
-          maximumValue={status.playableDurationMillis}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
-          onSlidingComplete={(positionMillis) =>
-            sound.setPositionAsync(positionMillis)
-          }
-        />
+          {status && (
+            <Slider
+              style={{ width: 350, height: 40 }}
+              minimumValue={0}
+              value={status.positionMillis}
+              maximumValue={status.playableDurationMillis}
+              minimumTrackTintColor="#FFFFFF"
+              maximumTrackTintColor="#000000"
+              onSlidingComplete={(positionMillis) =>
+                sound.setPositionAsync(positionMillis)
+              }
+            />
+          )}
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-around",
+              width: 300,
+            }}
+          >
+            <Ionicons
+              name="md-play-skip-back"
+              size={40}
+              style={{ color: "white" }}
+              onPress={() => {
+                if (selectedIndexTrack > 0) {
+                  setSelectedIndexTrack(selectedIndexTrack - 1);
+                }
+              }}
+            />
+
+            {status && status.isPlaying ? (
+              <Ionicons
+                name="md-pause"
+                size={70}
+                onPress={pauseSound}
+                style={{ color: "white" }}
+              />
+            ) : (
+              <Ionicons
+                name="md-play"
+                size={70}
+                onPress={playSound}
+                style={{ color: "white" }}
+              />
+            )}
+
+            <Ionicons
+              name="md-play-skip-forward"
+              size={40}
+              style={{ color: "white" }}
+              onPress={() => {
+                if (selectedIndexTrack < tracks.length - 1) {
+                  setSelectedIndexTrack(selectedIndexTrack + 1);
+                }
+              }}
+            />
+          </View>
+        </>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            height: '100%',
+            flexDirection: 'column',
+            alignItems: "center",
+            justifyContent: "space-around",
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 28 }}>
+            {tracks[selectedIndexTrack].name}
+          </Text>
+          <Text style={{ color: "lightgrey", fontSize: 16 }}>
+            {tracks[selectedIndexTrack].album} -
+            {tracks[selectedIndexTrack].artist}
+          </Text>
+
+          {status && (
+            <Slider
+              style={{ width: 350, height: 40 }}
+              minimumValue={0}
+              value={status.positionMillis}
+              maximumValue={status.playableDurationMillis}
+              minimumTrackTintColor="#FFFFFF"
+              maximumTrackTintColor="#000000"
+              onSlidingComplete={(positionMillis) =>
+                sound.setPositionAsync(positionMillis)
+              }
+            />
+          )}
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-around",
+              width: 300,
+            }}
+          >
+            <Ionicons
+              name="md-play-skip-back"
+              size={40}
+              style={{ color: "white" }}
+              onPress={() => {
+                if (selectedIndexTrack > 0) {
+                  setSelectedIndexTrack(selectedIndexTrack - 1);
+                }
+              }}
+            />
+
+            {status && status.isPlaying ? (
+              <Ionicons
+                name="md-pause"
+                size={70}
+                onPress={pauseSound}
+                style={{ color: "white" }}
+              />
+            ) : (
+              <Ionicons
+                name="md-play"
+                size={70}
+                onPress={playSound}
+                style={{ color: "white" }}
+              />
+            )}
+
+            <Ionicons
+              name="md-play-skip-forward"
+              size={40}
+              style={{ color: "white" }}
+              onPress={() => {
+                if (selectedIndexTrack < tracks.length - 1) {
+                  setSelectedIndexTrack(selectedIndexTrack + 1);
+                }
+              }}
+            />
+          </View>
+        </View>
       )}
-
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-around",
-          width: 300,
-        }}
-      >
-        <Ionicons
-          name="md-play-skip-back"
-          size={40}
-          style={{ color: "white" }}
-          onPress={() => {
-            if (selectedIndexTrack > 0) {
-              setSelectedIndexTrack(selectedIndexTrack - 1);
-            }
-          }}
-        />
-
-        {status && status.isPlaying ? (
-          <Ionicons
-            name="md-pause"
-            size={70}
-            onPress={pauseSound}
-            style={{ color: "white" }}
-          />
-        ) : (
-          <Ionicons
-            name="md-play"
-            size={70}
-            onPress={playSound}
-            style={{ color: "white" }}
-          />
-        )}
-
-        <Ionicons
-          name="md-play-skip-forward"
-          size={40}
-          style={{ color: "white" }}
-          onPress={() => {
-            if (selectedIndexTrack < tracks.length - 1) {
-              setSelectedIndexTrack(selectedIndexTrack + 1);
-            }
-          }}
-        />
-      </View>
-    </>
+    </View>
   );
 };
 

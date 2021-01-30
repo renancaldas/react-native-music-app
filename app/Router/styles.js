@@ -27,4 +27,5 @@ export const Footer = styled.View`
     flex: 1;
     flex-direction: row;
     justify-content: space-around;
+    padding: 20px 0px;
 `
