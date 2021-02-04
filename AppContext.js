@@ -7,8 +7,7 @@ const tracks = [
     name: "Pause Theme",
     artist: "Final Fantasy",
     album: "FFXV",
-    uri:
-      "https://storage.cloudconvert.com/tasks/9929b910-7959-4b93-a9ae-1b0a7e5ddfc8/ffxv_pause_theme.mp3?AWSAccessKeyId=cloudconvert-production&Expires=1611687799&Signature=Rip7mpUfpWYVw3HYIKwyxX5GXcQ%3D&response-content-disposition=inline%3B%20filename%3D%22ffxv_pause_theme.mp3%22&response-content-type=audio%2Fmpeg",
+    uri: "http://192.168.15.4:3000/video",
     cover: "ffxv_cover.jpeg",
   },
   {
@@ -16,8 +15,7 @@ const tracks = [
     name: "Stand Your Ground",
     artist: "Final Fantasy",
     album: "FFXV",
-    uri:
-      "https://storage.cloudconvert.com/tasks/e6200c40-c03e-4033-9281-656a981a1be3/ffxv_stand_your_ground.mp3?AWSAccessKeyId=cloudconvert-production&Expires=1611683485&Signature=dGE3O1TmOlglaRZxAQT3yvQBYaE%3D&response-content-disposition=inline%3B%20filename%3D%22ffxv_stand_your_ground.mp3%22&response-content-type=audio%2Fmpeg",
+    uri: "http://192.168.15.4:3000/video",
     cover: "ffxv_cover.jpeg",
   },
   {
@@ -25,8 +23,7 @@ const tracks = [
     name: "Daemons",
     artist: "Final Fantasy",
     album: "FFXV",
-    uri:
-      "https://storage.cloudconvert.com/tasks/3d531b28-35f9-45e7-ae94-c43d40fef607/ffxv_daemons.mp3?AWSAccessKeyId=cloudconvert-production&Expires=1611683894&Signature=Ka3d4B%2F91OIPqawqfZ8edSxSOAg%3D&response-content-disposition=inline%3B%20filename%3D%22ffxv_daemons.mp3%22&response-content-type=audio%2Fmpeg",
+    uri: "http://192.168.15.4:3000/video",
     cover: "ffxv_cover.jpeg",
   },
 ];
@@ -69,7 +66,7 @@ const AppProvider = ({ children }) => {
 
         setSelectedIndexTrack,
         setScreenOrientation,
-        setIsOrientationVertical
+        setIsOrientationVertical,
       }}
     >
       {children}

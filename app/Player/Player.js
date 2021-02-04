@@ -13,8 +13,6 @@ const Player = () => {
     setSelectedIndexTrack,
   } = useContext(AppContext);
 
-  console.log(">>> isOrientationVertical", isOrientationVertical);
-
   const [sound, setSound] = useState();
   const [status, setStatus] = useState();
 

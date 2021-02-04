@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-music-app",
-    "slug": "react-native-music-app",
+    "name": "MusicApp",
+    "slug": "MusicApp",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
