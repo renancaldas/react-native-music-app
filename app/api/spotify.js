@@ -1,6 +1,6 @@
 const config = {
   redirectUrl:
-    "http://www.renancaldas.com:3000/callbackSpotify",
+    "http://music.renancaldas.com:3000/callbackSpotify",
   clientId: "77880ef48e6545949e1d36b049fb2f17",
   scopes: "user-read-private user-read-email user-library-read",
 };

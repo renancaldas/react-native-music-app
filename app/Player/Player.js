@@ -1,53 +1,91 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Image, Text, View } from "react-native";
+import React, { useEffect, useContext } from "react";
+import { Image, Text, View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { Audio } from "expo-av";
-import { AppContext } from "../../AppContext";
+import { AppContext } from "../contexts/AppContext";
+
+import { youtubeUrl } from '../api';
 
 const Player = () => {
   const {
+    user,
     isOrientationVertical,
-    tracks,
+    playlist,
     selectedIndexTrack,
+    sound,
+    playerStatus,
+    setRoute,
     setSelectedIndexTrack,
+    setSound,
+    setPlayerStatus,
+    setLoading
   } = useContext(AppContext);
 
-  const [sound, setSound] = useState();
-  const [status, setStatus] = useState();
 
-  const playSound = async () => {
-    console.log("Loading Sound");
+  useEffect(() => {
+    if (!user) {
+      setRoute('/login');
+    }
 
-    await Audio.setAudioModeAsync({
-      allowsRecordingIOS: true,
-      playsInSilentModeIOS: true,
-    });
+    return sound
+      ? () => {
+        console.log("Unloading Sound");
+        sound.unloadAsync();
+      }
+      : undefined;
+  }, [user, sound]);
 
-    const sound = new Audio.Sound();
+  const loadTrack = async (index) => {
+    console.log("Loading track: ", playlist[index].youtubeId);
+    setLoading(true);
 
-    await sound.loadAsync({ uri: tracks[selectedIndexTrack].uri });
+    try {
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
 
-    sound.setOnPlaybackStatusUpdate(setStatus);
+      const sound = new Audio.Sound();
+      await sound.loadAsync({ uri: `${youtubeUrl}/stream?id=${playlist[index].youtubeId}` });
+      sound.setOnPlaybackStatusUpdate(setPlayerStatus);
+      setSound(sound);
 
-    setSound(sound);
+      console.log("Playing Sound");
+      setLoading(false);
 
-    console.log("Playing Sound");
-    await sound.playAsync();
+      await sound.playAsync();
+    } catch (ex) {
+      console.log(ex);
+      setLoading(false);
+    }
+  }
+
+  const onPressPlay = async () => {
+    loadTrack(selectedIndexTrack);
   };
 
-  const pauseSound = async () => {
+  const onPressPause = async () => {
     await sound.pauseAsync();
   };
 
-  useEffect(() => {
-    return sound
-      ? () => {
-          console.log("Unloading Sound");
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
+  const onPressBack = async () => {
+    if (selectedIndexTrack > 0) {
+      const index = selectedIndexTrack - 1;
+      setSelectedIndexTrack(index);
+      await sound.unloadAsync();
+      await loadTrack(index);
+    }
+  }
+
+  const onPressForward = async () => {
+    if (selectedIndexTrack < playlist.length - 1) {
+      const index = selectedIndexTrack + 1;
+      setSelectedIndexTrack(index);
+      await sound.unloadAsync();
+      await loadTrack(index);
+    }
+  }
 
   return (
     <View
@@ -70,25 +108,24 @@ const Player = () => {
           shadowOpacity: 0.41,
           shadowRadius: 9.11,
         }}
-        source={require(`../../assets/ffxv_cover.jpeg`)}
+        source={{ uri: playlist[selectedIndexTrack].album.images[0].url }}
       />
 
       {isOrientationVertical ? (
         <>
           <Text style={{ color: "white", fontSize: 28 }}>
-            {tracks[selectedIndexTrack].name}
+            {playlist[selectedIndexTrack].name}
           </Text>
           <Text style={{ color: "lightgrey", fontSize: 16 }}>
-            {tracks[selectedIndexTrack].album} -
-            {tracks[selectedIndexTrack].artist}
+            {`${playlist[selectedIndexTrack].album.name} - ${playlist[selectedIndexTrack].artists[0].name}`}
           </Text>
 
-          {status && (
+          {playerStatus && (
             <Slider
               style={{ width: 350, height: 40 }}
               minimumValue={0}
-              value={status.positionMillis}
-              maximumValue={status.playableDurationMillis}
+              value={playerStatus.positionMillis}
+              maximumValue={playerStatus.playableDurationMillis}
               minimumTrackTintColor="#FFFFFF"
               maximumTrackTintColor="#000000"
               onSlidingComplete={(positionMillis) =>
@@ -105,125 +142,120 @@ const Player = () => {
               width: 300,
             }}
           >
-            <Ionicons
-              name="md-play-skip-back"
-              size={40}
-              style={{ color: "white" }}
-              onPress={() => {
-                if (selectedIndexTrack > 0) {
-                  setSelectedIndexTrack(selectedIndexTrack - 1);
-                }
-              }}
-            />
-
-            {status && status.isPlaying ? (
+            <TouchableOpacity onPress={onPressBack}>
               <Ionicons
-                name="md-pause"
-                size={70}
-                onPress={pauseSound}
+                name="md-play-skip-back"
+                size={40}
                 style={{ color: "white" }}
+
               />
+            </TouchableOpacity>
+
+            {playerStatus && playerStatus.isPlaying ? (
+              <TouchableOpacity onPress={onPressPause}>
+                <Ionicons
+                  name="md-pause"
+                  size={70}
+
+                  style={{ color: "white" }}
+                />
+              </TouchableOpacity>
             ) : (
+                <TouchableOpacity onPress={onPressPlay}>
+                  <Ionicons
+                    name="md-play"
+                    size={70}
+
+                    style={{ color: "white" }}
+                  />
+                </TouchableOpacity>
+              )}
+
+
+            <TouchableOpacity onPress={onPressForward}>
               <Ionicons
-                name="md-play"
-                size={70}
-                onPress={playSound}
+                name="md-play-skip-forward"
+                size={40}
                 style={{ color: "white" }}
               />
-            )}
-
-            <Ionicons
-              name="md-play-skip-forward"
-              size={40}
-              style={{ color: "white" }}
-              onPress={() => {
-                if (selectedIndexTrack < tracks.length - 1) {
-                  setSelectedIndexTrack(selectedIndexTrack + 1);
-                }
-              }}
-            />
+            </TouchableOpacity>
           </View>
         </>
       ) : (
-        <View
-          style={{
-            flex: 1,
-            height: '100%',
-            flexDirection: 'column',
-            alignItems: "center",
-            justifyContent: "space-around",
-          }}
-        >
-          <Text style={{ color: "white", fontSize: 28 }}>
-            {tracks[selectedIndexTrack].name}
-          </Text>
-          <Text style={{ color: "lightgrey", fontSize: 16 }}>
-            {tracks[selectedIndexTrack].album} -
-            {tracks[selectedIndexTrack].artist}
-          </Text>
-
-          {status && (
-            <Slider
-              style={{ width: 350, height: 40 }}
-              minimumValue={0}
-              value={status.positionMillis}
-              maximumValue={status.playableDurationMillis}
-              minimumTrackTintColor="#FFFFFF"
-              maximumTrackTintColor="#000000"
-              onSlidingComplete={(positionMillis) =>
-                sound.setPositionAsync(positionMillis)
-              }
-            />
-          )}
-
           <View
             style={{
-              flexDirection: "row",
+              flex: 1,
+              height: '100%',
+              flexDirection: 'column',
               alignItems: "center",
               justifyContent: "space-around",
-              width: 300,
             }}
           >
-            <Ionicons
-              name="md-play-skip-back"
-              size={40}
-              style={{ color: "white" }}
-              onPress={() => {
-                if (selectedIndexTrack > 0) {
-                  setSelectedIndexTrack(selectedIndexTrack - 1);
-                }
-              }}
-            />
+            <Text style={{ color: "white", fontSize: 28 }}>
+              {playlist[selectedIndexTrack].name}
+            </Text>
+            <Text style={{ color: "lightgrey", fontSize: 16 }}>
+              {`${playlist[selectedIndexTrack].album.name} - ${playlist[selectedIndexTrack].artists[0].name}`}
+            </Text>
 
-            {status && status.isPlaying ? (
-              <Ionicons
-                name="md-pause"
-                size={70}
-                onPress={pauseSound}
-                style={{ color: "white" }}
-              />
-            ) : (
-              <Ionicons
-                name="md-play"
-                size={70}
-                onPress={playSound}
-                style={{ color: "white" }}
+            {sound && playerStatus && (
+              <Slider
+                style={{ width: 350, height: 40 }}
+                minimumValue={0}
+                value={playerStatus.positionMillis}
+                maximumValue={playerStatus.playableDurationMillis}
+                minimumTrackTintColor="#FFFFFF"
+                maximumTrackTintColor="#000000"
+                onSlidingComplete={(positionMillis) =>
+                  sound.setPositionAsync(positionMillis)
+                }
               />
             )}
 
-            <Ionicons
-              name="md-play-skip-forward"
-              size={40}
-              style={{ color: "white" }}
-              onPress={() => {
-                if (selectedIndexTrack < tracks.length - 1) {
-                  setSelectedIndexTrack(selectedIndexTrack + 1);
-                }
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-around",
+                width: 300,
               }}
-            />
+            >
+              <TouchableOpacity onPress={onPressBack}>
+                <Ionicons
+                  name="md-play-skip-back"
+                  size={40}
+                  style={{ color: "white" }}
+                />
+              </TouchableOpacity>
+
+              {playerStatus && playerStatus.isPlaying ? (
+                <TouchableOpacity onPress={onPressPause}>
+                  <Ionicons
+                    name="md-pause"
+                    size={70}
+                    style={{ color: "white" }}
+                  />
+                </TouchableOpacity>
+              ) : (
+                  <TouchableOpacity onPress={onPressPlay}>
+                    <Ionicons
+                      name="md-play"
+                      size={70}
+                      style={{ color: "white" }}
+                    />
+                  </TouchableOpacity>
+                )}
+
+              <TouchableOpacity onPress={onPressForward}>
+                <Ionicons
+                  name="md-play-skip-forward"
+                  size={40}
+                  style={{ color: "white" }}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      )}
+        )}
     </View>
   );
 };

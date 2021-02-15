@@ -1,6 +1,6 @@
 import React from "react";
 import Router from "./app/Router/Router";
-import { AppProvider } from "./AppContext";
+import { AppProvider } from "./app/contexts/AppContext";
 
 const App = () => {
   return (
