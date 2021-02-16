@@ -116,6 +116,36 @@ const getTracksByAlbumId = (album_id, access_token) => {
   }).then(handleResponse);
 };
 
+const getLikedSongs = (access_token) => new Promise((resolve, reject) => {
+  let list = [];
+  limitItems = 100;
+
+  const requestLoop = (url) => {
+    fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    }).then((res) => {
+      if (res.ok) {
+        res.json().then((data)=> {
+          list = list.concat(data.items);
+          if (list.length <= limitItems && data.next) {
+            requestLoop(data.next)
+          } else {
+            resolve(list);
+          }
+        });
+      } else {
+        res.json().then(reject);
+      }
+    })
+  }
+
+  requestLoop(`https://api.spotify.com/v1/me/tracks?limit=50`);
+});
+
+
 export default {
   getCodeUrl,
   getToken,
@@ -127,4 +157,5 @@ export default {
   searchTrack,
   getAlbumsByArtistId,
   getTracksByAlbumId,
+  getLikedSongs
 };

@@ -21,6 +21,14 @@ export const Row = styled(TouchableOpacity)`
   margin-bottom: 10px;
 `
 
+export const RowBetween = styled(TouchableOpacity)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between
+  width: 100%;
+`
+
 export const FlexColumn = styled.View`
   display: flex;
   flex-direction: column;

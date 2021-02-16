@@ -8,7 +8,7 @@ import { Text, FlexRow } from '../../AppStyles';
 import convertMilliseconds from '../helpers/convertMilliseconds';
 
 const Playlist = () => {
-  const { user, playlist, selectedAlbum, removeTrackFromPlaylist } = useContext(AppContext);
+  const { user, playlist, removeTrackFromPlaylist } = useContext(AppContext);
 
   const onPressTrack = (track) => {
     removeTrackFromPlaylist(track);
@@ -23,19 +23,23 @@ const Playlist = () => {
           playlist && playlist.length > 0 ? playlist.map(track => (
             <Row key={track.id} onPress={() => onPressTrack(track)}>
               {
-                selectedAlbum.images.length > 0 ? (
+                track && track.album && track.album.images.length > 0 ? (
                   <Avatar
                     source={{
-                      uri: selectedAlbum.images[selectedAlbum.images.length - 1].url,
+                      uri: track.album.images[track.album.images.length - 1].url,
                     }} />
                 ) : (
                     <Icon name="disc" />
                   )
               }
               <FlexColumn>
-                <Text>
-                  {`${track.track_number} - ${track.name.substring(0, 35)}`}
-                </Text>
+                {
+                  track && track.track_number && track.name ? (
+                    <Text>
+                      {`${track.track_number} - ${track.name.substring(0, 35)}`}
+                    </Text>
+                  ) : null
+                }
                 <FlexRow>
                   <Text>
                     {convertMilliseconds(track.duration_ms)}

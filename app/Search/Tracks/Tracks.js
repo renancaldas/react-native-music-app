@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AppContext } from "../../contexts/AppContext";
 
 import { Column, Scroll, Avatar, Icon, Row, FlexColumn } from '../styles';
@@ -7,19 +7,37 @@ import { Bold, Text, FlexRow } from '../../../AppStyles';
 import convertMilliseconds from '../../helpers/convertMilliseconds';
 
 import { queryVideos, getVideoByTrackId, preloadMp3 } from '../../api';
+import spotifyApi from "../../api/spotify";
 
 const Tracks = () => {
-  const { 
-    user, 
-    selectedArtist, 
-    selectedAlbum, 
-    tracks, 
+  const {
+    user,
+    selectedArtist,
+    selectedAlbum,
+    tracks,
     setLoading,
-    setOpenLinkModal, 
-    setQueryResults, 
-    setSelectedTrack, 
+    setOpenLinkModal,
+    setQueryResults,
+    setSelectedTrack,
     addTrackToPlaylist,
+    setTracks
   } = useContext(AppContext);
+
+  useEffect(() => {
+    if (!tracks || tracks.length === 0) {
+      setLoading(true);
+
+      spotifyApi
+        .getLikedSongs(user.spotifyToken.access_token)
+        .then((likedSongs) => {
+          setLoading(false);
+          setTracks({
+            href: likedSongs.href,
+            items: likedSongs.map(item => item.track)
+          })
+        });
+    }
+  }, [tracks])
 
   const onPressTrack = (track) => {
     setSelectedTrack(track);
@@ -35,7 +53,11 @@ const Tracks = () => {
         });
         setLoading(false);
       } else {
-        queryVideos(`${selectedArtist.name} ${selectedAlbum.name} ${track.name}`).then((queryResults) => {
+        const query = selectedArtist && selectedAlbum
+          ? `${selectedArtist.name} ${selectedAlbum.name} ${track.name}`
+          : `${track.album.artists[0].name} ${track.album.name} ${track.name}`;
+
+        queryVideos(query).then((queryResults) => {
           setQueryResults(queryResults);
           setOpenLinkModal(true);
           setLoading(false);
@@ -52,19 +74,23 @@ const Tracks = () => {
           tracks.items.map(track => (
             <Row key={track.id} onPress={() => onPressTrack(track)}>
               {
-                selectedAlbum.images.length > 0 ? (
+                track && track.album && track.album.images && track.album.images.length > 0 ? (
                   <Avatar
                     source={{
-                      uri: selectedAlbum.images[selectedAlbum.images.length - 1].url,
+                      uri: track.album.images[track.album.images.length - 1].url,
                     }} />
                 ) : (
                     <Icon name="disc" />
                   )
               }
               <FlexColumn>
-                <Text>
-                  {`${track.track_number} - ${track.name.substring(0, 35)}`}
-                </Text>
+                {
+                  track && track.track_number && track.name ? (
+                    <Text>
+                      {`${track.track_number} - ${track.name.substring(0, 35)}`}
+                    </Text>
+                  ) : null
+                }
                 <FlexRow>
                   <Text>
                     {convertMilliseconds(track.duration_ms)}

@@ -101,22 +101,27 @@ const Player = () => {
         marginBottom: 20
       }}
     >
-      <Image
-        style={{
-          borderRadius: 20,
-          marginLeft: 50,
-          height: 380,
-          width: 380,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 7,
-          },
-          shadowOpacity: 0.41,
-          shadowRadius: 9.11,
-        }}
-        source={{ uri: playlist[selectedIndexTrack].album.images[0].url }}
-      />
+      {
+        playlist && playlist[selectedIndexTrack] && playlist[selectedIndexTrack].album && playlist[selectedIndexTrack].album.images ? (
+          <Image
+            style={{
+              borderRadius: 20,
+              marginLeft: 50,
+              height: 380,
+              width: 380,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 7,
+              },
+              shadowOpacity: 0.41,
+              shadowRadius: 9.11,
+            }}
+            source={{ uri: playlist[selectedIndexTrack].album.images[0].url }}
+          />
+        ) : null
+      }
+
 
       {isOrientationVertical ? (
         <>
@@ -210,9 +215,18 @@ const Player = () => {
               <Text style={{ color: "lightgrey", fontSize: 20 }}>
                 {playlist[selectedIndexTrack].artists[0].name}
               </Text>
-              <Text style={{ color: "lightgrey", fontSize: 16 }}>
-                {playlist[selectedIndexTrack].album.name}
-              </Text>
+              {
+                playlist && playlist[selectedIndexTrack] && playlist[selectedIndexTrack].album ? (
+                  <Text style={{ color: "lightgrey", fontSize: 16 }}>
+                    {playlist[selectedIndexTrack].album.name}
+                  </Text>
+                ) : (
+                    <Text style={{ color: "lightgrey", fontSize: 16 }}>
+                      [ALBUM_NAME]
+                    </Text>
+                  )
+              }
+
             </View>
 
             {sound && playerStatus && (
