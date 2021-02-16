@@ -19,9 +19,7 @@ const Player = () => {
     setSelectedIndexTrack,
     setSound,
     setPlayerStatus,
-    setLoading
   } = useContext(AppContext);
-
 
   useEffect(() => {
     if (!user) {
@@ -36,9 +34,18 @@ const Player = () => {
       : undefined;
   }, [user, sound]);
 
+  const onPlaybackStatusUpdate = (playbackStatus) => {
+    console.log('onPlaybackStatusUpdate: ', playbackStatus.positionMillis);
+
+    if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
+      onPressForward();
+    }
+
+    setPlayerStatus(playbackStatus);
+  }
+
   const loadTrack = async (index) => {
     console.log("Loading track: ", playlist[index].youtubeId);
-    setLoading(true);
 
     try {
       await Audio.setAudioModeAsync({
@@ -48,16 +55,13 @@ const Player = () => {
 
       const sound = new Audio.Sound();
       await sound.loadAsync({ uri: `${youtubeUrl}/stream?id=${playlist[index].youtubeId}` });
-      sound.setOnPlaybackStatusUpdate(setPlayerStatus);
+      sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
       setSound(sound);
 
       console.log("Playing Sound");
-      setLoading(false);
-
       await sound.playAsync();
     } catch (ex) {
       console.log(ex);
-      setLoading(false);
     }
   }
 
@@ -94,12 +98,15 @@ const Player = () => {
         flexDirection: isOrientationVertical ? "column" : "row",
         alignItems: "center",
         justifyContent: "space-around",
+        marginBottom: 20
       }}
     >
       <Image
         style={{
-          height: 300,
-          width: 300,
+          borderRadius: 20,
+          marginLeft: 50,
+          height: 380,
+          width: 380,
           shadowColor: "#000",
           shadowOffset: {
             width: 0,
@@ -185,25 +192,35 @@ const Player = () => {
           <View
             style={{
               flex: 1,
-              height: '100%',
+              height: '90%',
               flexDirection: 'column',
               alignItems: "center",
               justifyContent: "space-around",
             }}
           >
-            <Text style={{ color: "white", fontSize: 28 }}>
+            <Text style={{ color: "white", fontSize: 32 }}>
               {playlist[selectedIndexTrack].name}
             </Text>
-            <Text style={{ color: "lightgrey", fontSize: 16 }}>
-              {`${playlist[selectedIndexTrack].album.name} - ${playlist[selectedIndexTrack].artists[0].name}`}
-            </Text>
+            <View style={{
+              flexDirection: 'column',
+              alignItems: "center",
+              justifyContent: "space-around",
+              height: 70
+            }}>
+              <Text style={{ color: "lightgrey", fontSize: 20 }}>
+                {playlist[selectedIndexTrack].artists[0].name}
+              </Text>
+              <Text style={{ color: "lightgrey", fontSize: 16 }}>
+                {playlist[selectedIndexTrack].album.name}
+              </Text>
+            </View>
 
             {sound && playerStatus && (
               <Slider
                 style={{ width: 350, height: 40 }}
                 minimumValue={0}
                 value={playerStatus.positionMillis}
-                maximumValue={playerStatus.playableDurationMillis}
+                maximumValue={playlist[selectedIndexTrack].duration_ms}
                 minimumTrackTintColor="#FFFFFF"
                 maximumTrackTintColor="#000000"
                 onSlidingComplete={(positionMillis) =>

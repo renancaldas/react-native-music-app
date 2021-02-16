@@ -8,6 +8,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Scroll, Avatar, Row, FlexColumn } from './styles';
 import { FlexRow } from '../../../AppStyles';
 
+import convertMilliseconds from '../../helpers/convertMilliseconds';
+
 import { linkTrackAndVideo, preloadMp3 } from '../../api';
 
 export default function ModalLink() {
@@ -21,6 +23,7 @@ export default function ModalLink() {
   const onClickConfirm = () => {
     linkTrackAndVideo(selectedTrack.id, selected.videoId).then((linked) => {
       if (linked.spotifyId && linked.youtubeId) {
+        setSelected(null);
         setOpenLinkModal(false);
         preloadMp3(linked.youtubeId);
         addTrackToPlaylist({
@@ -43,8 +46,9 @@ export default function ModalLink() {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Please link a youtube video to the track</Text>
-
+            {
+              selectedTrack && <Text style={styles.modalText}>Please link a youtube video to the track: {selectedTrack.name} ({convertMilliseconds(selectedTrack.duration_ms)})</Text>
+            }
             {
               selected ? (
                 <>
